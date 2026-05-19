@@ -4,7 +4,12 @@
     "href": "index.html",
     "title": "kokoromi",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
+    "crumbs": [
+      "Home",
+      "Basics",
+      "kokoromi"
+    ]
   },
   {
     "objectID": "about.html",

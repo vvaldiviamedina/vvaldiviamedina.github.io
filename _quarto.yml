@@ -1,14 +1,47 @@
 project:
   type: website
+  output-dir: docs
 
 website:
   title: "kokoromi"
+  page-navigation: true
+  page-footer: "VVM"
   navbar:
+    background: dark
+    foreground: info
     left:
       - href: index.qmd
         text: Home
       - about.qmd
-
+      - text: "More"
+        menu:
+          - about.qmd
+          - talks.qmd
+  sidebar:
+    style: "docked"
+    search: true
+    title: "kokoro"
+    background: "#5c9e95"
+    foreground: "#c7a3c0"
+    contents:
+      - text: "Introduction"
+        href: introduction.qmd
+      - section: "Basics"
+        href: basics-summary.qmd
+        contents:
+          - index.qmd
+          - basics-knitr.qmd
+          - basics-jupyter.qmd
+      - section: "Layout"
+        contents:
+          - layout.qmd
+          - layout-knitr.qmd
+          - layout-jupyter.qmd
+      - section: advanced.qmd
+        contents:
+          - raw-code.qmd
+          - custom-theme.qmd
+      - acknowledgment.qmd
 format:
   html:
     theme: cosmo
