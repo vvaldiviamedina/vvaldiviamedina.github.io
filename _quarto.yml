@@ -12,10 +12,21 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - href: showcase.qmd
-        text: Showcase
       - href: about.qmd
         text: About
+  sidebar:
+    style: "docked"
+    search: true
+    title: "kokoro"
+    background: "#5c9e95"
+    foreground: "#c7a3c0"
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - text: "Showcase"
+        href: showcase.qmd
+      - text: "About"
+        href: about.qmd
 format:
   html:
     theme:

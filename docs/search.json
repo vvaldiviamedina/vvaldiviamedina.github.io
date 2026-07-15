@@ -4,90 +4,141 @@
     "href": "showcase.html",
     "title": "Showcase",
     "section": "",
-    "text": "This page is a grab-bag of Quarto features, rendered right in your site. Open the .qmd source alongside this page to see how each piece is written."
+    "text": "This page is a grab-bag of Quarto features, rendered right in your site. Open the .qmd source alongside this page to see how each piece is written.",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#callouts",
     "href": "showcase.html#callouts",
     "title": "Showcase",
     "section": "Callouts",
-    "text": "Callouts\nCallouts are a nice way to flag notes, tips, warnings, or important info without writing any HTML.\n\n\n\n\n\n\nNote\n\n\n\nThis is a note. Good for asides and extra context.\n\n\n\n\n\n\n\n\nTipPro tip\n\n\n\nCallouts can have their own titles, like this one.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThis is a warning. Use it to flag things readers should be careful about.\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis is important. Reserve it for things that really matter.\n\n\n\n\n\n\n\n\nNoteClick to expand\n\n\n\n\n\nCallouts can also be collapsible — handy for optional detail or spoilers."
+    "text": "Callouts\nCallouts are a nice way to flag notes, tips, warnings, or important info without writing any HTML.\n\n\n\n\n\n\nNote\n\n\n\nThis is a note. Good for asides and extra context.\n\n\n\n\n\n\n\n\nTipPro tip\n\n\n\nCallouts can have their own titles, like this one.\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThis is a warning. Use it to flag things readers should be careful about.\n\n\n\n\n\n\n\n\nImportant\n\n\n\nThis is important. Reserve it for things that really matter.\n\n\n\n\n\n\n\n\nNoteClick to expand\n\n\n\n\n\nCallouts can also be collapsible — handy for optional detail or spoilers.",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#tabsets",
     "href": "showcase.html#tabsets",
     "title": "Showcase",
     "section": "Tabsets",
-    "text": "Tabsets\nTabsets let you show alternative content (e.g. different languages or OS instructions) without cluttering the page.\n\nmacOSWindowsLinux\n\n\nbrew install quarto\n\n\nwinget install --id Posit.Quarto\n\n\nsudo apt install quarto"
+    "text": "Tabsets\nTabsets let you show alternative content (e.g. different languages or OS instructions) without cluttering the page.\n\nmacOSWindowsLinux\n\n\nbrew install quarto\n\n\nwinget install --id Posit.Quarto\n\n\nsudo apt install quarto",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#columns-layout",
     "href": "showcase.html#columns-layout",
     "title": "Showcase",
     "section": "Columns / layout",
-    "text": "Columns / layout\nQuarto uses a grid system so you can lay content out side by side.\n\n\n\nLeft column\nPut anything here — text, images, code.\n\n\n\nRight column\nThis is great for before/after comparisons or a figure next to its explanation."
+    "text": "Columns / layout\nQuarto uses a grid system so you can lay content out side by side.\n\n\n\nLeft column\nPut anything here — text, images, code.\n\n\n\nRight column\nThis is great for before/after comparisons or a figure next to its explanation.",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#code-blocks",
     "href": "showcase.html#code-blocks",
     "title": "Showcase",
     "section": "Code blocks",
-    "text": "Code blocks\nPlain fenced code blocks get syntax highlighting for free, with optional line numbers:\ndef greet(name: str) -&gt; str:\n    return f\"Hello, {name}!\"\n\nprint(greet(\"world\"))\nYou can also fold long code blocks so they don’t dominate the page — click to expand:\nimport math\n\ndef area_of_circle(radius: float) -&gt; float:\n    return math.pi * radius ** 2\n\nfor r in range(1, 5):\n    print(f\"radius={r} -&gt; area={area_of_circle(r):.2f}\")"
+    "text": "Code blocks\nPlain fenced code blocks get syntax highlighting for free, with optional line numbers:\ndef greet(name: str) -&gt; str:\n    return f\"Hello, {name}!\"\n\nprint(greet(\"world\"))\nYou can also fold long code blocks so they don’t dominate the page — click to expand:\nimport math\n\ndef area_of_circle(radius: float) -&gt; float:\n    return math.pi * radius ** 2\n\nfor r in range(1, 5):\n    print(f\"radius={r} -&gt; area={area_of_circle(r):.2f}\")",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#live-interactive-demo-observable-js",
     "href": "showcase.html#live-interactive-demo-observable-js",
     "title": "Showcase",
     "section": "Live, interactive demo (Observable JS)",
-    "text": "Live, interactive demo (Observable JS)\nQuarto ships with Observable JS built in — no Python/R kernel required, it runs straight in the browser. Drag the slider:\n\nviewof n = Inputs.range([1, 50], {value: 10, step: 1, label: \"n\"})\n\n\n\n\n\n\n\nmd`**${n} squared is ${n * n}.**`\n\n\n\n\n\n\n\nPlot.plot({\n  marks: [\n    Plot.barY(\n      Array.from({length: n}, (_, i) =&gt; ({x: i + 1, y: (i + 1) ** 2})),\n      {x: \"x\", y: \"y\", fill: \"steelblue\"}\n    )\n  ],\n  y: {label: \"value²\"},\n  x: {label: \"value\"}\n})"
+    "text": "Live, interactive demo (Observable JS)\nQuarto ships with Observable JS built in — no Python/R kernel required, it runs straight in the browser. Drag the slider:\n\nviewof n = Inputs.range([1, 50], {value: 10, step: 1, label: \"n\"})\n\n\n\n\n\n\n\nmd`**${n} squared is ${n * n}.**`\n\n\n\n\n\n\n\nPlot.plot({\n  marks: [\n    Plot.barY(\n      Array.from({length: n}, (_, i) =&gt; ({x: i + 1, y: (i + 1) ** 2})),\n      {x: \"x\", y: \"y\", fill: \"steelblue\"}\n    )\n  ],\n  y: {label: \"value²\"},\n  x: {label: \"value\"}\n})",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#tables",
     "href": "showcase.html#tables",
     "title": "Showcase",
     "section": "Tables",
-    "text": "Tables\n\n\n\n\n\n\n\n\nFeature\nNeeds a kernel?\nGood for\n\n\n\n\nCallouts\nNo\nNotes, warnings, tips\n\n\nTabsets\nNo\nAlternatives (OS, language)\n\n\nObservable JS\nNo\nLive interactive charts/widgets\n\n\nPython/R code chunks\nYes (Jupyter/knitr)\nData analysis, real computation"
+    "text": "Tables\n\n\n\n\n\n\n\n\nFeature\nNeeds a kernel?\nGood for\n\n\n\n\nCallouts\nNo\nNotes, warnings, tips\n\n\nTabsets\nNo\nAlternatives (OS, language)\n\n\nObservable JS\nNo\nLive interactive charts/widgets\n\n\nPython/R code chunks\nYes (Jupyter/knitr)\nData analysis, real computation",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#footnotes-cross-references",
     "href": "showcase.html#footnotes-cross-references",
     "title": "Showcase",
     "section": "Footnotes & cross-references",
-    "text": "Footnotes & cross-references\nYou can drop a footnote right in the text.1 Figures and tables can also be numbered and cross-referenced automatically once you add captions and labels."
+    "text": "Footnotes & cross-references\nYou can drop a footnote right in the text.1 Figures and tables can also be numbered and cross-referenced automatically once you add captions and labels.",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#theme-toggle",
     "href": "showcase.html#theme-toggle",
     "title": "Showcase",
     "section": "Theme toggle",
-    "text": "Theme toggle\nLook at the navbar — there’s now a light/dark switcher (configured in _quarto.yml via theme: {light: cosmo, dark: darkly}). Try it."
+    "text": "Theme toggle\nLook at the navbar — there’s now a light/dark switcher (configured in _quarto.yml via theme: {light: cosmo, dark: darkly}). Try it.",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#where-to-go-next",
     "href": "showcase.html#where-to-go-next",
     "title": "Showcase",
     "section": "Where to go next",
-    "text": "Where to go next\n\nCallouts\nTabsets\nObservable JS\nThemes\nFull website guide"
+    "text": "Where to go next\n\nCallouts\nTabsets\nObservable JS\nThemes\nFull website guide",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "showcase.html#footnotes",
     "href": "showcase.html#footnotes",
     "title": "Showcase",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nLike this one — Quarto collects them at the bottom of the page automatically.↩︎"
+    "text": "Footnotes\n\n\nLike this one — Quarto collects them at the bottom of the page automatically.↩︎",
+    "crumbs": [
+      "Home",
+      "Showcase"
+    ]
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this site"
+    "text": "About this site",
+    "crumbs": [
+      "Home",
+      "About"
+    ]
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "kokoromi",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
+    "crumbs": [
+      "Home"
+    ]
   }
 ]
