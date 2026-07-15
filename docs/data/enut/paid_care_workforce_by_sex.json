@@ -1,0 +1,50 @@
+[
+  {
+    "definition": "Núcleo (ocupación y sector de cuidados)",
+    "sex": "Hombres",
+    "share": 0.0731,
+    "se": 0.0046,
+    "ci_low": 0.064,
+    "ci_high": 0.0822
+  },
+  {
+    "definition": "Núcleo (ocupación y sector de cuidados)",
+    "sex": "Mujeres",
+    "share": 0.2269,
+    "se": 0.0068,
+    "ci_low": 0.2136,
+    "ci_high": 0.2403
+  },
+  {
+    "definition": "Ampliada (incluye facilitadores)",
+    "sex": "Hombres",
+    "share": 0.0776,
+    "se": 0.0047,
+    "ci_low": 0.0684,
+    "ci_high": 0.0867
+  },
+  {
+    "definition": "Ampliada (incluye facilitadores)",
+    "sex": "Mujeres",
+    "share": 0.286,
+    "se": 0.007,
+    "ci_low": 0.2722,
+    "ci_high": 0.2998
+  },
+  {
+    "definition": "Máxima (incluye habilitadores)",
+    "sex": "Hombres",
+    "share": 0.116,
+    "se": 0.0058,
+    "ci_low": 0.1046,
+    "ci_high": 0.1274
+  },
+  {
+    "definition": "Máxima (incluye habilitadores)",
+    "sex": "Mujeres",
+    "share": 0.3434,
+    "se": 0.0074,
+    "ci_low": 0.3289,
+    "ci_high": 0.3579
+  }
+]

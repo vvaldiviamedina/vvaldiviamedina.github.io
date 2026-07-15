@@ -73,6 +73,41 @@ Plot.plot({
 })
 ```
 
+## El cuidado también está segregado en el mercado laboral
+
+Hasta aquí, todo el trabajo de cuidados visto era **no remunerado**. Pero el cuidado también existe como empleo: salud, educación y cuidado personal remunerados. ¿Qué proporción de las personas ocupadas trabaja en cuidados remunerados, y cómo se distribuye por sexo?
+
+::: {.callout-note}
+## Fuente distinta a los gráficos anteriores
+Este gráfico usa una clasificación por ocupación (CIUO-08, 2 dígitos) y sector (CAENES), que **no está en la base de datos pública de la ENUT** — solo en un archivo interno de procesamiento del INE con mayor nivel de detalle. Solo las proporciones agregadas y sus intervalos de confianza salieron de ese archivo; ningún microdato se publica aquí. Se calcularon con diseño muestral complejo (`svydesign` + `svyby`, con estratos y conglomerados) usando [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R). Se muestran tres definiciones, de más estricta a más amplia: **núcleo** (ocupación y sector de cuidados a la vez), **ampliada** (incluye facilitadores del cuidado) y **máxima** (incluye además habilitadores).
+:::
+
+```{ojs}
+//| echo: false
+paidCare = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  marginLeft: 160,
+  x: {label: "Proporción de personas ocupadas →", percent: true, domain: [0, 0.4]},
+  y: {label: null},
+  fy: {label: null},
+  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
+  marks: [
+    Plot.barX(paidCare, {y: "sex", x: "share", fy: "definition", fill: "sex", tip: true}),
+    Plot.ruleX(paidCare, {y: "sex", fy: "definition", x1: "ci_low", x2: "ci_high", stroke: "currentColor", strokeWidth: 1.5}),
+    Plot.ruleX([0])
+  ],
+  height: 340
+})
+```
+
+::: {.callout-important}
+Bajo la definición núcleo, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres definiciones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
+:::
+
 ## La brecha a lo largo de la vida
 
 ¿La brecha de género en trabajo no remunerado es constante, o cambia según la edad?
@@ -127,5 +162,6 @@ Plot.plot({
 2. Se procesó con [`scripts/build_enut_data.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.py) (Python: `pyreadr` + `pandas`) para calcular promedios ponderados por sexo, categoría de actividad, edad y región. Hay también una versión en R: [`scripts/build_enut_data.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.R).
 3. Los resultados agregados se guardaron como archivos `.json` pequeños (no la base completa) en `data/enut/`.
 4. Esta página los carga con [Observable JS](https://quarto.org/docs/interactive/ojs/) y los grafica con [Observable Plot](https://observablehq.com/plot/) — todo se ejecuta en el navegador, sin backend.
+5. El gráfico de cuidado remunerado usa una fuente distinta: un archivo interno de procesamiento del INE con clasificación detallada de ocupación, procesado con [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R) usando diseño muestral complejo (`survey::svydesign`). Solo las proporciones agregadas salieron de ese archivo.
 
 Quieres aprender a hacer esto con tus propios datos? Mira la página de [web scraping](web-scraping.qmd).
