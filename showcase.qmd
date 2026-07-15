@@ -1,0 +1,148 @@
+---
+title: "Showcase"
+subtitle: "A tour of what Quarto can do"
+toc: true
+---
+
+This page is a grab-bag of Quarto features, rendered right in your site. Open the `.qmd` source alongside this page to see how each piece is written.
+
+## Callouts
+
+Callouts are a nice way to flag notes, tips, warnings, or important info without writing any HTML.
+
+::: {.callout-note}
+This is a **note**. Good for asides and extra context.
+:::
+
+::: {.callout-tip}
+## Pro tip
+Callouts can have their own titles, like this one.
+:::
+
+::: {.callout-warning}
+This is a **warning**. Use it to flag things readers should be careful about.
+:::
+
+::: {.callout-important}
+This is **important**. Reserve it for things that really matter.
+:::
+
+::: {.callout-note collapse="true"}
+## Click to expand
+Callouts can also be collapsible — handy for optional detail or spoilers.
+:::
+
+## Tabsets
+
+Tabsets let you show alternative content (e.g. different languages or OS instructions) without cluttering the page.
+
+::: {.panel-tabset}
+## macOS
+```bash
+brew install quarto
+```
+
+## Windows
+```powershell
+winget install --id Posit.Quarto
+```
+
+## Linux
+```bash
+sudo apt install quarto
+```
+:::
+
+## Columns / layout
+
+Quarto uses a grid system so you can lay content out side by side.
+
+::: {.columns}
+::: {.column width="50%"}
+### Left column
+Put anything here — text, images, code.
+:::
+
+::: {.column width="50%"}
+### Right column
+This is great for before/after comparisons or a figure next to its explanation.
+:::
+:::
+
+## Code blocks
+
+Plain fenced code blocks get syntax highlighting for free, with optional line numbers:
+
+```python
+def greet(name: str) -> str:
+    return f"Hello, {name}!"
+
+print(greet("world"))
+```
+
+You can also fold long code blocks so they don't dominate the page — click to expand:
+
+```{.python code-fold="true" code-summary="Show the full script"}
+import math
+
+def area_of_circle(radius: float) -> float:
+    return math.pi * radius ** 2
+
+for r in range(1, 5):
+    print(f"radius={r} -> area={area_of_circle(r):.2f}")
+```
+
+## Live, interactive demo (Observable JS)
+
+Quarto ships with [Observable JS](https://quarto.org/docs/interactive/ojs/) built in — no Python/R kernel required, it runs straight in the browser. Drag the slider:
+
+```{ojs}
+//| echo: false
+viewof n = Inputs.range([1, 50], {value: 10, step: 1, label: "n"})
+```
+
+```{ojs}
+//| echo: false
+md`**${n} squared is ${n * n}.**`
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  marks: [
+    Plot.barY(
+      Array.from({length: n}, (_, i) => ({x: i + 1, y: (i + 1) ** 2})),
+      {x: "x", y: "y", fill: "steelblue"}
+    )
+  ],
+  y: {label: "value²"},
+  x: {label: "value"}
+})
+```
+
+## Tables
+
+| Feature | Needs a kernel? | Good for |
+|---|---|---|
+| Callouts | No | Notes, warnings, tips |
+| Tabsets | No | Alternatives (OS, language) |
+| Observable JS | No | Live interactive charts/widgets |
+| Python/R code chunks | Yes (Jupyter/knitr) | Data analysis, real computation |
+
+## Footnotes & cross-references
+
+You can drop a footnote right in the text.[^1] Figures and tables can also be numbered and cross-referenced automatically once you add captions and labels.
+
+[^1]: Like this one — Quarto collects them at the bottom of the page automatically.
+
+## Theme toggle
+
+Look at the navbar — there's now a light/dark switcher (configured in `_quarto.yml` via `theme: {light: cosmo, dark: darkly}`). Try it.
+
+## Where to go next
+
+- [Callouts](https://quarto.org/docs/authoring/callouts.html)
+- [Tabsets](https://quarto.org/docs/interactive/layout.html#tabset-panel)
+- [Observable JS](https://quarto.org/docs/interactive/ojs/)
+- [Themes](https://quarto.org/docs/output-formats/html-themes.html)
+- [Full website guide](https://quarto.org/docs/websites)
