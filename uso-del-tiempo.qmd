@@ -124,7 +124,7 @@ Plot.plot({
 ## Cómo se hizo esta página
 
 1. Se descargó la base de datos en formato R (`.RDS`) desde la sección **Bases de Datos** de [ine.gob.cl/enut](https://www.ine.gob.cl/enut).
-2. Se procesó con Python (`pyreadr` + `pandas`) para calcular promedios ponderados por sexo, categoría de actividad, edad y región.
+2. Se procesó con [`scripts/build_enut_data.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.py) (Python: `pyreadr` + `pandas`) para calcular promedios ponderados por sexo, categoría de actividad, edad y región. Hay también una versión en R: [`scripts/build_enut_data.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.R).
 3. Los resultados agregados se guardaron como archivos `.json` pequeños (no la base completa) en `data/enut/`.
 4. Esta página los carga con [Observable JS](https://quarto.org/docs/interactive/ojs/) y los grafica con [Observable Plot](https://observablehq.com/plot/) — todo se ejecuta en el navegador, sin backend.
 

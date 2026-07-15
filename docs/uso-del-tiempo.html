@@ -587,7 +587,7 @@ Important
 <h2 class="anchored" data-anchor-id="cómo-se-hizo-esta-página">Cómo se hizo esta página</h2>
 <ol type="1">
 <li>Se descargó la base de datos en formato R (<code>.RDS</code>) desde la sección <strong>Bases de Datos</strong> de <a href="https://www.ine.gob.cl/enut">ine.gob.cl/enut</a>.</li>
-<li>Se procesó con Python (<code>pyreadr</code> + <code>pandas</code>) para calcular promedios ponderados por sexo, categoría de actividad, edad y región.</li>
+<li>Se procesó con <a href="https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.py"><code>scripts/build_enut_data.py</code></a> (Python: <code>pyreadr</code> + <code>pandas</code>) para calcular promedios ponderados por sexo, categoría de actividad, edad y región. Hay también una versión en R: <a href="https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.R"><code>scripts/build_enut_data.R</code></a>.</li>
 <li>Los resultados agregados se guardaron como archivos <code>.json</code> pequeños (no la base completa) en <code>data/enut/</code>.</li>
 <li>Esta página los carga con <a href="https://quarto.org/docs/interactive/ojs/">Observable JS</a> y los grafica con <a href="https://observablehq.com/plot/">Observable Plot</a> — todo se ejecuta en el navegador, sin backend.</li>
 </ol>

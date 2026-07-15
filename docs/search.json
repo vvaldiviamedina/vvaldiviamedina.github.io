@@ -443,7 +443,7 @@
     "href": "uso-del-tiempo.html#cómo-se-hizo-esta-página",
     "title": "Uso del tiempo en Chile",
     "section": "Cómo se hizo esta página",
-    "text": "Cómo se hizo esta página\n\nSe descargó la base de datos en formato R (.RDS) desde la sección Bases de Datos de ine.gob.cl/enut.\nSe procesó con Python (pyreadr + pandas) para calcular promedios ponderados por sexo, categoría de actividad, edad y región.\nLos resultados agregados se guardaron como archivos .json pequeños (no la base completa) en data/enut/.\nEsta página los carga con Observable JS y los grafica con Observable Plot — todo se ejecuta en el navegador, sin backend.\n\nQuieres aprender a hacer esto con tus propios datos? Mira la página de web scraping.",
+    "text": "Cómo se hizo esta página\n\nSe descargó la base de datos en formato R (.RDS) desde la sección Bases de Datos de ine.gob.cl/enut.\nSe procesó con scripts/build_enut_data.py (Python: pyreadr + pandas) para calcular promedios ponderados por sexo, categoría de actividad, edad y región. Hay también una versión en R: scripts/build_enut_data.R.\nLos resultados agregados se guardaron como archivos .json pequeños (no la base completa) en data/enut/.\nEsta página los carga con Observable JS y los grafica con Observable Plot — todo se ejecuta en el navegador, sin backend.\n\nQuieres aprender a hacer esto con tus propios datos? Mira la página de web scraping.",
     "crumbs": [
       "Home",
       "Uso del tiempo (viz)"
