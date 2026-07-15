@@ -8,7 +8,7 @@ El cuidado —salud, educación, cuidado personal— también existe como empleo
 
 ::: {.callout-note}
 ## Fuente de los datos
-Clasificación por ocupación (CIUO-08, 2 dígitos) y sector económico (CAENES), construida sobre un archivo interno de procesamiento del INE de la ENUT — **no disponible en la base de datos pública**, que solo trae un agrupamiento más grueso de ocupaciones. Solo las proporciones agregadas y sus intervalos de confianza salieron de ese archivo; ningún microdato se publica aquí. Se calcularon con diseño muestral complejo (`svydesign` + `svyby`, con estratos y conglomerados) usando [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R). Se muestran tres definiciones, de más estricta a más amplia: **núcleo** (ocupación y sector de cuidados a la vez), **ampliada** (incluye facilitadores del cuidado) y **máxima** (incluye además habilitadores).
+Clasificación por ocupación (CIUO-08, 2 dígitos) y sector económico (CAENES, 1 dígito), de la ENUT.
 :::
 
 ```{ojs}
@@ -56,7 +56,7 @@ Inputs.table(paidCare.map(d => ({
 ```
 
 ::: {.callout-important}
-Bajo la definición núcleo, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres definiciones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
+Bajo la definición de trabajo de cuidados remunerados, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres definiciones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
 :::
 
 ## Cómo se hizo esta página

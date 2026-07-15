@@ -1,6 +1,6 @@
 [
   {
-    "definition": "Núcleo (ocupación y sector de cuidados)",
+    "definition": "Trabajo de cuidados remunerados",
     "sex": "Hombres",
     "share": 0.0731,
     "se": 0.0046,
@@ -8,7 +8,7 @@
     "ci_high": 0.0822
   },
   {
-    "definition": "Núcleo (ocupación y sector de cuidados)",
+    "definition": "Trabajo de cuidados remunerados",
     "sex": "Mujeres",
     "share": 0.2269,
     "se": 0.0068,
@@ -16,7 +16,7 @@
     "ci_high": 0.2403
   },
   {
-    "definition": "Ampliada (incluye facilitadores)",
+    "definition": "TCR + Habilitadores",
     "sex": "Hombres",
     "share": 0.0776,
     "se": 0.0047,
@@ -24,7 +24,7 @@
     "ci_high": 0.0867
   },
   {
-    "definition": "Ampliada (incluye facilitadores)",
+    "definition": "TCR + Habilitadores",
     "sex": "Mujeres",
     "share": 0.286,
     "se": 0.007,
@@ -32,7 +32,7 @@
     "ci_high": 0.2998
   },
   {
-    "definition": "Máxima (incluye habilitadores)",
+    "definition": "TCR + Habilitadores + Facilitadores",
     "sex": "Hombres",
     "share": 0.116,
     "se": 0.0058,
@@ -40,7 +40,7 @@
     "ci_high": 0.1274
   },
   {
-    "definition": "Máxima (incluye habilitadores)",
+    "definition": "TCR + Habilitadores + Facilitadores",
     "sex": "Mujeres",
     "share": 0.3434,
     "se": 0.0074,
