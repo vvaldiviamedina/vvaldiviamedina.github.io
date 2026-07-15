@@ -25,6 +25,8 @@ website:
         href: index.qmd
       - text: "Showcase"
         href: showcase.qmd
+      - text: "Build a site like this"
+        href: build-a-site.qmd
       - text: "About"
         href: about.qmd
 format:

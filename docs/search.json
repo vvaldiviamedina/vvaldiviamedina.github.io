@@ -121,6 +121,149 @@
     ]
   },
   {
+    "objectID": "build-a-site.html",
+    "href": "build-a-site.html",
+    "title": "Build a site like this one",
+    "section": "",
+    "text": "This walks through everything needed to go from nothing to a live Quarto website on GitHub Pages, the same way this site (kokoromi) is set up. Commands are shown for the shell (bash/PowerShell); where R users have a native alternative (e.g. via the quarto and usethis packages), that’s shown in its own tab.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#install-the-prerequisites",
+    "href": "build-a-site.html#install-the-prerequisites",
+    "title": "Build a site like this one",
+    "section": "1. Install the prerequisites",
+    "text": "1. Install the prerequisites\n\nmacOSWindowsLinux\n\n\nbrew install --cask quarto\nbrew install git gh          # gh = GitHub CLI, optional but handy\n\n\nwinget install --id Posit.Quarto\nwinget install --id Git.Git\nwinget install --id GitHub.cli\n\n\nsudo apt install git\n# Quarto: download the .deb from https://quarto.org/docs/get-started/\nsudo dpkg -i quarto-*.deb\n\n\n\nConfirm everything is on your PATH:\nquarto --version\ngit --version\n\n\n\n\n\n\nTip\n\n\n\nIf you plan to write posts that execute R code, also install R and, inside R, install.packages(\"rmarkdown\"). For Python code chunks, you need jupyter (pip install jupyter). Neither is required for plain Markdown pages or Observable JS demos — see the Showcase page.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#create-the-github-repo",
+    "href": "build-a-site.html#create-the-github-repo",
+    "title": "Build a site like this one",
+    "section": "2. Create the GitHub repo",
+    "text": "2. Create the GitHub repo\n\nBash (gh CLI)R (usethis)\n\n\ngh repo create &lt;your-username&gt;.github.io --public --clone\ncd &lt;your-username&gt;.github.io\n\n\nusethis::create_github_repo(\n  \"&lt;your-username&gt;.github.io\",\n  private = FALSE\n)\n\n\n\nIf you’d rather not use a CLI, create the repo in the GitHub web UI, then clone it:\ngit clone https://github.com/&lt;your-username&gt;/&lt;your-username&gt;.github.io.git\ncd &lt;your-username&gt;.github.io",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#scaffold-a-quarto-website-project",
+    "href": "build-a-site.html#scaffold-a-quarto-website-project",
+    "title": "Build a site like this one",
+    "section": "3. Scaffold a Quarto website project",
+    "text": "3. Scaffold a Quarto website project\nInside the repo folder:\nquarto create project website .\nThis generates _quarto.yml, an index.qmd, an about.qmd, and a starter styles.css. Answer the prompts (project title, etc.) — you can always change them later.\n\n\n\n\n\n\nTipR alternative\n\n\n\nFrom the R console, the quarto package wraps the same CLI:\nquarto::quarto_create_project(name = \".\", type = \"website\")",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#point-the-build-output-at-docs",
+    "href": "build-a-site.html#point-the-build-output-at-docs",
+    "title": "Build a site like this one",
+    "section": "4. Point the build output at docs/",
+    "text": "4. Point the build output at docs/\nGitHub Pages needs a specific folder to serve from. Rather than fiddling with branches, the simplest option is: render straight into docs/ and tell GitHub Pages to serve that folder. In _quarto.yml:\nproject:\n  type: website\n  output-dir: docs",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#configure-navigation",
+    "href": "build-a-site.html#configure-navigation",
+    "title": "Build a site like this one",
+    "section": "5. Configure navigation",
+    "text": "5. Configure navigation\nStill in _quarto.yml, set up a navbar and/or a docked sidebar — only listing pages that actually exist:\nwebsite:\n  title: \"your-site-name\"\n  navbar:\n    left:\n      - href: index.qmd\n        text: Home\n      - href: about.qmd\n        text: About\n  sidebar:\n    style: \"docked\"\n    search: true\n    contents:\n      - index.qmd\n      - about.qmd\n\nformat:\n  html:\n    theme:\n      light: cosmo\n      dark: darkly   # gives you a free light/dark toggle\n    css: styles.css\n\n\n\n\n\n\nWarning\n\n\n\nEvery file listed under navbar or sidebar must exist as an actual .qmd in the repo. A stale reference (say, from a template you copy-pasted) won’t error loudly — it’ll just render as a dead link, and it’s easy to miss until someone clicks it.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#write-your-pages",
+    "href": "build-a-site.html#write-your-pages",
+    "title": "Build a site like this one",
+    "section": "6. Write your pages",
+    "text": "6. Write your pages\nEach page is a .qmd file with a YAML header and Markdown/code below:\n---\ntitle: \"About\"\n---\n\nSome content here.\nAdd as many as you like, and list them in _quarto.yml so they show up in navigation.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#set-up-.gitignore-correctly",
+    "href": "build-a-site.html#set-up-.gitignore-correctly",
+    "title": "Build a site like this one",
+    "section": "7. Set up .gitignore correctly",
+    "text": "7. Set up .gitignore correctly\nQuarto’s local working directory (_site/ if you render outside the project, .quarto/ cache) shouldn’t be committed — but your output (docs/) must be:\n/.quarto/\n_site/\n**/*.quarto_ipynb\n\n\n\n\n\n\nWarningA real pitfall\n\n\n\nDon’t ever paste git status output into .gitignore — it’s an easy copy/paste slip, and the result silently excludes real site files (like index.html or newly generated CSS) from every future commit. The symptom is subtle: your site renders fine locally but looks broken/unstyled once pushed, because new asset files never made it into the repo.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#render-and-preview-locally-before-pushing",
+    "href": "build-a-site.html#render-and-preview-locally-before-pushing",
+    "title": "Build a site like this one",
+    "section": "8. Render and preview locally — before pushing",
+    "text": "8. Render and preview locally — before pushing\nquarto render        # full project render (not `quarto render index.qmd`!)\nquarto preview        # opens a live-reloading local server\n\n\n\n\n\n\nImportant\n\n\n\nAlways render the whole project (quarto render with no arguments), not a single file. Rendering one .qmd directly skips the site-wide navbar/sidebar/theme wiring, and that page will come out looking unstyled compared to the rest of the site.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#commit-and-push",
+    "href": "build-a-site.html#commit-and-push",
+    "title": "Build a site like this one",
+    "section": "9. Commit and push",
+    "text": "9. Commit and push\ngit add .\ngit commit -m \"Initial site\"\ngit push origin main\n\n\n\n\n\n\nTipR alternative\n\n\n\nquarto::quarto_render()\ngert::git_add(\".\")\ngert::git_commit(\"Initial site\")\ngert::git_push()",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#turn-on-github-pages",
+    "href": "build-a-site.html#turn-on-github-pages",
+    "title": "Build a site like this one",
+    "section": "10. Turn on GitHub Pages",
+    "text": "10. Turn on GitHub Pages\nIn the GitHub web UI:\n\nGo to your repo → Settings → Pages.\nUnder Build and deployment, set Source to Deploy from a branch.\nSet Branch to main and the folder to /docs.\nSave, then wait a minute or two.\n\nYour site will be live at https://&lt;your-username&gt;.github.io/.\n\n\n\n\n\n\nNoteAlternative: GitHub Actions\n\n\n\nInstead of committing rendered HTML at all, you can let GitHub build it for you on every push using the quarto-actions workflow, and deploy from a gh-pages branch instead of docs/. That keeps your main branch free of generated files — more setup up front, but a cleaner history long-term.",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#checklist",
+    "href": "build-a-site.html#checklist",
+    "title": "Build a site like this one",
+    "section": "Checklist",
+    "text": "Checklist\n\nQuarto CLI + Git installed\nRepo named &lt;username&gt;.github.io\n_quarto.yml has output-dir: docs\nNavbar/sidebar only reference pages that exist\n.gitignore excludes _site/ and .quarto/, not docs/\nquarto render run on the full project, no errors/warnings\nPushed to main\nGitHub Pages source set to main / docs",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "build-a-site.html#where-to-go-next",
+    "href": "build-a-site.html#where-to-go-next",
+    "title": "Build a site like this one",
+    "section": "Where to go next",
+    "text": "Where to go next\n\nQuarto websites guide\nShowcase page — callouts, tabsets, live demos\nGitHub Pages docs",
+    "crumbs": [
+      "Home",
+      "Build a site like this"
+    ]
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",

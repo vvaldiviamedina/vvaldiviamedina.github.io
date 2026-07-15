@@ -1,0 +1,223 @@
+---
+title: "Build a site like this one"
+subtitle: "A step-by-step walkthrough: Quarto + GitHub Pages"
+toc: true
+---
+
+This walks through everything needed to go from nothing to a live Quarto website on GitHub Pages, the same way this site (`kokoromi`) is set up. Commands are shown for the shell (bash/PowerShell); where R users have a native alternative (e.g. via the `quarto` and `usethis` packages), that's shown in its own tab.
+
+::: {.callout-note}
+You need a **GitHub account** and a repo named exactly `<your-username>.github.io` for the "user site" setup used here (serves at the root domain, no project path).
+:::
+
+## 1. Install the prerequisites
+
+::: {.panel-tabset}
+## macOS
+```bash
+brew install --cask quarto
+brew install git gh          # gh = GitHub CLI, optional but handy
+```
+
+## Windows
+```powershell
+winget install --id Posit.Quarto
+winget install --id Git.Git
+winget install --id GitHub.cli
+```
+
+## Linux
+```bash
+sudo apt install git
+# Quarto: download the .deb from https://quarto.org/docs/get-started/
+sudo dpkg -i quarto-*.deb
+```
+:::
+
+Confirm everything is on your `PATH`:
+
+```bash
+quarto --version
+git --version
+```
+
+::: {.callout-tip}
+If you plan to write posts that execute **R** code, also install R and, inside R, `install.packages("rmarkdown")`. For **Python** code chunks, you need `jupyter` (`pip install jupyter`). Neither is required for plain Markdown pages or Observable JS demos — see the [Showcase](showcase.qmd) page.
+:::
+
+## 2. Create the GitHub repo
+
+::: {.panel-tabset}
+## Bash (gh CLI)
+```bash
+gh repo create <your-username>.github.io --public --clone
+cd <your-username>.github.io
+```
+
+## R (usethis)
+```r
+usethis::create_github_repo(
+  "<your-username>.github.io",
+  private = FALSE
+)
+```
+:::
+
+If you'd rather not use a CLI, create the repo in the GitHub web UI, then clone it:
+
+```bash
+git clone https://github.com/<your-username>/<your-username>.github.io.git
+cd <your-username>.github.io
+```
+
+## 3. Scaffold a Quarto website project
+
+Inside the repo folder:
+
+```bash
+quarto create project website .
+```
+
+This generates `_quarto.yml`, an `index.qmd`, an `about.qmd`, and a starter `styles.css`. Answer the prompts (project title, etc.) — you can always change them later.
+
+::: {.callout-tip}
+## R alternative
+From the R console, the [`quarto`](https://quarto-dev.github.io/quarto-r/) package wraps the same CLI:
+
+```r
+quarto::quarto_create_project(name = ".", type = "website")
+```
+:::
+
+## 4. Point the build output at `docs/`
+
+GitHub Pages needs a specific folder to serve from. Rather than fiddling with branches, the simplest option is: render straight into `docs/` and tell GitHub Pages to serve that folder. In `_quarto.yml`:
+
+```yaml
+project:
+  type: website
+  output-dir: docs
+```
+
+## 5. Configure navigation
+
+Still in `_quarto.yml`, set up a navbar and/or a docked sidebar — only listing pages that actually exist:
+
+```yaml
+website:
+  title: "your-site-name"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: About
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - about.qmd
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly   # gives you a free light/dark toggle
+    css: styles.css
+```
+
+::: {.callout-warning}
+Every file listed under `navbar` or `sidebar` must exist as an actual `.qmd` in the repo. A stale reference (say, from a template you copy-pasted) won't error loudly — it'll just render as a dead link, and it's easy to miss until someone clicks it.
+:::
+
+## 6. Write your pages
+
+Each page is a `.qmd` file with a YAML header and Markdown/code below:
+
+```markdown
+---
+title: "About"
+---
+
+Some content here.
+```
+
+Add as many as you like, and list them in `_quarto.yml` so they show up in navigation.
+
+## 7. Set up `.gitignore` correctly
+
+Quarto's local working directory (`_site/` if you render outside the project, `.quarto/` cache) shouldn't be committed — but your **output** (`docs/`) must be:
+
+```text
+/.quarto/
+_site/
+**/*.quarto_ipynb
+```
+
+::: {.callout-warning}
+## A real pitfall
+Don't ever paste `git status` output *into* `.gitignore` — it's an easy copy/paste slip, and the result silently excludes real site files (like `index.html` or newly generated CSS) from every future commit. The symptom is subtle: your site renders fine locally but looks broken/unstyled once pushed, because new asset files never made it into the repo.
+:::
+
+## 8. Render and preview locally — before pushing
+
+```bash
+quarto render        # full project render (not `quarto render index.qmd`!)
+quarto preview        # opens a live-reloading local server
+```
+
+::: {.callout-important}
+Always render the **whole project** (`quarto render` with no arguments), not a single file. Rendering one `.qmd` directly skips the site-wide navbar/sidebar/theme wiring, and that page will come out looking unstyled compared to the rest of the site.
+:::
+
+## 9. Commit and push
+
+```bash
+git add .
+git commit -m "Initial site"
+git push origin main
+```
+
+::: {.callout-tip}
+## R alternative
+```r
+quarto::quarto_render()
+gert::git_add(".")
+gert::git_commit("Initial site")
+gert::git_push()
+```
+:::
+
+## 10. Turn on GitHub Pages
+
+In the GitHub web UI:
+
+1. Go to your repo → **Settings** → **Pages**.
+2. Under **Build and deployment**, set **Source** to `Deploy from a branch`.
+3. Set **Branch** to `main` and the folder to `/docs`.
+4. Save, then wait a minute or two.
+
+Your site will be live at `https://<your-username>.github.io/`.
+
+::: {.callout-note}
+## Alternative: GitHub Actions
+Instead of committing rendered HTML at all, you can let GitHub build it for you on every push using the [`quarto-actions`](https://github.com/quarto-dev/quarto-actions) workflow, and deploy from a `gh-pages` branch instead of `docs/`. That keeps your `main` branch free of generated files — more setup up front, but a cleaner history long-term.
+:::
+
+## Checklist
+
+- [ ] Quarto CLI + Git installed
+- [ ] Repo named `<username>.github.io`
+- [ ] `_quarto.yml` has `output-dir: docs`
+- [ ] Navbar/sidebar only reference pages that exist
+- [ ] `.gitignore` excludes `_site/` and `.quarto/`, **not** `docs/`
+- [ ] `quarto render` run on the full project, no errors/warnings
+- [ ] Pushed to `main`
+- [ ] GitHub Pages source set to `main` / `docs`
+
+## Where to go next
+
+- [Quarto websites guide](https://quarto.org/docs/websites)
+- [Showcase page](showcase.qmd) — callouts, tabsets, live demos
+- [GitHub Pages docs](https://docs.github.com/en/pages)
