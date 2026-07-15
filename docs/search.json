@@ -1,5 +1,104 @@
 [
   {
+    "objectID": "web-scraping.html",
+    "href": "web-scraping.html",
+    "title": "Web scraping, step by step",
+    "section": "",
+    "text": "This walks through getting data off a website that doesn’t hand it to you nicely — using the exact process behind the Uso del tiempo page, including the dead ends.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-1-look-for-the-easy-path-first",
+    "href": "web-scraping.html#step-1-look-for-the-easy-path-first",
+    "title": "Web scraping, step by step",
+    "section": "Step 1: Look for the easy path first",
+    "text": "Step 1: Look for the easy path first\nBefore writing a single line of scraping code, check whether the data is already published somewhere structured:\n\nA national/organizational open data portal (in Chile: datos.gob.cl). Many of these run CKAN, which exposes a clean JSON API — no HTML parsing needed:\n\ncurl \"https://datos.gob.cl/api/3/action/package_show?id=&lt;dataset-name&gt;\"\n\nA “download” or “bases de datos” section on the source site itself.\n\n\n\n\n\n\n\nWarningDead end #1\n\n\n\nFor ENUT, the CKAN entry on datos.gob.cl existed but had zero attached files — just a description pointing back to INE’s own site. Open data portals are sometimes just metadata catalogs, not actual mirrors. Worth checking, but don’t assume it’ll have the file.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-2-fetch-the-page-and-see-whats-actually-there",
+    "href": "web-scraping.html#step-2-fetch-the-page-and-see-whats-actually-there",
+    "title": "Web scraping, step by step",
+    "section": "Step 2: Fetch the page and see what’s actually there",
+    "text": "Step 2: Fetch the page and see what’s actually there\n\nBash (curl)Python (requests)R (rvest)\n\n\ncurl -sL -A \"Mozilla/5.0\" \"https://example.com/page\" -o page.html\ngrep -oE 'href=\"[^\"]*\\.(csv|xlsx|zip)\"' page.html\n\n\nimport requests\nr = requests.get(\"https://example.com/page\", headers={\"User-Agent\": \"Mozilla/5.0\"})\nr.raise_for_status()\nhtml = r.text\n\n\nlibrary(rvest)\npage &lt;- read_html(\"https://example.com/page\")\npage |&gt; html_elements(\"a\") |&gt; html_attr(\"href\")\n\n\n\nAlways set a User-Agent — some servers block requests that don’t look like a browser. Always follow redirects (-L in curl).\n\n\n\n\n\n\nWarningDead end #2\n\n\n\nFetching INE’s ENUT page this way returned real HTML, but grepping it for .zip/.xlsx/.csv links came back empty. The only file links in the raw HTML were three PDFs. The “Bases de Datos” panel visible in the browser simply wasn’t in the server-rendered page.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-3-figure-out-why-the-data-isnt-in-the-html",
+    "href": "web-scraping.html#step-3-figure-out-why-the-data-isnt-in-the-html",
+    "title": "Web scraping, step by step",
+    "section": "Step 3: Figure out why the data isn’t in the HTML",
+    "text": "Step 3: Figure out why the data isn’t in the HTML\nIf a link is visible in your browser but missing from curl’s output, the page is probably building that part of the DOM with JavaScript after load — an AJAX call, a client-side framework, or an accordion that only populates on click. curl never runs JavaScript, so it only ever sees the initial server response.\nHow to confirm it and find the real source:\n\nOpen the page in a real browser.\nOpen DevTools → Network tab, reload, and watch for XHR/fetch requests — the data is often coming from a JSON or file endpoint you can hit directly.\nIf it’s a static link that’s just injected by JS (our case), hover over the link and read the URL in the status bar, or right-click → “Copy link address.”\n\n\n\n\n\n\n\nTipWhat actually worked here\n\n\n\nHovering over “Base de datos R II ENUT 2023” in the browser revealed the real URL in the status bar: https://www.ine.gob.cl/docs/default-source/uso-del-tiempo-tiempo-libre/bbdd/ii-enut/250403-ii-enut-bdd-r-v2.zip No JavaScript execution needed on my end — once I had the direct URL, a plain curl download worked fine. Sometimes the fastest fix for “the scraper can’t find it” is a human spending 10 seconds in the browser.\n\n\nIf there’s truly no static URL to grab (the content is generated entirely by client-side JS with no discoverable endpoint), the fallback is a headless browser like Playwright or Selenium, which actually renders the page before you extract from it. That’s slower and heavier — reach for it only after Network-tab inspection comes up empty.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-4-download-and-unpack",
+    "href": "web-scraping.html#step-4-download-and-unpack",
+    "title": "Web scraping, step by step",
+    "section": "Step 4: Download and unpack",
+    "text": "Step 4: Download and unpack\ncurl -sL -A \"Mozilla/5.0\" \"&lt;direct-file-url&gt;\" -o data.zip\nunzip -o data.zip -d data/",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-5-parse-whatever-format-you-land-on",
+    "href": "web-scraping.html#step-5-parse-whatever-format-you-land-on",
+    "title": "Web scraping, step by step",
+    "section": "Step 5: Parse whatever format you land on",
+    "text": "Step 5: Parse whatever format you land on\nNot everything is a friendly CSV. This dataset came as an .RDS — R’s native serialization format — but Python can read it without installing R, via pyreadr:\n\nPython (no R needed)R (native)\n\n\nimport pyreadr\nresult = pyreadr.read_r(\"data.RDS\")\ndf = list(result.values())[0]   # RDS holding one object -&gt; one entry\nprint(df.shape, list(df.columns)[:20])\n\n\ndf &lt;- readRDS(\"data.RDS\")\nstr(df)\n\n\n\nOther common formats and their tools:\n\n\n\nFormat\nPython\nR\n\n\n\n\nCSV\npandas.read_csv\nreadr::read_csv\n\n\nExcel\npandas.read_excel\nreadxl::read_excel\n\n\nSPSS .sav\npyreadstat\nhaven::read_sav\n\n\nStata .dta\npandas.read_stata\nhaven::read_dta\n\n\nPDF tables\npdfplumber / camelot\ntabulizer",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-6-understand-the-codebook-before-trusting-the-numbers",
+    "href": "web-scraping.html#step-6-understand-the-codebook-before-trusting-the-numbers",
+    "title": "Web scraping, step by step",
+    "section": "Step 6: Understand the codebook before trusting the numbers",
+    "text": "Step 6: Understand the codebook before trusting the numbers\nRaw survey data is full of cryptic column names (t_tnr_ds, fe_cut, varstrat…). Before charting anything:\n\nFind the methodology document or variable dictionary — it explains naming conventions, units, and which weight/expansion-factor column to use for population-representative estimates.\nValidate against a number the publisher already reported (a headline stat from their own press release or summary report). If your computed number is in the right ballpark, your variable/weight choices are probably correct.\n\n\n\n\n\n\n\nTip\n\n\n\nFor ENUT, INE’s own methodology PDF explained the naming scheme: prefixes like tnr (trabajo no remunerado), to (trabajo remunerado), suffixes _dt/_fds/_ds (weekday/weekend/weekly-average), and that estimates should be weighted by fe_cut. Computing the gender gap in unpaid work with that weight landed close to INE’s own published figure — a good sign the approach was right.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#step-7-be-a-good-citizen-with-what-you-publish",
+    "href": "web-scraping.html#step-7-be-a-good-citizen-with-what-you-publish",
+    "title": "Web scraping, step by step",
+    "section": "Step 7: Be a good citizen with what you publish",
+    "text": "Step 7: Be a good citizen with what you publish\n\nDon’t commit large raw third-party files to a git repo — store the small, derived/aggregated results you actually need (a few KB of JSON), and document how to regenerate them from the source.\nCite the source and its license/date. Data changes; someone reading your chart in two years should be able to find the original.\nIf a site has an API, use it instead of scraping next time — friendlier to them and more stable for you.",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
+    "objectID": "web-scraping.html#checklist",
+    "href": "web-scraping.html#checklist",
+    "title": "Web scraping, step by step",
+    "section": "Checklist",
+    "text": "Checklist\n\nChecked robots.txt and the site’s terms/license\nLooked for an existing open-data/API entry first\nFetched the raw HTML and confirmed whether the data is actually there\nIf missing: checked DevTools Network tab / hovered links for the real URL\nDownloaded once, cached locally, didn’t hammer the server\nFound and read the codebook/methodology before computing anything\nSanity-checked results against a published figure\nCommitted only small derived outputs, not the raw dump — with source + license noted",
+    "crumbs": [
+      "Home",
+      "Web scraping"
+    ]
+  },
+  {
     "objectID": "showcase.html",
     "href": "showcase.html",
     "title": "Showcase",
@@ -282,6 +381,72 @@
     "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
     "crumbs": [
       "Home"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html",
+    "href": "uso-del-tiempo.html",
+    "title": "Uso del tiempo en Chile",
+    "section": "",
+    "text": "NoteFuente de los datos\n\n\n\nInstituto Nacional de Estadísticas (INE) de Chile, II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023 — 48.020 personas encuestadas en centros urbanos de las 16 regiones del país. Base de datos descargada desde ine.gob.cl/enut (formato R, licencia CC BY-NC). Los promedios de esta página se calculan ponderando por el factor de expansión de personas del módulo de uso del tiempo (fe_cut); las celdas con menos de 30 casos muestrales se omiten.",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html#el-balance-diario-de-tiempo-por-sexo",
+    "href": "uso-del-tiempo.html#el-balance-diario-de-tiempo-por-sexo",
+    "title": "Uso del tiempo en Chile",
+    "section": "El balance diario de tiempo, por sexo",
+    "text": "El balance diario de tiempo, por sexo\nEn promedio, ¿cuántas horas al día destina cada persona a trabajo remunerado, trabajo no remunerado, cuidado personal, educación y ocio?\n\nbalance = FileAttachment(\"data/enut/time_balance_by_sex.json\").json()\n\n\n\n\n\n\n\nPlot.plot({\n  marginLeft: 160,\n  x: {label: \"Horas por día →\"},\n  y: {label: null},\n  color: {legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [\"#5c9e95\", \"#c7a3c0\"]},\n  marks: [\n    Plot.barX(balance, {\n      y: \"domain\",\n      x: \"hours\",\n      fy: \"domain\",\n      fill: \"sex\",\n      tip: true\n    }),\n    Plot.ruleX([0])\n  ],\n  fy: {label: null, tickFormat: () =&gt; \"\"},\n  height: 320\n})\n\n\n\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nLos hombres destinan más horas al día al trabajo remunerado; las mujeres destinan considerablemente más al trabajo no remunerado. Esa es, en gran parte, la “doble jornada”: cuando se suman ambos tipos de trabajo, la carga total de trabajo de las mujeres es mayor.",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html#en-qué-consiste-ese-trabajo-no-remunerado",
+    "href": "uso-del-tiempo.html#en-qué-consiste-ese-trabajo-no-remunerado",
+    "title": "Uso del tiempo en Chile",
+    "section": "¿En qué consiste ese trabajo no remunerado?",
+    "text": "¿En qué consiste ese trabajo no remunerado?\nEl trabajo no remunerado agrupa tres grandes categorías: cuidados a otras personas del hogar, trabajo doméstico, y trabajo voluntario o ayuda a otros hogares.\n\nbreakdown = FileAttachment(\"data/enut/unpaid_breakdown_by_sex.json\").json()\n\n\n\n\n\n\n\nPlot.plot({\n  marginLeft: 220,\n  x: {label: \"Horas por día →\"},\n  y: {label: null},\n  color: {legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [\"#5c9e95\", \"#c7a3c0\"]},\n  marks: [\n    Plot.barX(breakdown, {\n      y: \"category\",\n      x: \"hours\",\n      fill: \"sex\",\n      tip: true\n    }),\n    Plot.ruleX([0])\n  ],\n  height: 260\n})",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html#la-brecha-a-lo-largo-de-la-vida",
+    "href": "uso-del-tiempo.html#la-brecha-a-lo-largo-de-la-vida",
+    "title": "Uso del tiempo en Chile",
+    "section": "La brecha a lo largo de la vida",
+    "text": "La brecha a lo largo de la vida\n¿La brecha de género en trabajo no remunerado es constante, o cambia según la edad?\n\nbyAge = FileAttachment(\"data/enut/unpaid_by_age_sex.json\").json()\n\n\n\n\n\n\n\nPlot.plot({\n  x: {label: \"Grupo etario\"},\n  y: {label: \"Horas por día en trabajo no remunerado →\"},\n  color: {legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [\"#5c9e95\", \"#c7a3c0\"]},\n  marks: [\n    Plot.lineY(byAge, {x: \"age_group\", y: \"hours\", stroke: \"sex\", marker: \"circle\", tip: true}),\n    Plot.ruleY([0])\n  ],\n  height: 320\n})\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nLa brecha se abre fuerte entre los 18-24 y los 35-44 años — los años típicos de crianza — y se mantiene amplia el resto de la vida, incluso después de los 65.",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html#la-brecha-por-región",
+    "href": "uso-del-tiempo.html#la-brecha-por-región",
+    "title": "Uso del tiempo en Chile",
+    "section": "La brecha por región",
+    "text": "La brecha por región\n\nbyRegion = FileAttachment(\"data/enut/unpaid_gap_by_region.json\").json()\n\n\n\n\n\n\n\nPlot.plot({\n  marginLeft: 260,\n  x: {label: \"Brecha Mujeres − Hombres (horas/día) →\"},\n  y: {label: null, domain: byRegion.map(d =&gt; d.region)},\n  marks: [\n    Plot.barX(byRegion, {y: \"region\", x: \"gap\", fill: \"#c7a3c0\", tip: true, sort: {y: \"x\", reverse: true}}),\n    Plot.ruleX([0])\n  ],\n  height: 420\n})",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
+    ]
+  },
+  {
+    "objectID": "uso-del-tiempo.html#cómo-se-hizo-esta-página",
+    "href": "uso-del-tiempo.html#cómo-se-hizo-esta-página",
+    "title": "Uso del tiempo en Chile",
+    "section": "Cómo se hizo esta página",
+    "text": "Cómo se hizo esta página\n\nSe descargó la base de datos en formato R (.RDS) desde la sección Bases de Datos de ine.gob.cl/enut.\nSe procesó con Python (pyreadr + pandas) para calcular promedios ponderados por sexo, categoría de actividad, edad y región.\nLos resultados agregados se guardaron como archivos .json pequeños (no la base completa) en data/enut/.\nEsta página los carga con Observable JS y los grafica con Observable Plot — todo se ejecuta en el navegador, sin backend.\n\nQuieres aprender a hacer esto con tus propios datos? Mira la página de web scraping.",
+    "crumbs": [
+      "Home",
+      "Uso del tiempo (viz)"
     ]
   }
 ]

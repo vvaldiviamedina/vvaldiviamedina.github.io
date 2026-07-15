@@ -1,0 +1,44 @@
+[
+  {
+    "category": "Trabajo de cuidados",
+    "category_code": "tcnr",
+    "sex": "Hombres",
+    "hours": 1.84,
+    "n": 3062
+  },
+  {
+    "category": "Trabajo de cuidados",
+    "category_code": "tcnr",
+    "sex": "Mujeres",
+    "hours": 2.58,
+    "n": 6440
+  },
+  {
+    "category": "Trabajo doméstico",
+    "category_code": "tdnr",
+    "sex": "Hombres",
+    "hours": 2.23,
+    "n": 10433
+  },
+  {
+    "category": "Trabajo doméstico",
+    "category_code": "tdnr",
+    "sex": "Mujeres",
+    "hours": 3.65,
+    "n": 15870
+  },
+  {
+    "category": "Voluntariado / ayuda a otros hogares",
+    "category_code": "tvaoh",
+    "sex": "Hombres",
+    "hours": 5.08,
+    "n": 801
+  },
+  {
+    "category": "Voluntariado / ayuda a otros hogares",
+    "category_code": "tvaoh",
+    "sex": "Mujeres",
+    "hours": 4.29,
+    "n": 1851
+  }
+]

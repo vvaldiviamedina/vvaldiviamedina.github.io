@@ -25,6 +25,10 @@ website:
         href: index.qmd
       - text: "Showcase"
         href: showcase.qmd
+      - text: "Uso del tiempo (viz)"
+        href: uso-del-tiempo.qmd
+      - text: "Web scraping"
+        href: web-scraping.qmd
       - text: "Build a site like this"
         href: build-a-site.qmd
       - text: "About"

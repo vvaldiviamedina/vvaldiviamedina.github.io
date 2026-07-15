@@ -1,0 +1,130 @@
+[
+  {
+    "region": "Libertador General Bernardo O´Higgins",
+    "n_Hombres": 626,
+    "n_Mujeres": 975,
+    "Hombres": 2.75,
+    "Mujeres": 5.47,
+    "gap": 2.72
+  },
+  {
+    "region": "Coquimbo",
+    "n_Hombres": 716,
+    "n_Mujeres": 1103,
+    "Hombres": 2.84,
+    "Mujeres": 5.4,
+    "gap": 2.56
+  },
+  {
+    "region": "Maule",
+    "n_Hombres": 887,
+    "n_Mujeres": 1387,
+    "Hombres": 2.48,
+    "Mujeres": 4.96,
+    "gap": 2.48
+  },
+  {
+    "region": "Atacama",
+    "n_Hombres": 449,
+    "n_Mujeres": 758,
+    "Hombres": 2.7,
+    "Mujeres": 5.17,
+    "gap": 2.47
+  },
+  {
+    "region": "Antofagasta",
+    "n_Hombres": 506,
+    "n_Mujeres": 833,
+    "Hombres": 3.07,
+    "Mujeres": 5.45,
+    "gap": 2.38
+  },
+  {
+    "region": "Ñuble",
+    "n_Hombres": 545,
+    "n_Mujeres": 828,
+    "Hombres": 2.62,
+    "Mujeres": 5.0,
+    "gap": 2.38
+  },
+  {
+    "region": "Biobío",
+    "n_Hombres": 899,
+    "n_Mujeres": 1493,
+    "Hombres": 2.65,
+    "Mujeres": 4.95,
+    "gap": 2.3
+  },
+  {
+    "region": "La Araucanía",
+    "n_Hombres": 614,
+    "n_Mujeres": 1016,
+    "Hombres": 2.58,
+    "Mujeres": 4.88,
+    "gap": 2.3
+  },
+  {
+    "region": "Región Metropolitana de Santiago",
+    "n_Hombres": 1717,
+    "n_Mujeres": 2301,
+    "Hombres": 3.0,
+    "Mujeres": 5.22,
+    "gap": 2.22
+  },
+  {
+    "region": "Los Lagos",
+    "n_Hombres": 466,
+    "n_Mujeres": 702,
+    "Hombres": 3.09,
+    "Mujeres": 5.18,
+    "gap": 2.09
+  },
+  {
+    "region": "Los Ríos",
+    "n_Hombres": 368,
+    "n_Mujeres": 675,
+    "Hombres": 2.92,
+    "Mujeres": 5.0,
+    "gap": 2.08
+  },
+  {
+    "region": "Arica y Parinacota",
+    "n_Hombres": 463,
+    "n_Mujeres": 661,
+    "Hombres": 2.89,
+    "Mujeres": 4.8,
+    "gap": 1.91
+  },
+  {
+    "region": "Valparaíso",
+    "n_Hombres": 833,
+    "n_Mujeres": 1189,
+    "Hombres": 3.45,
+    "Mujeres": 5.36,
+    "gap": 1.91
+  },
+  {
+    "region": "Magallanes y la Antártica Chilena",
+    "n_Hombres": 525,
+    "n_Mujeres": 679,
+    "Hombres": 1.99,
+    "Mujeres": 3.65,
+    "gap": 1.66
+  },
+  {
+    "region": "Aysén del General Carlos Ibañez del Campo",
+    "n_Hombres": 339,
+    "n_Mujeres": 536,
+    "Hombres": 3.16,
+    "Mujeres": 4.79,
+    "gap": 1.63
+  },
+  {
+    "region": "Tarapacá",
+    "n_Hombres": 682,
+    "n_Mujeres": 901,
+    "Hombres": 2.67,
+    "Mujeres": 3.77,
+    "gap": 1.1
+  }
+]

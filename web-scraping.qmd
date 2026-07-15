@@ -1,0 +1,148 @@
+---
+title: "Web scraping, step by step"
+subtitle: "A real case study: pulling the ENUT dataset off INE's website"
+toc: true
+---
+
+This walks through getting data off a website that doesn't hand it to you nicely — using the exact process behind the [Uso del tiempo](uso-del-tiempo.qmd) page, including the dead ends.
+
+::: {.callout-important}
+## Before anything else: is this even OK to do?
+- Check `robots.txt` (`https://example.com/robots.txt`) for disallowed paths.
+- Read the site's terms of use / data license. Government open-data sites are usually fine for reuse (often Creative Commons); many commercial sites explicitly forbid scraping.
+- Don't hammer a server — space out requests, cache what you download, and never re-download the same file in a loop.
+- Prefer an official API or bulk-download link over scraping HTML whenever one exists — it's more stable and it's what the site owner actually wants you to use.
+:::
+
+## Step 1: Look for the easy path first
+
+Before writing a single line of scraping code, check whether the data is already published somewhere structured:
+
+- A national/organizational **open data portal** (in Chile: [datos.gob.cl](https://datos.gob.cl)). Many of these run [CKAN](https://ckan.org/), which exposes a clean JSON API — no HTML parsing needed:
+
+```bash
+curl "https://datos.gob.cl/api/3/action/package_show?id=<dataset-name>"
+```
+
+- A **"download" or "bases de datos" section** on the source site itself.
+
+::: {.callout-warning}
+## Dead end #1
+For ENUT, the CKAN entry on `datos.gob.cl` existed but had **zero attached files** — just a description pointing back to INE's own site. Open data portals are sometimes just metadata catalogs, not actual mirrors. Worth checking, but don't assume it'll have the file.
+:::
+
+## Step 2: Fetch the page and see what's actually there
+
+::: {.panel-tabset}
+## Bash (curl)
+```bash
+curl -sL -A "Mozilla/5.0" "https://example.com/page" -o page.html
+grep -oE 'href="[^"]*\.(csv|xlsx|zip)"' page.html
+```
+
+## Python (requests)
+```python
+import requests
+r = requests.get("https://example.com/page", headers={"User-Agent": "Mozilla/5.0"})
+r.raise_for_status()
+html = r.text
+```
+
+## R (rvest)
+```r
+library(rvest)
+page <- read_html("https://example.com/page")
+page |> html_elements("a") |> html_attr("href")
+```
+:::
+
+Always set a `User-Agent` — some servers block requests that don't look like a browser. Always follow redirects (`-L` in curl).
+
+::: {.callout-warning}
+## Dead end #2
+Fetching INE's ENUT page this way returned real HTML, but grepping it for `.zip`/`.xlsx`/`.csv` links came back **empty**. The only file links in the raw HTML were three PDFs. The "Bases de Datos" panel visible in the browser simply wasn't in the server-rendered page.
+:::
+
+## Step 3: Figure out why the data isn't in the HTML
+
+If a link is visible in your browser but missing from `curl`'s output, the page is probably building that part of the DOM with JavaScript *after* load — an AJAX call, a client-side framework, or an accordion that only populates on click. `curl` never runs JavaScript, so it only ever sees the initial server response.
+
+How to confirm it and find the real source:
+
+1. Open the page in a real browser.
+2. Open **DevTools → Network tab**, reload, and watch for XHR/fetch requests — the data is often coming from a JSON or file endpoint you can hit directly.
+3. If it's a static link that's just injected by JS (our case), **hover over the link and read the URL in the status bar**, or right-click → "Copy link address."
+
+::: {.callout-tip}
+## What actually worked here
+Hovering over "Base de datos R II ENUT 2023" in the browser revealed the real URL in the status bar:
+`https://www.ine.gob.cl/docs/default-source/uso-del-tiempo-tiempo-libre/bbdd/ii-enut/250403-ii-enut-bdd-r-v2.zip`
+No JavaScript execution needed on my end — once I had the direct URL, a plain `curl` download worked fine. Sometimes the fastest fix for "the scraper can't find it" is a human spending 10 seconds in the browser.
+:::
+
+If there's truly no static URL to grab (the content is generated entirely by client-side JS with no discoverable endpoint), the fallback is a **headless browser** like Playwright or Selenium, which actually renders the page before you extract from it. That's slower and heavier — reach for it only after Network-tab inspection comes up empty.
+
+## Step 4: Download and unpack
+
+```bash
+curl -sL -A "Mozilla/5.0" "<direct-file-url>" -o data.zip
+unzip -o data.zip -d data/
+```
+
+## Step 5: Parse whatever format you land on
+
+Not everything is a friendly CSV. This dataset came as an `.RDS` — R's native serialization format — but Python can read it without installing R, via [`pyreadr`](https://github.com/ofajardo/pyreadr):
+
+::: {.panel-tabset}
+## Python (no R needed)
+```python
+import pyreadr
+result = pyreadr.read_r("data.RDS")
+df = list(result.values())[0]   # RDS holding one object -> one entry
+print(df.shape, list(df.columns)[:20])
+```
+
+## R (native)
+```r
+df <- readRDS("data.RDS")
+str(df)
+```
+:::
+
+Other common formats and their tools:
+
+| Format | Python | R |
+|---|---|---|
+| CSV | `pandas.read_csv` | `readr::read_csv` |
+| Excel | `pandas.read_excel` | `readxl::read_excel` |
+| SPSS `.sav` | `pyreadstat` | `haven::read_sav` |
+| Stata `.dta` | `pandas.read_stata` | `haven::read_dta` |
+| PDF tables | `pdfplumber` / `camelot` | `tabulizer` |
+
+## Step 6: Understand the codebook before trusting the numbers
+
+Raw survey data is full of cryptic column names (`t_tnr_ds`, `fe_cut`, `varstrat`...). Before charting anything:
+
+- Find the **methodology document** or **variable dictionary** — it explains naming conventions, units, and which weight/expansion-factor column to use for population-representative estimates.
+- Validate against a number the publisher already reported (a headline stat from their own press release or summary report). If your computed number is in the right ballpark, your variable/weight choices are probably correct.
+
+::: {.callout-tip}
+For ENUT, INE's own methodology PDF explained the naming scheme: prefixes like `tnr` (trabajo no remunerado), `to` (trabajo remunerado), suffixes `_dt`/`_fds`/`_ds` (weekday/weekend/weekly-average), and that estimates should be weighted by `fe_cut`. Computing the gender gap in unpaid work with that weight landed close to INE's own published figure — a good sign the approach was right.
+:::
+
+## Step 7: Be a good citizen with what you publish
+
+- Don't commit large raw third-party files to a git repo — store the small, **derived/aggregated** results you actually need (a few KB of JSON), and document how to regenerate them from the source.
+- Cite the source and its license/date. Data changes; someone reading your chart in two years should be able to find the original.
+- If a site has an API, use it instead of scraping next time — friendlier to them and more stable for you.
+
+## Checklist
+
+- [ ] Checked `robots.txt` and the site's terms/license
+- [ ] Looked for an existing open-data/API entry first
+- [ ] Fetched the raw HTML and confirmed whether the data is actually there
+- [ ] If missing: checked DevTools Network tab / hovered links for the real URL
+- [ ] Downloaded once, cached locally, didn't hammer the server
+- [ ] Found and read the codebook/methodology before computing anything
+- [ ] Sanity-checked results against a published figure
+- [ ] Committed only small derived outputs, not the raw dump — with source + license noted
