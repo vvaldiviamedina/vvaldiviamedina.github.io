@@ -25,7 +25,7 @@ website:
         href: index.qmd
       - text: "Showcase"
         href: showcase.qmd
-      - text: "Uso del tiempo (viz)"
+      - text: "Cuidado remunerado (viz)"
         href: uso-del-tiempo.qmd
       - text: "Web scraping"
         href: web-scraping.qmd

@@ -4,7 +4,7 @@ subtitle: "A real case study: pulling the ENUT dataset off INE's website"
 toc: true
 ---
 
-This walks through getting data off a website that doesn't hand it to you nicely — using the exact process behind the [Uso del tiempo](uso-del-tiempo.qmd) page, including the dead ends.
+This walks through getting data off a website that doesn't hand it to you nicely — using the exact process behind the [El cuidado remunerado en Chile](uso-del-tiempo.qmd) page, including the dead ends.
 
 ::: {.callout-important}
 ## Before anything else: is this even OK to do?

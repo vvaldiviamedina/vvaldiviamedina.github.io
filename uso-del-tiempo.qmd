@@ -1,167 +1,63 @@
 ---
-title: "Uso del tiempo en Chile"
-subtitle: "La brecha de género en el trabajo no remunerado, según la II ENUT 2023"
+title: "El cuidado remunerado en Chile"
+subtitle: "Segregación de género en el mercado laboral del cuidado"
 toc: true
 ---
 
+El cuidado —salud, educación, cuidado personal— también existe como empleo. ¿Qué proporción de las personas ocupadas trabaja en cuidados remunerados, y cómo se distribuye por sexo?
+
 ::: {.callout-note}
 ## Fuente de los datos
-Instituto Nacional de Estadísticas (INE) de Chile, **II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023** — 48.020 personas encuestadas en centros urbanos de las 16 regiones del país. Base de datos descargada desde [ine.gob.cl/enut](https://www.ine.gob.cl/enut) (formato R, licencia CC BY-NC). Los promedios de esta página se calculan ponderando por el factor de expansión de personas del módulo de uso del tiempo (`fe_cut`); las celdas con menos de 30 casos muestrales se omiten.
+Clasificación por ocupación (CIUO-08, 2 dígitos) y sector económico (CAENES), construida sobre un archivo interno de procesamiento del INE de la ENUT — **no disponible en la base de datos pública**, que solo trae un agrupamiento más grueso de ocupaciones. Solo las proporciones agregadas y sus intervalos de confianza salieron de ese archivo; ningún microdato se publica aquí. Se calcularon con diseño muestral complejo (`svydesign` + `svyby`, con estratos y conglomerados) usando [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R). Se muestran tres definiciones, de más estricta a más amplia: **núcleo** (ocupación y sector de cuidados a la vez), **ampliada** (incluye facilitadores del cuidado) y **máxima** (incluye además habilitadores).
 :::
-
-## El balance diario de tiempo, por sexo
-
-En promedio, ¿cuántas horas al día destina cada persona a trabajo remunerado, trabajo no remunerado, cuidado personal, educación y ocio?
 
 ```{ojs}
 //| echo: false
-balance = FileAttachment("data/enut/time_balance_by_sex.json").json()
+paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+paidCare = paidCareRaw.map(d => ({...d, cv: d.se / d.share}))
 ```
 
 ```{ojs}
 //| echo: false
 Plot.plot({
   marginLeft: 160,
-  x: {label: "Horas por día →"},
-  y: {label: null},
-  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
-  marks: [
-    Plot.barX(balance, {
-      y: "domain",
-      x: "hours",
-      fy: "domain",
-      fill: "sex",
-      tip: true
-    }),
-    Plot.ruleX([0])
-  ],
-  fy: {label: null, tickFormat: () => ""},
-  height: 320
-})
-```
-
-::: {.callout-tip}
-Los hombres destinan más horas al día al trabajo remunerado; las mujeres destinan considerablemente más al trabajo no remunerado. Esa es, en gran parte, la "doble jornada": cuando se suman ambos tipos de trabajo, la carga total de trabajo de las mujeres es mayor.
-:::
-
-## ¿En qué consiste ese trabajo no remunerado?
-
-El trabajo no remunerado agrupa tres grandes categorías: cuidados a otras personas del hogar, trabajo doméstico, y trabajo voluntario o ayuda a otros hogares.
-
-```{ojs}
-//| echo: false
-breakdown = FileAttachment("data/enut/unpaid_breakdown_by_sex.json").json()
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  marginLeft: 220,
-  x: {label: "Horas por día →"},
-  y: {label: null},
-  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
-  marks: [
-    Plot.barX(breakdown, {
-      y: "category",
-      x: "hours",
-      fill: "sex",
-      tip: true
-    }),
-    Plot.ruleX([0])
-  ],
-  height: 260
-})
-```
-
-## El cuidado también está segregado en el mercado laboral
-
-Hasta aquí, todo el trabajo de cuidados visto era **no remunerado**. Pero el cuidado también existe como empleo: salud, educación y cuidado personal remunerados. ¿Qué proporción de las personas ocupadas trabaja en cuidados remunerados, y cómo se distribuye por sexo?
-
-::: {.callout-note}
-## Fuente distinta a los gráficos anteriores
-Este gráfico usa una clasificación por ocupación (CIUO-08, 2 dígitos) y sector (CAENES), que **no está en la base de datos pública de la ENUT** — solo en un archivo interno de procesamiento del INE con mayor nivel de detalle. Solo las proporciones agregadas y sus intervalos de confianza salieron de ese archivo; ningún microdato se publica aquí. Se calcularon con diseño muestral complejo (`svydesign` + `svyby`, con estratos y conglomerados) usando [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R). Se muestran tres definiciones, de más estricta a más amplia: **núcleo** (ocupación y sector de cuidados a la vez), **ampliada** (incluye facilitadores del cuidado) y **máxima** (incluye además habilitadores).
-:::
-
-```{ojs}
-//| echo: false
-paidCare = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  marginLeft: 160,
-  x: {label: "Proporción de personas ocupadas →", percent: true, domain: [0, 0.4]},
+  x: {label: "Proporción de personas ocupadas →", percent: true, grid: true},
   y: {label: null},
   fy: {label: null},
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
-    Plot.barX(paidCare, {y: "sex", x: "share", fy: "definition", fill: "sex", tip: true}),
-    Plot.ruleX(paidCare, {y: "sex", fy: "definition", x1: "ci_low", x2: "ci_high", stroke: "currentColor", strokeWidth: 1.5}),
-    Plot.ruleX([0])
+    Plot.ruleX(paidCare, {y: "sex", fy: "definition", x1: "ci_low", x2: "ci_high", stroke: "sex", strokeWidth: 3}),
+    Plot.dot(paidCare, {y: "sex", fy: "definition", x: "share", fill: "sex", r: 5, tip: true})
   ],
   height: 340
 })
+```
+
+Detalle de cada estimación (proporción, error estándar e intervalo de confianza al 95%, y coeficiente de variación — CV bajo indica una estimación precisa):
+
+```{ojs}
+//| echo: false
+Inputs.table(paidCare.map(d => ({
+  "Definición": d.definition,
+  "Sexo": d.sex,
+  "Proporción": (d.share * 100).toFixed(1) + "%",
+  "IC 95%": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`,
+  "CV": (d.cv * 100).toFixed(1) + "%"
+})))
 ```
 
 ::: {.callout-important}
 Bajo la definición núcleo, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres definiciones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
 :::
 
-## La brecha a lo largo de la vida
-
-¿La brecha de género en trabajo no remunerado es constante, o cambia según la edad?
-
-```{ojs}
-//| echo: false
-byAge = FileAttachment("data/enut/unpaid_by_age_sex.json").json()
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  x: {label: "Grupo etario"},
-  y: {label: "Horas por día en trabajo no remunerado →"},
-  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
-  marks: [
-    Plot.lineY(byAge, {x: "age_group", y: "hours", stroke: "sex", marker: "circle", tip: true}),
-    Plot.ruleY([0])
-  ],
-  height: 320
-})
-```
-
-::: {.callout-important}
-La brecha se abre fuerte entre los 18-24 y los 35-44 años — los años típicos de crianza — y se mantiene amplia el resto de la vida, incluso después de los 65.
-:::
-
-## La brecha por región
-
-```{ojs}
-//| echo: false
-byRegion = FileAttachment("data/enut/unpaid_gap_by_region.json").json()
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  marginLeft: 260,
-  x: {label: "Brecha Mujeres − Hombres (horas/día) →"},
-  y: {label: null, domain: byRegion.map(d => d.region)},
-  marks: [
-    Plot.barX(byRegion, {y: "region", x: "gap", fill: "#c7a3c0", tip: true, sort: {y: "x", reverse: true}}),
-    Plot.ruleX([0])
-  ],
-  height: 420
-})
-```
-
 ## Cómo se hizo esta página
 
-1. Se descargó la base de datos en formato R (`.RDS`) desde la sección **Bases de Datos** de [ine.gob.cl/enut](https://www.ine.gob.cl/enut).
-2. Se procesó con [`scripts/build_enut_data.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.py) (Python: `pyreadr` + `pandas`) para calcular promedios ponderados por sexo, categoría de actividad, edad y región. Hay también una versión en R: [`scripts/build_enut_data.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_enut_data.R).
-3. Los resultados agregados se guardaron como archivos `.json` pequeños (no la base completa) en `data/enut/`.
-4. Esta página los carga con [Observable JS](https://quarto.org/docs/interactive/ojs/) y los grafica con [Observable Plot](https://observablehq.com/plot/) — todo se ejecuta en el navegador, sin backend.
-5. El gráfico de cuidado remunerado usa una fuente distinta: un archivo interno de procesamiento del INE con clasificación detallada de ocupación, procesado con [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R) usando diseño muestral complejo (`survey::svydesign`). Solo las proporciones agregadas salieron de ese archivo.
+1. La clasificación de trabajo de cuidados remunerado (ocupación × sector) se construyó sobre un archivo interno de procesamiento de la ENUT, con [`scripts/build_paid_care_workforce.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce.R), usando diseño muestral complejo (`survey::svydesign` + `svyby`).
+2. Solo las proporciones agregadas y sus intervalos de confianza (`data/enut/paid_care_workforce_by_sex.json`) salieron de ese archivo — ningún microdato.
+3. Esta página los carga con [Observable JS](https://quarto.org/docs/interactive/ojs/) y los grafica con [Observable Plot](https://observablehq.com/plot/) — todo se ejecuta en el navegador, sin backend.
 
 Quieres aprender a hacer esto con tus propios datos? Mira la página de [web scraping](web-scraping.qmd).
