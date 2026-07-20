@@ -85,7 +85,7 @@ paidCare = paidCareRaw.map(d => ({...d, cv: d.se / d.share}))
 //| echo: false
 Plot.plot({
   marginBottom: 60,
-  fx: {label: null},
+  fx: {label: null, domain: ["TCR + Habilitadores + Facilitadores", "TCR + Habilitadores", "Trabajo de cuidados remunerados"]},
   x: {axis: null},
   y: {label: "Proporción de personas ocupadas →", percent: true, grid: true},
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
