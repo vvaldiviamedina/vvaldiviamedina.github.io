@@ -34,13 +34,14 @@ Plot.plot({
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
     Plot.barY(cwd, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
-    // Vertical CI whisker: ruleX (not ruleY!) is the mark that draws a line
-    // at a fixed x spanning a y1-y2 range; ruleY draws horizontal lines instead
-    Plot.ruleX(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#555", strokeWidth: 5, strokeLinecap: "round"}),
+    // Thin I-beam CI: a slim connecting rule plus narrow horizontal caps
+    Plot.ruleX(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#666", strokeWidth: 1.5}),
+    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_low", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22}),
+    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_high", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22}),
     // small bars: label above in dark text (data pre-filtered, not a dy
     // function -- Plot.text's dy only accepts a constant, not a per-row callback)
     Plot.text(cwd.filter(d => d.share < 0.05), {
-      fx: "definition", x: "sex", y: "share", dy: -10,
+      fx: "definition", x: "sex", y: "ci_high", dy: -8,
       text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: "bold"
     }),
     // bigger bars: label inside, in white
@@ -90,13 +91,14 @@ Plot.plot({
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
     Plot.barY(paidCare, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
-    // Vertical CI whisker: ruleX (not ruleY!) is the mark that draws a line
-    // at a fixed x spanning a y1-y2 range; ruleY draws horizontal lines instead
-    Plot.ruleX(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#555", strokeWidth: 5, strokeLinecap: "round"}),
+    // Thin I-beam CI: a slim connecting rule plus narrow horizontal caps
+    Plot.ruleX(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#666", strokeWidth: 1.5}),
+    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_low", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22}),
+    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_high", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22}),
     // small bars: label above in dark text (data pre-filtered, not a dy
     // function -- Plot.text's dy only accepts a constant, not a per-row callback)
     Plot.text(paidCare.filter(d => d.share < 0.05), {
-      fx: "definition", x: "sex", y: "share", dy: -10,
+      fx: "definition", x: "sex", y: "ci_high", dy: -8,
       text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: "bold"
     }),
     // bigger bars: label inside, in white
