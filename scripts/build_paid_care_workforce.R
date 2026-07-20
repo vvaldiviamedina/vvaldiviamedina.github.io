@@ -12,6 +12,7 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(survey)
   library(jsonlite)
+  library(haven)
 })
 
 SRC <- "//Buvmfswinp01/SEET_ENUT/ii_enut/5_procesamiento/5.6_ponderar/data/enut_5.6_ponderada.RDS"
@@ -49,6 +50,12 @@ enut <- enut |>
       cw_d %in% c(11, 12) ~ 1,
       TRUE ~ 0
     )
+  ) |>
+  mutate(
+    tc_sc = case_when(!cae %in% 2 ~ NA, cw_d == 11 ~ 1, TRUE ~ 0),
+    tc_nsc = case_when(!cae %in% 2 ~ NA, cw_d == 12 ~ 1, TRUE ~ 0),
+    habilitadores = case_when(!cae %in% 2 ~ NA, cw_d == 21 ~ 1, TRUE ~ 0),
+    facilitadores = case_when(!cae %in% 2 ~ NA, cw_d == 31 ~ 1, TRUE ~ 0)
   )
 
 enut <- subset(enut, tiempo == 1)
@@ -78,14 +85,31 @@ res_slight <- svyby(~slightly_unk_con, by = ~sexo, design = dise_ocup, FUN = svy
 res_broad <- svyby(~broad_unk_con, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
 
 rows <- c(
-  extract_rows(res_cwe, "cwe", "Núcleo (ocupación y sector de cuidados)"),
-  extract_rows(res_slight, "slightly_unk_con", "Ampliada (incluye facilitadores)"),
-  extract_rows(res_broad, "broad_unk_con", "Máxima (incluye habilitadores)")
+  extract_rows(res_cwe, "cwe", "Trabajo de cuidados remunerados"),
+  extract_rows(res_slight, "slightly_unk_con", "TCR + Habilitadores"),
+  extract_rows(res_broad, "broad_unk_con", "TCR + Habilitadores + Facilitadores")
 )
 
 dir.create(OUT_DIR, recursive = TRUE, showWarnings = FALSE)
 out_path <- file.path(OUT_DIR, "paid_care_workforce_by_sex.json")
 write_json(rows, out_path, auto_unbox = TRUE, pretty = TRUE)
 
-cat("Wrote", length(rows), "rows to", normalizePath(out_path), "\n")
-cat("This file contains only aggregate proportions + CIs -- safe to hand off.\n")
+cat("Wrote", length(rows), "rows to", file.path(OUT_DIR, "paid_care_workforce_by_sex.json"), "\n")
+# --- individual cw_d categories (mutually exclusive), by sex ---
+res_11 <- svyby(~tc_sc, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
+res_12 <- svyby(~tc_nsc, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
+res_21 <- svyby(~habilitadores, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
+res_31 <- svyby(~facilitadores, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
+
+rows_cwd <- c(
+  extract_rows(res_11, "tc_sc", "Trabajo de cuidados en la ocupación dentro del sector de cuidados"),
+  extract_rows(res_12, "tc_nsc", "Trabajo de cuidados en la ocupación fuera del sector de cuidados"),
+  extract_rows(res_21, "habilitadores", "Habilitadores"),
+  extract_rows(res_31, "facilitadores", "Facilitadores")
+)
+
+out_path_cwd <- file.path(OUT_DIR, "paid_care_workforce_cwd_by_sex.json")
+write_json(rows_cwd, out_path_cwd, auto_unbox = TRUE, pretty = TRUE)
+
+cat("Wrote", length(rows_cwd), "rows to", normalizePath(out_path_cwd), "\n")
+cat("Both files contain only aggregate proportions + CIs -- safe to hand off.\n")

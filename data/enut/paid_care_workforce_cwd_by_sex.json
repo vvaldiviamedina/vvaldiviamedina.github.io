@@ -1,0 +1,66 @@
+[
+  {
+    "definition": "Trabajo de cuidados en la ocupación dentro del sector de cuidados",
+    "sex": "Hombres",
+    "share": 0.0588,
+    "se": 0.0041,
+    "ci_low": 0.0506,
+    "ci_high": 0.0669
+  },
+  {
+    "definition": "Trabajo de cuidados en la ocupación dentro del sector de cuidados",
+    "sex": "Mujeres",
+    "share": 0.2013,
+    "se": 0.0065,
+    "ci_low": 0.1885,
+    "ci_high": 0.2142
+  },
+  {
+    "definition": "Trabajo de cuidados en la ocupación fuera del sector de cuidados",
+    "sex": "Hombres",
+    "share": 0.0143,
+    "se": 0.0019,
+    "ci_low": 0.0106,
+    "ci_high": 0.0181
+  },
+  {
+    "definition": "Trabajo de cuidados en la ocupación fuera del sector de cuidados",
+    "sex": "Mujeres",
+    "share": 0.0256,
+    "se": 0.0026,
+    "ci_low": 0.0206,
+    "ci_high": 0.0306
+  },
+  {
+    "definition": "Habilitadores",
+    "sex": "Hombres",
+    "share": 0.0045,
+    "se": 0.0009,
+    "ci_low": 0.0026,
+    "ci_high": 0.0063
+  },
+  {
+    "definition": "Habilitadores",
+    "sex": "Mujeres",
+    "share": 0.0591,
+    "se": 0.0044,
+    "ci_low": 0.0505,
+    "ci_high": 0.0676
+  },
+  {
+    "definition": "Facilitadores",
+    "sex": "Hombres",
+    "share": 0.0384,
+    "se": 0.0033,
+    "ci_low": 0.032,
+    "ci_high": 0.0449
+  },
+  {
+    "definition": "Facilitadores",
+    "sex": "Mujeres",
+    "share": 0.0574,
+    "se": 0.0036,
+    "ci_low": 0.0504,
+    "ci_high": 0.0644
+  }
+]
