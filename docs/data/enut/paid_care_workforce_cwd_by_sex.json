@@ -1,6 +1,6 @@
 [
   {
-    "definition": "Trabajo de cuidados en la ocupación dentro del sector de cuidados",
+    "definition": "TCR dentro del sector",
     "sex": "Hombres",
     "share": 0.0588,
     "se": 0.0041,
@@ -8,7 +8,7 @@
     "ci_high": 0.0669
   },
   {
-    "definition": "Trabajo de cuidados en la ocupación dentro del sector de cuidados",
+    "definition": "TCR dentro del sector",
     "sex": "Mujeres",
     "share": 0.2013,
     "se": 0.0065,
@@ -16,7 +16,7 @@
     "ci_high": 0.2142
   },
   {
-    "definition": "Trabajo de cuidados en la ocupación fuera del sector de cuidados",
+    "definition": "TCR fuera del sector",
     "sex": "Hombres",
     "share": 0.0143,
     "se": 0.0019,
@@ -24,7 +24,7 @@
     "ci_high": 0.0181
   },
   {
-    "definition": "Trabajo de cuidados en la ocupación fuera del sector de cuidados",
+    "definition": "TCR fuera del sector",
     "sex": "Mujeres",
     "share": 0.0256,
     "se": 0.0026,

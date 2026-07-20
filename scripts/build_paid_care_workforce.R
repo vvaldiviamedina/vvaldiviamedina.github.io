@@ -102,8 +102,8 @@ res_21 <- svyby(~habilitadores, by = ~sexo, design = dise_ocup, FUN = svymean, v
 res_31 <- svyby(~facilitadores, by = ~sexo, design = dise_ocup, FUN = svymean, vartype = c("se", "ci"), na.rm = TRUE)
 
 rows_cwd <- c(
-  extract_rows(res_11, "tc_sc", "Trabajo de cuidados en la ocupación dentro del sector de cuidados"),
-  extract_rows(res_12, "tc_nsc", "Trabajo de cuidados en la ocupación fuera del sector de cuidados"),
+  extract_rows(res_11, "tc_sc", "TCR dentro del sector"),
+  extract_rows(res_12, "tc_nsc", "TCR fuera del sector"),
   extract_rows(res_21, "habilitadores", "Habilitadores"),
   extract_rows(res_31, "facilitadores", "Facilitadores")
 )

@@ -11,55 +11,6 @@ El cuidado se realiza en las distintas formas de trabajo, lo que incluye el trab
 Clasificación por ocupación (CIUO-08, 2 dígitos) y rama (CAENES, 1 dígito), de la ENUT.
 :::
 
-```{ojs}
-//| echo: false
-paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
-```
-
-```{ojs}
-//| echo: false
-paidCare = paidCareRaw.map(d => ({...d, cv: d.se / d.share}))
-```
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  marginBottom: 60,
-  fx: {label: null},
-  x: {axis: null},
-  y: {label: "Proporción de personas ocupadas →", percent: true, grid: true},
-  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
-  marks: [
-    Plot.barY(paidCare, {fx: "definition", x: "sex", y: "share", fill: "sex", tip: true}),
-    // CI whiskers: a bold contrasting rule plus end caps, so they stay visible
-    // even though they're only a couple of points wide against a 0-anchored bar
-    Plot.ruleY(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "currentColor", strokeWidth: 2}),
-    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_low", stroke: "currentColor", strokeWidth: 2}),
-    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_high", stroke: "currentColor", strokeWidth: 2}),
-    Plot.text(paidCare, {fx: "definition", x: "sex", y: "share", dy: 16, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
-    Plot.ruleY([0])
-  ],
-  height: 380
-})
-```
-
-Independiente de la dimensión de análisis, la proporción de mujeres que realizan y se encuentran dentro de los sectores de cuidados, es mayor en comparación a los hombres. 
-
-```{ojs}
-//| echo: false
-Inputs.table(paidCare.map(d => ({
-  "Definición": d.definition,
-  "Sexo": d.sex,
-  "Proporción": (d.share * 100).toFixed(1) + "%",
-  "IC 95%": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`,
-  "CV": (d.cv * 100).toFixed(1) + "%"
-})))
-```
-
-::: {.callout-important}
-Bajo la definición de trabajo de cuidados remunerados, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres dimensiones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
-:::
-
 ## ¿Quiénes trabajan en el ecosistema de los cuidados?
 
 
@@ -82,11 +33,17 @@ Plot.plot({
   y: {label: "Proporción de personas ocupadas →", percent: true, grid: true},
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
-    Plot.barY(cwd, {fx: "definition", x: "sex", y: "share", fill: "sex", tip: true}),
-    Plot.ruleY(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "currentColor", strokeWidth: 2}),
-    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_low", stroke: "currentColor", strokeWidth: 2}),
-    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_high", stroke: "currentColor", strokeWidth: 2}),
-    Plot.text(cwd, {fx: "definition", x: "sex", y: "share", dy: 16, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
+    Plot.barY(cwd, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
+    // I-beam CI: a grey connecting rule plus narrow end caps (inset well
+    // inside the bar's band) so it reads as one bracket, not two stray lines
+    Plot.ruleY(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#888", strokeWidth: 2}),
+    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_low", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
+    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_high", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
+    Plot.text(cwd, {fx: "definition", x: "sex", y: "share", dy: 30, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
+    Plot.tip(cwd, Plot.pointer({
+      fx: "definition", x: "sex", y: "share",
+      title: d => `${d.definition}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
+    })),
     Plot.ruleY([0])
   ],
   height: 420
@@ -103,6 +60,60 @@ Inputs.table(cwd.map(d => ({
   "CV": (d.cv * 100).toFixed(1) + "%"
 })))
 ```
+
+
+```{ojs}
+//| echo: false
+paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+paidCare = paidCareRaw.map(d => ({...d, cv: d.se / d.share}))
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  marginBottom: 60,
+  fx: {label: null},
+  x: {axis: null},
+  y: {label: "Proporción de personas ocupadas →", percent: true, grid: true},
+  color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
+  marks: [
+    Plot.barY(paidCare, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
+    // I-beam CI: a grey connecting rule plus narrow end caps (inset well
+    // inside the bar's band) so it reads as one bracket, not two stray lines
+    Plot.ruleY(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#888", strokeWidth: 2}),
+    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_low", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
+    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_high", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
+    Plot.text(paidCare, {fx: "definition", x: "sex", y: "share", dy: 30, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
+    Plot.tip(paidCare, Plot.pointer({
+      fx: "definition", x: "sex", y: "share",
+      title: d => `${d.definition}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
+    })),
+    Plot.ruleY([0])
+  ],
+  height: 380
+})
+```
+
+Independiente de la dimensión de análisis, la proporción de mujeres que realizan y se encuentran dentro de los sectores de cuidados, es mayor en comparación a los hombres. 
+
+```{ojs}
+//| echo: false
+Inputs.table(paidCare.map(d => ({
+  "Definición": d.definition,
+  "Sexo": d.sex,
+  "Proporción": (d.share * 100).toFixed(1) + "%",
+  "IC 95%": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`,
+  "CV": (d.cv * 100).toFixed(1) + "%"
+})))
+```
+
+::: {.callout-important}
+Bajo la definición de trabajo de cuidados remunerados, las mujeres ocupadas tienen más de 3 veces la probabilidad de trabajar en cuidados remunerados que los hombres — y los intervalos de confianza de ambos sexos no se superponen en ninguna de las tres dimensiones. La segregación de género en el cuidado no es solo dentro del hogar: se repite en el mercado laboral.
+:::
 
 ## Cómo se hizo esta página
 
