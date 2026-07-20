@@ -34,12 +34,20 @@ Plot.plot({
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
     Plot.barY(cwd, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
-    // I-beam CI: a grey connecting rule plus narrow end caps (inset well
-    // inside the bar's band) so it reads as one bracket, not two stray lines
-    Plot.ruleY(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#888", strokeWidth: 2}),
-    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_low", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
-    Plot.tickY(cwd, {fx: "definition", x: "sex", y: "ci_high", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
-    Plot.text(cwd, {fx: "definition", x: "sex", y: "share", dy: 30, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
+    // Vertical CI whisker: ruleX (not ruleY!) is the mark that draws a line
+    // at a fixed x spanning a y1-y2 range; ruleY draws horizontal lines instead
+    Plot.ruleX(cwd, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#555", strokeWidth: 5, strokeLinecap: "round"}),
+    // small bars: label above in dark text (data pre-filtered, not a dy
+    // function -- Plot.text's dy only accepts a constant, not a per-row callback)
+    Plot.text(cwd.filter(d => d.share < 0.05), {
+      fx: "definition", x: "sex", y: "share", dy: -10,
+      text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: "bold"
+    }),
+    // bigger bars: label inside, in white
+    Plot.text(cwd.filter(d => d.share >= 0.05), {
+      fx: "definition", x: "sex", y: "share", dy: 30,
+      text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"
+    }),
     Plot.tip(cwd, Plot.pointer({
       fx: "definition", x: "sex", y: "share",
       title: d => `${d.definition}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
@@ -82,12 +90,20 @@ Plot.plot({
   color: {legend: true, domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]},
   marks: [
     Plot.barY(paidCare, {fx: "definition", x: "sex", y: "share", fill: "sex"}),
-    // I-beam CI: a grey connecting rule plus narrow end caps (inset well
-    // inside the bar's band) so it reads as one bracket, not two stray lines
-    Plot.ruleY(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#888", strokeWidth: 2}),
-    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_low", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
-    Plot.tickY(paidCare, {fx: "definition", x: "sex", y: "ci_high", stroke: "#888", strokeWidth: 2, insetLeft: 18, insetRight: 18}),
-    Plot.text(paidCare, {fx: "definition", x: "sex", y: "share", dy: 30, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"}),
+    // Vertical CI whisker: ruleX (not ruleY!) is the mark that draws a line
+    // at a fixed x spanning a y1-y2 range; ruleY draws horizontal lines instead
+    Plot.ruleX(paidCare, {fx: "definition", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#555", strokeWidth: 5, strokeLinecap: "round"}),
+    // small bars: label above in dark text (data pre-filtered, not a dy
+    // function -- Plot.text's dy only accepts a constant, not a per-row callback)
+    Plot.text(paidCare.filter(d => d.share < 0.05), {
+      fx: "definition", x: "sex", y: "share", dy: -10,
+      text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: "bold"
+    }),
+    // bigger bars: label inside, in white
+    Plot.text(paidCare.filter(d => d.share >= 0.05), {
+      fx: "definition", x: "sex", y: "share", dy: 30,
+      text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold"
+    }),
     Plot.tip(paidCare, Plot.pointer({
       fx: "definition", x: "sex", y: "share",
       title: d => `${d.definition}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
