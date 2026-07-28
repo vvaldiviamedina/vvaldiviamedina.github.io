@@ -65,3 +65,30 @@ with open(out_path, "w", encoding="utf-8") as f:
     json.dump(rows, f, ensure_ascii=False, indent=2)
 
 print(f"Wrote {len(rows)} rows to {out_path}")
+
+# --- overall (all sexes combined), with a stable "n per 1000" allocation
+# per time slot -- largest-remainder rounding so counts always sum to 1000 ---
+overall = d.groupby(["time", "grupo"])["WPER"].sum().reset_index()
+overall_totals = overall.groupby("time")["WPER"].transform("sum")
+overall["pct"] = overall["WPER"] / overall_totals
+
+def allocate_1000(group):
+    raw = group["pct"] * 1000
+    floor_n = np.floor(raw).astype(int)
+    remainder = 1000 - floor_n.sum()
+    order = (raw - floor_n).sort_values(ascending=False).index
+    floor_n.loc[order[:remainder]] += 1
+    group = group.copy()
+    group["n"] = floor_n
+    return group
+
+overall = overall.groupby("time", group_keys=False).apply(allocate_1000)
+overall["pct"] = overall["pct"].round(4)
+overall = overall[["time", "grupo", "pct", "n"]].sort_values(["time", "grupo"])
+
+overall_rows = overall.to_dict(orient="records")
+out_path_overall = f"{OUT_DIR}/oneday_overall.json"
+with open(out_path_overall, "w", encoding="utf-8") as f:
+    json.dump(overall_rows, f, ensure_ascii=False, indent=2)
+
+print(f"Wrote {len(overall_rows)} rows to {out_path_overall}")

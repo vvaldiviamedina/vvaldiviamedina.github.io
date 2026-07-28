@@ -30,6 +30,219 @@ grupoOrder = ["Personal", "Trabajo", "Domésticas", "Cuidado", "Ocio", "Voluntar
 grupoColors = ["#8ca8c4", "#5c9e95", "#d98c62", "#c7a3c0", "#e0b23e", "#7fa37f", "#c9c9c9"]
 ```
 
+## 1.000 personas, un día
+
+Cada punto representa a 1 de cada 1.000 habitantes. Los puntos se agrupan según la actividad que realizan en cada momento del día — igual que en la [visualización original](https://ustimeuse.github.io/oneday.html), pero con proporciones reales de la ENUT 2021 en vez de simuladas.
+
+```{ojs}
+//| echo: false
+overallRaw = FileAttachment("data/enut_ar/oneday_overall.json").json()
+```
+
+```{ojs}
+//| echo: false
+overallByTime = {
+  const m = new Map();
+  for (const t of new Set(overallRaw.map(d => d.time))) {
+    const rows = overallRaw.filter(d => d.time === t);
+    m.set(t, Object.fromEntries(rows.map(r => [r.grupo, r.n])));
+  }
+  return m;
+}
+```
+
+```{ojs}
+//| echo: false
+overallTimes = [...overallByTime.keys()].sort()
+```
+
+```{ojs}
+//| echo: false
+centroids = ({
+  "Personal": [500, 300],
+  "Trabajo": [200, 150],
+  "Domésticas": [800, 150],
+  "Ocio": [200, 450],
+  "Cuidado": [800, 450],
+  "Voluntarias": [500, 80],
+  "Sin clasificar": [500, 560]
+})
+```
+
+```{ojs}
+//| echo: false
+oneDayViz = {
+  const width = 1000, height = 600;
+  const colorFor = Object.fromEntries(grupoOrder.map((g, i) => [g, grupoColors[i]]));
+
+  function formatTime(t) {
+    const [h, m] = t.split(":").map(Number);
+    const period = h < 12 ? "am" : "pm";
+    let h12 = h % 12;
+    if (h12 === 0) h12 = 12;
+    return `${h12}:${String(m).padStart(2, "0")}${period}`;
+  }
+
+  // build the initial 1000 dots from the first time slot's counts
+  function buildDots(t) {
+    const counts = overallByTime.get(t);
+    const dots = [];
+    let idx = 0;
+    for (const g of grupoOrder) {
+      const n = counts[g] || 0;
+      const [cx, cy] = centroids[g];
+      for (let i = 0; i < n; i++) {
+        dots.push({id: idx++, grupo: g, x: cx + (Math.random() - 0.5) * 20, y: cy + (Math.random() - 0.5) * 20});
+      }
+    }
+    return dots;
+  }
+
+  let timeIndex = 0;
+  const dots = buildDots(overallTimes[0]);
+
+  const container = html`<div>
+    <div style="text-align:center; font-size: 2.2rem; color: var(--bs-secondary-color, #666); font-weight: 300;" class="time-label"></div>
+    <div style="text-align:center; margin-bottom: 10px;">
+      <button class="btn-play" style="padding: 4px 10px; margin-right: 6px;">⏸ Pausar</button>
+      <button class="btn-slow" style="padding: 4px 10px; margin-right: 6px;">Lento</button>
+      <button class="btn-fast" style="padding: 4px 10px;">Rápido</button>
+    </div>
+    <div style="display:flex; gap: 24px; align-items:flex-start; flex-wrap: wrap;">
+      <div class="chart-holder"></div>
+      <div class="side-panel" style="flex: 1; min-width: 260px;">
+        <div class="bar-holder"></div>
+      </div>
+    </div>
+  </div>`;
+
+  const svg = d3.select(container.querySelector(".chart-holder"))
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", [0, 0, width, height])
+    .attr("style", "max-width: 100%; height: auto;");
+
+  const pctLabels = {};
+  for (const g of grupoOrder) {
+    const [cx, cy] = centroids[g];
+    svg.append("text")
+      .attr("x", cx).attr("y", cy - 46)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 12)
+      .attr("fill", "currentColor")
+      .text(g);
+    pctLabels[g] = svg.append("text")
+      .attr("x", cx).attr("y", cy - 32)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 11)
+      .attr("fill", "currentColor")
+      .attr("opacity", 0.7);
+  }
+
+  const circles = svg.selectAll("circle")
+    .data(dots, d => d.id)
+    .join("circle")
+    .attr("r", 2.4)
+    .attr("fill", d => colorFor[d.grupo])
+    .attr("cx", d => d.x)
+    .attr("cy", d => d.y)
+    .attr("opacity", 0.85);
+
+  const sim = d3.forceSimulation(dots)
+    .force("x", d3.forceX(d => centroids[d.grupo][0]).strength(0.1))
+    .force("y", d3.forceY(d => centroids[d.grupo][1]).strength(0.1))
+    .force("collide", d3.forceCollide(2.6))
+    .alphaDecay(0.03)
+    .on("tick", () => {
+      circles.attr("cx", d => d.x).attr("cy", d => d.y);
+    });
+
+  function updateSidePanel(t) {
+    const counts = overallByTime.get(t);
+    const ranked = grupoOrder.map(g => ({grupo: g, n: counts[g] || 0})).sort((a, b) => b.n - a.n);
+    const barHolder = container.querySelector(".bar-holder");
+    barHolder.innerHTML = "";
+    barHolder.appendChild(Plot.plot({
+      width: 320,
+      height: 340,
+      marginLeft: 130,
+      x: {label: "personas de 1.000 →", domain: [0, 1000]},
+      y: {domain: ranked.map(d => d.grupo), label: null},
+      marks: [
+        Plot.barX(ranked, {y: "grupo", x: "n", fill: d => colorFor[d.grupo]}),
+        Plot.text(ranked, {y: "grupo", x: "n", dx: 20, text: d => d.n, textAnchor: "start"}),
+        Plot.ruleX([0])
+      ]
+    }));
+    for (const g of grupoOrder) {
+      pctLabels[g].text(Math.round((counts[g] || 0) / 10) + "%");
+    }
+    container.querySelector(".time-label").textContent = formatTime(t);
+  }
+
+  function advance() {
+    timeIndex = (timeIndex + 1) % overallTimes.length;
+    const t = overallTimes[timeIndex];
+    const target = overallByTime.get(t);
+
+    const currentByGrupo = d3.group(dots, d => d.grupo);
+    const pool = [];
+    for (const g of grupoOrder) {
+      const arr = currentByGrupo.get(g) || [];
+      const want = target[g] || 0;
+      for (let i = want; i < arr.length; i++) pool.push(arr[i]);
+    }
+    let poolIdx = 0;
+    for (const g of grupoOrder) {
+      const arr = currentByGrupo.get(g) || [];
+      const want = target[g] || 0;
+      for (let i = arr.length; i < want && poolIdx < pool.length; i++, poolIdx++) {
+        pool[poolIdx].grupo = g;
+      }
+    }
+
+    circles.attr("fill", d => colorFor[d.grupo]);
+    // d3-force's forceX/forceY accessors are only evaluated once, at
+    // initialization -- re-setting the forces after mutating d.grupo makes
+    // d3 recompute each node's target, otherwise dots keep the old target
+    // forever even after their category (and color) has changed.
+    sim.force("x", d3.forceX(d => centroids[d.grupo][0]).strength(0.1));
+    sim.force("y", d3.forceY(d => centroids[d.grupo][1]).strength(0.1));
+    sim.alpha(0.7).restart();
+    updateSidePanel(t);
+  }
+
+  let playing = true;
+  let speed = 250;
+  let timer = setInterval(advance, speed);
+  function restartTimer() {
+    clearInterval(timer);
+    timer = setInterval(advance, speed);
+  }
+
+  container.querySelector(".btn-play").onclick = (e) => {
+    playing = !playing;
+    e.target.textContent = playing ? "⏸ Pausar" : "▶ Reanudar";
+    if (playing) restartTimer(); else clearInterval(timer);
+  };
+  container.querySelector(".btn-slow").onclick = () => { speed = 600; if (playing) restartTimer(); };
+  container.querySelector(".btn-fast").onclick = () => { speed = 100; if (playing) restartTimer(); };
+
+  invalidation.then(() => clearInterval(timer));
+
+  updateSidePanel(overallTimes[0]);
+
+  return container;
+}
+```
+
+::: {.callout-note}
+Los 1.000 puntos son una muestra proporcional reconstruida a partir de los porcentajes reales por intervalo de 10 minutos — igual que en la visualización original, no son 1.000 personas reales rastreadas individualmente. En cada paso, solo se mueven los puntos que necesitan cambiar de categoría para que el total vuelva a cuadrar con los datos.
+:::
+
+## El mismo patrón, desagregado por sexo
+
 ```{ojs}
 //| echo: false
 // Stack manually (y0/y1 per time+sex, in grupoOrder) instead of relying on

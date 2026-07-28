@@ -70,3 +70,30 @@ out_path <- file.path(OUT_DIR, "oneday_by_sex.json")
 write_json(result, out_path, auto_unbox = TRUE, pretty = TRUE)
 
 cat("Wrote", nrow(result), "rows to", normalizePath(out_path), "\n")
+
+# --- overall (all sexes combined), with a stable "n per 1000" allocation
+# per time slot -- largest-remainder rounding so counts always sum to 1000 ---
+allocate_1000 <- function(pct) {
+  raw <- pct * 1000
+  n <- floor(raw)
+  remainder <- 1000 - sum(n)
+  if (remainder > 0) {
+    order <- order(raw - n, decreasing = TRUE)
+    n[order[seq_len(remainder)]] <- n[order[seq_len(remainder)]] + 1
+  }
+  n
+}
+
+overall <- d |>
+  group_by(time, grupo) |>
+  summarise(w = sum(WPER), .groups = "drop") |>
+  group_by(time) |>
+  mutate(pct = round(w / sum(w), 4), n = allocate_1000(w / sum(w))) |>
+  ungroup() |>
+  select(time, grupo, pct, n) |>
+  arrange(time, grupo)
+
+out_path_overall <- file.path(OUT_DIR, "oneday_overall.json")
+write_json(overall, out_path_overall, auto_unbox = TRUE, pretty = TRUE)
+
+cat("Wrote", nrow(overall), "rows to", normalizePath(out_path_overall), "\n")
