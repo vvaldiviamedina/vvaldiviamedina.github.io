@@ -220,6 +220,27 @@
     ]
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "kokoromi",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site",
+    "crumbs": [
+      "Home",
+      "About"
+    ]
+  },
+  {
     "objectID": "build-a-site.html",
     "href": "build-a-site.html",
     "title": "Build a site like this one",
@@ -363,24 +384,25 @@
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "oneday.html",
+    "href": "oneday.html",
+    "title": "Un día cualquiera",
     "section": "",
-    "text": "About this site",
+    "text": "Inspirado en oneday.html de ustimeuse.github.io — pero construido con datos reales de un diario de actividades de 10 minutos, en vez de simulados.\noneDayRaw = FileAttachment(\"data/enut_ar/oneday_by_sex.json\").json()\noneDay = oneDayRaw.map(d =&gt; ({\n  ...d,\n  hour: (+d.time.slice(0, 2)) + (+d.time.slice(3, 5)) / 60\n}))\ngrupoOrder = [\"Personal\", \"Trabajo\", \"Domésticas\", \"Cuidado\", \"Ocio\", \"Voluntarias\", \"Sin clasificar\"]\ngrupoColors = [\"#8ca8c4\", \"#5c9e95\", \"#d98c62\", \"#c7a3c0\", \"#e0b23e\", \"#7fa37f\", \"#c9c9c9\"]\n// Stack manually (y0/y1 per time+sex, in grupoOrder) instead of relying on\n// Plot's automatic stack transform -- more predictable and easier to verify.\nstacked = {\n  const byKey = d3.group(oneDay, d =&gt; `${d.time}|${d.sex}`);\n  const rows = [];\n  for (const arr of byKey.values()) {\n    const base = arr[0];\n    let y0 = 0;\n    for (const g of grupoOrder) {\n      const rec = arr.find(r =&gt; r.grupo === g);\n      const pct = rec ? rec.pct : 0;\n      const y1 = y0 + pct;\n      rows.push({time: base.time, hour: base.hour, sex: base.sex, grupo: g, pct, y0, y1});\n      y0 = y1;\n    }\n  }\n  return rows;\n}\nstackedMujeres = stacked.filter(d =&gt; d.sex === \"Mujeres\")\nstackedVarones = stacked.filter(d =&gt; d.sex === \"Varones\")\n// Two separate plots (not one faceted with fy:\"sex\") -- Plot.areaY with\n// explicit y1/y2 channels renders incorrectly when combined with fy\n// faceting in the Plot version bundled here; two plain plots sidestep it.\ndayChart = (data, title) =&gt; Plot.plot({\n  title,\n  width: 800,\n  height: 260,\n  marginLeft: 50,\n  x: {label: \"Hora del día →\", domain: [0, 24], ticks: [0, 3, 6, 9, 12, 15, 18, 21, 24], tickFormat: d =&gt; `${d}h`},\n  y: {label: \"Proporción de la población →\", domain: [0, 1], tickFormat: d =&gt; `${Math.round(d * 100)}%`},\n  color: {legend: true, domain: grupoOrder, range: grupoColors},\n  marks: [\n    Plot.areaY(data, {x: \"hour\", y1: \"y0\", y2: \"y1\", fill: \"grupo\", tip: true}),\n    Plot.ruleY([0])\n  ]\n})\ndayChart(stackedMujeres, \"Mujeres\")\ndayChart(stackedVarones, \"Varones\")",
     "crumbs": [
       "Home",
-      "About"
+      "Un día cualquiera (viz)"
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "kokoromi",
-    "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.",
+    "objectID": "oneday.html#cómo-se-hizo-esta-página",
+    "href": "oneday.html#cómo-se-hizo-esta-página",
+    "title": "Un día cualquiera",
+    "section": "Cómo se hizo esta página",
+    "text": "Cómo se hizo esta página\n\nSe descargaron los archivos enut2021_diario.txt (diario de actividades, ~2 millones de filas: una por persona por intervalo de 10 minutos) y enut2021_base.txt (datos de la persona: sexo, factor de expansión) desde el portal de datos abiertos de Argentina, usando su API CKAN.\nSe procesaron con scripts/build_argentina_oneday.R (o su equivalente en Python, scripts/build_argentina_oneday.py): cada actividad se clasificó en una de 7 categorías (clasificador CAUTAL), y se calculó, para cada intervalo de 10 minutos y cada sexo, qué porcentaje ponderado de la población estaba en cada categoría.\nEl resultado — un archivo pequeño (data/enut_ar/oneday_by_sex.json, ~2.000 filas) — es lo único que salió del procesamiento; no se publica el diario completo.\nEsta página lo grafica con Observable Plot como un gráfico de áreas apiladas, directamente en el navegador.",
     "crumbs": [
-      "Home"
+      "Home",
+      "Un día cualquiera (viz)"
     ]
   },
   {

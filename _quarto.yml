@@ -27,6 +27,8 @@ website:
         href: showcase.qmd
       - text: "Cuidado remunerado (viz)"
         href: uso-del-tiempo.qmd
+      - text: "Un día cualquiera (viz)"
+        href: oneday.qmd
       - text: "Web scraping"
         href: web-scraping.qmd
       - text: "Build a site like this"

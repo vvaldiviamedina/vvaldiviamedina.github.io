@@ -1,0 +1,100 @@
+---
+title: "Un día cualquiera"
+subtitle: "Cómo se distribuyen las actividades de la población a lo largo del día, según la ENUT 2021 (Argentina)"
+toc: true
+---
+
+Inspirado en [oneday.html de ustimeuse.github.io](https://ustimeuse.github.io/oneday.html) — pero construido con datos reales de un diario de actividades de 10 minutos, en vez de simulados.
+
+::: {.callout-note}
+## Fuente de los datos
+Instituto Nacional de Estadística y Censos (INDEC) de Argentina, **Encuesta Nacional de Uso del Tiempo 2021 (ENUT 2021)** — a diferencia de la ENUT de Chile (que solo registra tiempo total por actividad), la ENUT argentina incluye un **diario de actividades en intervalos de 10 minutos** a lo largo de las 24 horas del día, lo que permite ver cómo cambia la actividad de la población minuto a minuto. Datos públicos descargados vía la [API de datos.gob.ar](https://portal-andino.datos.gob.ar/dataset/encuesta-nacional-uso-tiempo-2021-enut-2021) (sin restricciones de acceso). Las actividades se agrupan en 7 categorías según el clasificador CAUTAL de la propia encuesta. Los porcentajes están ponderados por el factor de expansión de personas (`WPER`).
+:::
+
+```{ojs}
+//| echo: false
+oneDayRaw = FileAttachment("data/enut_ar/oneday_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+oneDay = oneDayRaw.map(d => ({
+  ...d,
+  hour: (+d.time.slice(0, 2)) + (+d.time.slice(3, 5)) / 60
+}))
+```
+
+```{ojs}
+//| echo: false
+grupoOrder = ["Personal", "Trabajo", "Domésticas", "Cuidado", "Ocio", "Voluntarias", "Sin clasificar"]
+grupoColors = ["#8ca8c4", "#5c9e95", "#d98c62", "#c7a3c0", "#e0b23e", "#7fa37f", "#c9c9c9"]
+```
+
+```{ojs}
+//| echo: false
+// Stack manually (y0/y1 per time+sex, in grupoOrder) instead of relying on
+// Plot's automatic stack transform -- more predictable and easier to verify.
+stacked = {
+  const byKey = d3.group(oneDay, d => `${d.time}|${d.sex}`);
+  const rows = [];
+  for (const arr of byKey.values()) {
+    const base = arr[0];
+    let y0 = 0;
+    for (const g of grupoOrder) {
+      const rec = arr.find(r => r.grupo === g);
+      const pct = rec ? rec.pct : 0;
+      const y1 = y0 + pct;
+      rows.push({time: base.time, hour: base.hour, sex: base.sex, grupo: g, pct, y0, y1});
+      y0 = y1;
+    }
+  }
+  return rows;
+}
+```
+
+```{ojs}
+//| echo: false
+stackedMujeres = stacked.filter(d => d.sex === "Mujeres")
+stackedVarones = stacked.filter(d => d.sex === "Varones")
+```
+
+```{ojs}
+//| echo: false
+// Two separate plots (not one faceted with fy:"sex") -- Plot.areaY with
+// explicit y1/y2 channels renders incorrectly when combined with fy
+// faceting in the Plot version bundled here; two plain plots sidestep it.
+dayChart = (data, title) => Plot.plot({
+  title,
+  width: 800,
+  height: 260,
+  marginLeft: 50,
+  x: {label: "Hora del día →", domain: [0, 24], ticks: [0, 3, 6, 9, 12, 15, 18, 21, 24], tickFormat: d => `${d}h`},
+  y: {label: "Proporción de la población →", domain: [0, 1], tickFormat: d => `${Math.round(d * 100)}%`},
+  color: {legend: true, domain: grupoOrder, range: grupoColors},
+  marks: [
+    Plot.areaY(data, {x: "hour", y1: "y0", y2: "y1", fill: "grupo", tip: true}),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+dayChart(stackedMujeres, "Mujeres")
+```
+
+```{ojs}
+//| echo: false
+dayChart(stackedVarones, "Varones")
+```
+
+::: {.callout-important}
+El patrón de sueño (categoría "Personal", que domina la madrugada) es casi idéntico entre mujeres y varones. La diferencia salta a la vista durante el día: los varones muestran un pico de "Trabajo" más pronunciado al mediodía, mientras que "Domésticas" y "Cuidado" ocupan una porción visiblemente mayor del día de las mujeres, sin que su "Trabajo" remunerado disminuya tanto durante esas horas — el patrón visual de la doble jornada.
+:::
+
+## Cómo se hizo esta página
+
+1. Se descargaron los archivos `enut2021_diario.txt` (diario de actividades, ~2 millones de filas: una por persona por intervalo de 10 minutos) y `enut2021_base.txt` (datos de la persona: sexo, factor de expansión) desde el portal de datos abiertos de Argentina, usando su API CKAN.
+2. Se procesaron con [`scripts/build_argentina_oneday.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_argentina_oneday.R) (o su equivalente en Python, [`scripts/build_argentina_oneday.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_argentina_oneday.py)): cada actividad se clasificó en una de 7 categorías (clasificador CAUTAL), y se calculó, para cada intervalo de 10 minutos y cada sexo, qué porcentaje ponderado de la población estaba en cada categoría.
+3. El resultado — un archivo pequeño (`data/enut_ar/oneday_by_sex.json`, ~2.000 filas) — es lo único que salió del procesamiento; no se publica el diario completo.
+4. Esta página lo grafica con [Observable Plot](https://observablehq.com/plot/) como un gráfico de áreas apiladas, directamente en el navegador.
