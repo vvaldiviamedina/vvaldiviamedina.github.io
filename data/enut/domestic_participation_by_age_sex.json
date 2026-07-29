@@ -1,0 +1,86 @@
+[
+  {
+    "age_group": "12-17",
+    "sex": "Hombres",
+    "share": 0.8678,
+    "n": 1087
+  },
+  {
+    "age_group": "12-17",
+    "sex": "Mujeres",
+    "share": 0.8768,
+    "n": 1095
+  },
+  {
+    "age_group": "18-24",
+    "sex": "Hombres",
+    "share": 0.9262,
+    "n": 1345
+  },
+  {
+    "age_group": "18-24",
+    "sex": "Mujeres",
+    "share": 0.9389,
+    "n": 1464
+  },
+  {
+    "age_group": "25-34",
+    "sex": "Hombres",
+    "share": 0.905,
+    "n": 1970
+  },
+  {
+    "age_group": "25-34",
+    "sex": "Mujeres",
+    "share": 0.9662,
+    "n": 2611
+  },
+  {
+    "age_group": "35-44",
+    "sex": "Hombres",
+    "share": 0.8882,
+    "n": 1824
+  },
+  {
+    "age_group": "35-44",
+    "sex": "Mujeres",
+    "share": 0.977,
+    "n": 2789
+  },
+  {
+    "age_group": "45-54",
+    "sex": "Hombres",
+    "share": 0.9169,
+    "n": 1734
+  },
+  {
+    "age_group": "45-54",
+    "sex": "Mujeres",
+    "share": 0.9724,
+    "n": 2769
+  },
+  {
+    "age_group": "55-64",
+    "sex": "Hombres",
+    "share": 0.8991,
+    "n": 1753
+  },
+  {
+    "age_group": "55-64",
+    "sex": "Mujeres",
+    "share": 0.9676,
+    "n": 2705
+  },
+  {
+    "age_group": "65+",
+    "sex": "Hombres",
+    "share": 0.8916,
+    "n": 2144
+  },
+  {
+    "age_group": "65+",
+    "sex": "Mujeres",
+    "share": 0.9571,
+    "n": 3187
+  }
+]

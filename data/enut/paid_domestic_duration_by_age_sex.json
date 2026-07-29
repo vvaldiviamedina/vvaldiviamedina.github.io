@@ -1,0 +1,184 @@
+[
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "18-24",
+    "sex": "Hombres",
+    "hours": 7.55,
+    "n": 472
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "18-24",
+    "sex": "Mujeres",
+    "hours": 6.5,
+    "n": 387
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "25-34",
+    "sex": "Hombres",
+    "hours": 8.79,
+    "n": 1448
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "25-34",
+    "sex": "Mujeres",
+    "hours": 8.19,
+    "n": 1435
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "35-44",
+    "sex": "Hombres",
+    "hours": 9.29,
+    "n": 1443
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "35-44",
+    "sex": "Mujeres",
+    "hours": 8.27,
+    "n": 1607
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "45-54",
+    "sex": "Hombres",
+    "hours": 9.06,
+    "n": 1280
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "45-54",
+    "sex": "Mujeres",
+    "hours": 8.35,
+    "n": 1463
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "55-64",
+    "sex": "Hombres",
+    "hours": 8.82,
+    "n": 1162
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "55-64",
+    "sex": "Mujeres",
+    "hours": 8.14,
+    "n": 1004
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "65+",
+    "sex": "Hombres",
+    "hours": 8.43,
+    "n": 527
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_group": "65+",
+    "sex": "Mujeres",
+    "hours": 6.59,
+    "n": 314
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "12-17",
+    "sex": "Hombres",
+    "hours": 0.96,
+    "n": 920
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "12-17",
+    "sex": "Mujeres",
+    "hours": 1.09,
+    "n": 960
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "18-24",
+    "sex": "Hombres",
+    "hours": 1.87,
+    "n": 1225
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "18-24",
+    "sex": "Mujeres",
+    "hours": 2.34,
+    "n": 1368
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "25-34",
+    "sex": "Hombres",
+    "hours": 2.26,
+    "n": 1740
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "25-34",
+    "sex": "Mujeres",
+    "hours": 3.52,
+    "n": 2508
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "35-44",
+    "sex": "Hombres",
+    "hours": 2.51,
+    "n": 1575
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "35-44",
+    "sex": "Mujeres",
+    "hours": 4.17,
+    "n": 2704
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "45-54",
+    "sex": "Hombres",
+    "hours": 2.44,
+    "n": 1542
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "45-54",
+    "sex": "Mujeres",
+    "hours": 4.28,
+    "n": 2676
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "55-64",
+    "sex": "Hombres",
+    "hours": 2.46,
+    "n": 1521
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "55-64",
+    "sex": "Mujeres",
+    "hours": 4.22,
+    "n": 2623
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "65+",
+    "sex": "Hombres",
+    "hours": 2.5,
+    "n": 1910
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_group": "65+",
+    "sex": "Mujeres",
+    "hours": 4.17,
+    "n": 3031
+  }
+]

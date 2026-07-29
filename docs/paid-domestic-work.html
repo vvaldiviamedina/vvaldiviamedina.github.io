@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Web scraping, step by step – kokoromi</title>
+<title>Trabajo remunerado y trabajo doméstico – kokoromi</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -68,8 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./build-a-site.html" rel="next">
-<link href="./paid-domestic-work.html" rel="prev">
+<link href="./web-scraping.html" rel="next">
+<link href="./oneday.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -111,6 +111,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -315,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./web-scraping.html">Web scraping</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./paid-domestic-work.html">Trabajo pago y doméstico (viz)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -361,13 +363,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./paid-domestic-work.html" class="sidebar-item-text sidebar-link">
+  <a href="./paid-domestic-work.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Trabajo pago y doméstico (viz)</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./web-scraping.html" class="sidebar-item-text sidebar-link active">
+  <a href="./web-scraping.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Web scraping</span></a>
   </div>
 </li>
@@ -393,14 +395,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#step-1-look-for-the-easy-path-first" id="toc-step-1-look-for-the-easy-path-first" class="nav-link active" data-scroll-target="#step-1-look-for-the-easy-path-first">Step 1: Look for the easy path first</a></li>
-  <li><a href="#step-2-fetch-the-page-and-see-whats-actually-there" id="toc-step-2-fetch-the-page-and-see-whats-actually-there" class="nav-link" data-scroll-target="#step-2-fetch-the-page-and-see-whats-actually-there">Step 2: Fetch the page and see what’s actually there</a></li>
-  <li><a href="#step-3-figure-out-why-the-data-isnt-in-the-html" id="toc-step-3-figure-out-why-the-data-isnt-in-the-html" class="nav-link" data-scroll-target="#step-3-figure-out-why-the-data-isnt-in-the-html">Step 3: Figure out why the data isn’t in the HTML</a></li>
-  <li><a href="#step-4-download-and-unpack" id="toc-step-4-download-and-unpack" class="nav-link" data-scroll-target="#step-4-download-and-unpack">Step 4: Download and unpack</a></li>
-  <li><a href="#step-5-parse-whatever-format-you-land-on" id="toc-step-5-parse-whatever-format-you-land-on" class="nav-link" data-scroll-target="#step-5-parse-whatever-format-you-land-on">Step 5: Parse whatever format you land on</a></li>
-  <li><a href="#step-6-understand-the-codebook-before-trusting-the-numbers" id="toc-step-6-understand-the-codebook-before-trusting-the-numbers" class="nav-link" data-scroll-target="#step-6-understand-the-codebook-before-trusting-the-numbers">Step 6: Understand the codebook before trusting the numbers</a></li>
-  <li><a href="#step-7-be-a-good-citizen-with-what-you-publish" id="toc-step-7-be-a-good-citizen-with-what-you-publish" class="nav-link" data-scroll-target="#step-7-be-a-good-citizen-with-what-you-publish">Step 7: Be a good citizen with what you publish</a></li>
-  <li><a href="#checklist" id="toc-checklist" class="nav-link" data-scroll-target="#checklist">Checklist</a></li>
+  <li><a href="#duración-promedio-diaria" id="toc-duración-promedio-diaria" class="nav-link active" data-scroll-target="#duración-promedio-diaria">Duración promedio diaria</a></li>
+  <li><a href="#participación-en-trabajo-doméstico" id="toc-participación-en-trabajo-doméstico" class="nav-link" data-scroll-target="#participación-en-trabajo-doméstico">Participación en trabajo doméstico</a></li>
+  <li><a href="#cómo-se-hizo-esta-página" id="toc-cómo-se-hizo-esta-página" class="nav-link" data-scroll-target="#cómo-se-hizo-esta-página">Cómo se hizo esta página</a></li>
   </ul>
 </nav>
     </div>
@@ -410,8 +407,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Web scraping, step by step</h1>
-<p class="subtitle lead">A real case study: pulling the ENUT dataset off INE’s website</p>
+<h1 class="title">Trabajo remunerado y trabajo doméstico</h1>
+<p class="subtitle lead">Duración promedio diaria y participación, por sexo y edad — inspirado en GenderPulse.md</p>
 </div>
 
 
@@ -428,217 +425,172 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This walks through getting data off a website that doesn’t hand it to you nicely — using the exact process behind the <a href="./uso-del-tiempo.html">El cuidado remunerado en Chile</a> page, including the dead ends.</p>
+<p>Inspirado en las visualizaciones de <a href="https://genderpulse.md/en/economic-empowerment/paid-work-and-domestic-work/daily-average-duration-of-paid-work-and-domestic-work">GenderPulse.md</a> — pero con datos de la ENUT 2023 de Chile.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Fuente de los datos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Instituto Nacional de Estadísticas (INE) de Chile, <strong>II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023</strong>. Los promedios están ponderados por el factor de expansión de personas (<code>fe_cut</code>); las celdas con menos de 30 casos muestrales se omiten (por eso no aparece “Trabajo remunerado” para el grupo de 12 a 17 años — muy pocos adolescentes en la muestra tienen empleo).</p>
+</div>
+</div>
+<section id="duración-promedio-diaria" class="level2">
+<h2 class="anchored" data-anchor-id="duración-promedio-diaria">Duración promedio diaria</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="17" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 16;"><span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>durationRaw <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/enut/paid_domestic_duration_by_age_sex.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="23" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 22;"><span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>ageOrder <span class="op">=</span> [<span class="st">"12-17"</span><span class="op">,</span> <span class="st">"18-24"</span><span class="op">,</span> <span class="st">"25-34"</span><span class="op">,</span> <span class="st">"35-44"</span><span class="op">,</span> <span class="st">"45-54"</span><span class="op">,</span> <span class="st">"55-64"</span><span class="op">,</span> <span class="st">"65+"</span>]</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>sexColors <span class="op">=</span> ({<span class="dt">domain</span><span class="op">:</span> [<span class="st">"Hombres"</span><span class="op">,</span> <span class="st">"Mujeres"</span>]<span class="op">,</span> <span class="dt">range</span><span class="op">:</span> [<span class="st">"#5c9e95"</span><span class="op">,</span> <span class="st">"#c7a3c0"</span>]})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="28" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 27;"><span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">// fx for the outer grouping (age) + x for the inner one (sex) gives</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co">// side-by-side grouped bars -- plain x+fill on a shared x stacks them</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co">// by default, which silently overflows the y-domain when H+M &gt; domain max.</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>durationChart <span class="op">=</span> (activity) <span class="kw">=&gt;</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span><span class="op">:</span> activity<span class="op">,</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">700</span><span class="op">,</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">300</span><span class="op">,</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">fx</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Grupo etario"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> ageOrder}<span class="op">,</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">axis</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Horas por día →"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>]}<span class="op">,</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="op">...</span>sexColors}<span class="op">,</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(durationRaw<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">activity</span> <span class="op">===</span> activity)<span class="op">,</span> {</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      <span class="dt">fx</span><span class="op">:</span> <span class="st">"age_group"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"sex"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"hours"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"sex"</span><span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    })<span class="op">,</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="51" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 50;"><span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">durationChart</span>(<span class="st">"Trabajo remunerado"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="56" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 55;"><span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="fu">durationChart</span>(<span class="st">"Trabajo doméstico"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="expression">
+
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Before anything else: is this even OK to do?
+Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ul>
-<li>Check <code>robots.txt</code> (<code>https://example.com/robots.txt</code>) for disallowed paths.</li>
-<li>Read the site’s terms of use / data license. Government open-data sites are usually fine for reuse (often Creative Commons); many commercial sites explicitly forbid scraping.</li>
-<li>Don’t hammer a server — space out requests, cache what you download, and never re-download the same file in a loop.</li>
-<li>Prefer an official API or bulk-download link over scraping HTML whenever one exists — it’s more stable and it’s what the site owner actually wants you to use.</li>
-</ul>
+<p>El trabajo remunerado es relativamente parejo entre sexos (con los hombres algo por delante en casi todos los grupos etarios). El trabajo doméstico no remunerado es la historia inversa y mucho más marcada: las mujeres dedican entre 1,3 y 1,8 horas diarias más que los hombres en cada grupo etario, y la brecha se mantiene ancha durante toda la vida adulta — no se cierra con la edad.</p>
 </div>
 </div>
-<section id="step-1-look-for-the-easy-path-first" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-look-for-the-easy-path-first">Step 1: Look for the easy path first</h2>
-<p>Before writing a single line of scraping code, check whether the data is already published somewhere structured:</p>
-<ul>
-<li>A national/organizational <strong>open data portal</strong> (in Chile: <a href="https://datos.gob.cl">datos.gob.cl</a>). Many of these run <a href="https://ckan.org/">CKAN</a>, which exposes a clean JSON API — no HTML parsing needed:</li>
-</ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="st">"https://datos.gob.cl/api/3/action/package_show?id=&lt;dataset-name&gt;"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<ul>
-<li>A <strong>“download” or “bases de datos” section</strong> on the source site itself.</li>
-</ul>
-<div class="callout callout-style-default callout-warning callout-titled">
+</section>
+<section id="participación-en-trabajo-doméstico" class="level2">
+<h2 class="anchored" data-anchor-id="participación-en-trabajo-doméstico">Participación en trabajo doméstico</h2>
+<p>¿Qué proporción de cada grupo realiza al menos algo de trabajo doméstico en un día típico?</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="69" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 68;"><span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>participationRaw <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/enut/domestic_participation_by_age_sex.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="74" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 73;"><span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>  <span class="dt">width</span><span class="op">:</span> <span class="dv">700</span><span class="op">,</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>  <span class="dt">height</span><span class="op">:</span> <span class="dv">320</span><span class="op">,</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>  <span class="dt">fx</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Grupo etario"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> ageOrder}<span class="op">,</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>  <span class="dt">x</span><span class="op">:</span> {<span class="dt">axis</span><span class="op">:</span> <span class="kw">null</span>}<span class="op">,</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="dt">y</span><span class="op">:</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Proporción que participa →"</span><span class="op">,</span> <span class="dt">domain</span><span class="op">:</span> [<span class="dv">0</span><span class="op">,</span> <span class="dv">1</span>]<span class="op">,</span> <span class="dt">tickFormat</span><span class="op">:</span> d <span class="kw">=&gt;</span> <span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(d <span class="op">*</span> <span class="dv">100</span>)<span class="sc">}</span><span class="vs">%`</span>}<span class="op">,</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="dt">color</span><span class="op">:</span> {<span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span><span class="op">,</span> <span class="op">...</span>sexColors}<span class="op">,</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>  <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">barY</span>(participationRaw<span class="op">,</span> {<span class="dt">fx</span><span class="op">:</span> <span class="st">"age_group"</span><span class="op">,</span> <span class="dt">x</span><span class="op">:</span> <span class="st">"sex"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"share"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"sex"</span><span class="op">,</span> <span class="dt">tip</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">,</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>    Plot<span class="op">.</span><span class="fu">ruleY</span>([<span class="dv">0</span>])</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Dead end #1
+Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For ENUT, the CKAN entry on <code>datos.gob.cl</code> existed but had <strong>zero attached files</strong> — just a description pointing back to INE’s own site. Open data portals are sometimes just metadata catalogs, not actual mirrors. Worth checking, but don’t assume it’ll have the file.</p>
+<p>La participación en sí (¿hizo algo de trabajo doméstico ese día?) es alta para ambos sexos — sobre 87% en todos los grupos. La brecha de género no está tanto en si se participa, sino en <strong>cuánto tiempo</strong> se le dedica una vez que se participa, como muestra el gráfico de duración.</p>
 </div>
 </div>
 </section>
-<section id="step-2-fetch-the-page-and-see-whats-actually-there" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-fetch-the-page-and-see-whats-actually-there">Step 2: Fetch the page and see what’s actually there</h2>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Bash (curl)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Python (requests)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">R (rvest)</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sL</span> <span class="at">-A</span> <span class="st">"Mozilla/5.0"</span> <span class="st">"https://example.com/page"</span> <span class="at">-o</span> page.html</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-oE</span> <span class="st">'href="[^"]*\.(csv|xlsx|zip)"'</span> page.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.get(<span class="st">"https://example.com/page"</span>, headers<span class="op">=</span>{<span class="st">"User-Agent"</span>: <span class="st">"Mozilla/5.0"</span>})</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>r.raise_for_status()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>html <span class="op">=</span> r.text</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://example.com/page"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>page <span class="sc">|&gt;</span> <span class="fu">html_elements</span>(<span class="st">"a"</span>) <span class="sc">|&gt;</span> <span class="fu">html_attr</span>(<span class="st">"href"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-<p>Always set a <code>User-Agent</code> — some servers block requests that don’t look like a browser. Always follow redirects (<code>-L</code> in curl).</p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Warning</span>Dead end #2
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Fetching INE’s ENUT page this way returned real HTML, but grepping it for <code>.zip</code>/<code>.xlsx</code>/<code>.csv</code> links came back <strong>empty</strong>. The only file links in the raw HTML were three PDFs. The “Bases de Datos” panel visible in the browser simply wasn’t in the server-rendered page.</p>
-</div>
-</div>
-</section>
-<section id="step-3-figure-out-why-the-data-isnt-in-the-html" class="level2">
-<h2 class="anchored" data-anchor-id="step-3-figure-out-why-the-data-isnt-in-the-html">Step 3: Figure out why the data isn’t in the HTML</h2>
-<p>If a link is visible in your browser but missing from <code>curl</code>’s output, the page is probably building that part of the DOM with JavaScript <em>after</em> load — an AJAX call, a client-side framework, or an accordion that only populates on click. <code>curl</code> never runs JavaScript, so it only ever sees the initial server response.</p>
-<p>How to confirm it and find the real source:</p>
+<section id="cómo-se-hizo-esta-página" class="level2">
+<h2 class="anchored" data-anchor-id="cómo-se-hizo-esta-página">Cómo se hizo esta página</h2>
 <ol type="1">
-<li>Open the page in a real browser.</li>
-<li>Open <strong>DevTools → Network tab</strong>, reload, and watch for XHR/fetch requests — the data is often coming from a JSON or file endpoint you can hit directly.</li>
-<li>If it’s a static link that’s just injected by JS (our case), <strong>hover over the link and read the URL in the status bar</strong>, or right-click → “Copy link address.”</li>
+<li>Se usó la misma base de datos pública de la ENUT 2023 de Chile (formato R) descrita en la página de <a href="./web-scraping.html">web scraping</a>.</li>
+<li>Se procesó con <a href="https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.R"><code>scripts/build_paid_domestic_work.R</code></a> (o su equivalente en Python, <a href="https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.py"><code>scripts/build_paid_domestic_work.py</code></a>): promedios ponderados de horas diarias (<code>t_to_ds</code>, <code>t_tdnr_ds</code>) y de participación (<code>p_tdnr_ds</code>), por sexo y grupo etario.</li>
+<li>Esta página los grafica con <a href="https://observablehq.com/plot/">Observable Plot</a>, directamente en el navegador.</li>
 </ol>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>What actually worked here
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Hovering over “Base de datos R II ENUT 2023” in the browser revealed the real URL in the status bar: <code>https://www.ine.gob.cl/docs/default-source/uso-del-tiempo-tiempo-libre/bbdd/ii-enut/250403-ii-enut-bdd-r-v2.zip</code> No JavaScript execution needed on my end — once I had the direct URL, a plain <code>curl</code> download worked fine. Sometimes the fastest fix for “the scraper can’t find it” is a human spending 10 seconds in the browser.</p>
-</div>
-</div>
-<p>If there’s truly no static URL to grab (the content is generated entirely by client-side JS with no discoverable endpoint), the fallback is a <strong>headless browser</strong> like Playwright or Selenium, which actually renders the page before you extract from it. That’s slower and heavier — reach for it only after Network-tab inspection comes up empty.</p>
-</section>
-<section id="step-4-download-and-unpack" class="level2">
-<h2 class="anchored" data-anchor-id="step-4-download-and-unpack">Step 4: Download and unpack</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sL</span> <span class="at">-A</span> <span class="st">"Mozilla/5.0"</span> <span class="st">"&lt;direct-file-url&gt;"</span> <span class="at">-o</span> data.zip</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-o</span> data.zip <span class="at">-d</span> data/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-<section id="step-5-parse-whatever-format-you-land-on" class="level2">
-<h2 class="anchored" data-anchor-id="step-5-parse-whatever-format-you-land-on">Step 5: Parse whatever format you land on</h2>
-<p>Not everything is a friendly CSV. This dataset came as an <code>.RDS</code> — R’s native serialization format — but Python can read it without installing R, via <a href="https://github.com/ofajardo/pyreadr"><code>pyreadr</code></a>:</p>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python (no R needed)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R (native)</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyreadr</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pyreadr.read_r(<span class="st">"data.RDS"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> <span class="bu">list</span>(result.values())[<span class="dv">0</span>]   <span class="co"># RDS holding one object -&gt; one entry</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.shape, <span class="bu">list</span>(df.columns)[:<span class="dv">20</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data.RDS"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div>
-</div>
-<p>Other common formats and their tools:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Format</th>
-<th>Python</th>
-<th>R</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>CSV</td>
-<td><code>pandas.read_csv</code></td>
-<td><code>readr::read_csv</code></td>
-</tr>
-<tr class="even">
-<td>Excel</td>
-<td><code>pandas.read_excel</code></td>
-<td><code>readxl::read_excel</code></td>
-</tr>
-<tr class="odd">
-<td>SPSS <code>.sav</code></td>
-<td><code>pyreadstat</code></td>
-<td><code>haven::read_sav</code></td>
-</tr>
-<tr class="even">
-<td>Stata <code>.dta</code></td>
-<td><code>pandas.read_stata</code></td>
-<td><code>haven::read_dta</code></td>
-</tr>
-<tr class="odd">
-<td>PDF tables</td>
-<td><code>pdfplumber</code> / <code>camelot</code></td>
-<td><code>tabulizer</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="step-6-understand-the-codebook-before-trusting-the-numbers" class="level2">
-<h2 class="anchored" data-anchor-id="step-6-understand-the-codebook-before-trusting-the-numbers">Step 6: Understand the codebook before trusting the numbers</h2>
-<p>Raw survey data is full of cryptic column names (<code>t_tnr_ds</code>, <code>fe_cut</code>, <code>varstrat</code>…). Before charting anything:</p>
-<ul>
-<li>Find the <strong>methodology document</strong> or <strong>variable dictionary</strong> — it explains naming conventions, units, and which weight/expansion-factor column to use for population-representative estimates.</li>
-<li>Validate against a number the publisher already reported (a headline stat from their own press release or summary report). If your computed number is in the right ballpark, your variable/weight choices are probably correct.</li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>For ENUT, INE’s own methodology PDF explained the naming scheme: prefixes like <code>tnr</code> (trabajo no remunerado), <code>to</code> (trabajo remunerado), suffixes <code>_dt</code>/<code>_fds</code>/<code>_ds</code> (weekday/weekend/weekly-average), and that estimates should be weighted by <code>fe_cut</code>. Computing the gender gap in unpaid work with that weight landed close to INE’s own published figure — a good sign the approach was right.</p>
-</div>
-</div>
-</section>
-<section id="step-7-be-a-good-citizen-with-what-you-publish" class="level2">
-<h2 class="anchored" data-anchor-id="step-7-be-a-good-citizen-with-what-you-publish">Step 7: Be a good citizen with what you publish</h2>
-<ul>
-<li>Don’t commit large raw third-party files to a git repo — store the small, <strong>derived/aggregated</strong> results you actually need (a few KB of JSON), and document how to regenerate them from the source.</li>
-<li>Cite the source and its license/date. Data changes; someone reading your chart in two years should be able to find the original.</li>
-<li>If a site has an API, use it instead of scraping next time — friendlier to them and more stable for you.</li>
-</ul>
-</section>
-<section id="checklist" class="level2">
-<h2 class="anchored" data-anchor-id="checklist">Checklist</h2>
-<ul class="task-list">
-<li><label><input type="checkbox">Checked <code>robots.txt</code> and the site’s terms/license</label></li>
-<li><label><input type="checkbox">Looked for an existing open-data/API entry first</label></li>
-<li><label><input type="checkbox">Fetched the raw HTML and confirmed whether the data is actually there</label></li>
-<li><label><input type="checkbox">If missing: checked DevTools Network tab / hovered links for the real URL</label></li>
-<li><label><input type="checkbox">Downloaded once, cached locally, didn’t hammer the server</label></li>
-<li><label><input type="checkbox">Found and read the codebook/methodology before computing anything</label></li>
-<li><label><input type="checkbox">Sanity-checked results against a published figure</label></li>
-<li><label><input type="checkbox">Committed only small derived outputs, not the raw dump — with source + license noted</label></li>
-</ul>
 
 
 </section>
 
 </main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImR1cmF0aW9uUmF3ID0gRmlsZUF0dGFjaG1lbnQoXCJkYXRhL2VudXQvcGFpZF9kb21lc3RpY19kdXJhdGlvbl9ieV9hZ2Vfc2V4Lmpzb25cIikuanNvbigpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJhZ2VPcmRlciA9IFtcIjEyLTE3XCIsIFwiMTgtMjRcIiwgXCIyNS0zNFwiLCBcIjM1LTQ0XCIsIFwiNDUtNTRcIiwgXCI1NS02NFwiLCBcIjY1K1wiXVxuc2V4Q29sb3JzID0gKHtkb21haW46IFtcIkhvbWJyZXNcIiwgXCJNdWplcmVzXCJdLCByYW5nZTogW1wiIzVjOWU5NVwiLCBcIiNjN2EzYzBcIl19KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiLy8gZnggZm9yIHRoZSBvdXRlciBncm91cGluZyAoYWdlKSArIHggZm9yIHRoZSBpbm5lciBvbmUgKHNleCkgZ2l2ZXNcbi8vIHNpZGUtYnktc2lkZSBncm91cGVkIGJhcnMgLS0gcGxhaW4geCtmaWxsIG9uIGEgc2hhcmVkIHggc3RhY2tzIHRoZW1cbi8vIGJ5IGRlZmF1bHQsIHdoaWNoIHNpbGVudGx5IG92ZXJmbG93cyB0aGUgeS1kb21haW4gd2hlbiBIK00gPiBkb21haW4gbWF4LlxuZHVyYXRpb25DaGFydCA9IChhY3Rpdml0eSkgPT4gUGxvdC5wbG90KHtcbiAgdGl0bGU6IGFjdGl2aXR5LFxuICB3aWR0aDogNzAwLFxuICBoZWlnaHQ6IDMwMCxcbiAgbWFyZ2luTGVmdDogNTAsXG4gIGZ4OiB7bGFiZWw6IFwiR3J1cG8gZXRhcmlvXCIsIGRvbWFpbjogYWdlT3JkZXJ9LFxuICB4OiB7YXhpczogbnVsbH0sXG4gIHk6IHtsYWJlbDogXCJIb3JhcyBwb3IgZMOtYSDihpJcIiwgZG9tYWluOiBbMCwgMTBdfSxcbiAgY29sb3I6IHtsZWdlbmQ6IHRydWUsIC4uLnNleENvbG9yc30sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5iYXJZKGR1cmF0aW9uUmF3LmZpbHRlcihkID0+IGQuYWN0aXZpdHkgPT09IGFjdGl2aXR5KSwge1xuICAgICAgZng6IFwiYWdlX2dyb3VwXCIsIHg6IFwic2V4XCIsIHk6IFwiaG91cnNcIiwgZmlsbDogXCJzZXhcIiwgdGlwOiB0cnVlXG4gICAgfSksXG4gICAgUGxvdC5ydWxlWShbMF0pXG4gIF1cbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJkdXJhdGlvbkNoYXJ0KFwiVHJhYmFqbyByZW11bmVyYWRvXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJkdXJhdGlvbkNoYXJ0KFwiVHJhYmFqbyBkb23DqXN0aWNvXCIpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJwYXJ0aWNpcGF0aW9uUmF3ID0gRmlsZUF0dGFjaG1lbnQoXCJkYXRhL2VudXQvZG9tZXN0aWNfcGFydGljaXBhdGlvbl9ieV9hZ2Vfc2V4Lmpzb25cIikuanNvbigpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTciLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJQbG90LnBsb3Qoe1xuICB3aWR0aDogNzAwLFxuICBoZWlnaHQ6IDMyMCxcbiAgbWFyZ2luTGVmdDogNTAsXG4gIGZ4OiB7bGFiZWw6IFwiR3J1cG8gZXRhcmlvXCIsIGRvbWFpbjogYWdlT3JkZXJ9LFxuICB4OiB7YXhpczogbnVsbH0sXG4gIHk6IHtsYWJlbDogXCJQcm9wb3JjacOzbiBxdWUgcGFydGljaXBhIOKGklwiLCBkb21haW46IFswLCAxXSwgdGlja0Zvcm1hdDogZCA9PiBgJHtNYXRoLnJvdW5kKGQgKiAxMDApfSVgfSxcbiAgY29sb3I6IHtsZWdlbmQ6IHRydWUsIC4uLnNleENvbG9yc30sXG4gIG1hcmtzOiBbXG4gICAgUGxvdC5iYXJZKHBhcnRpY2lwYXRpb25SYXcsIHtmeDogXCJhZ2VfZ3JvdXBcIiwgeDogXCJzZXhcIiwgeTogXCJzaGFyZVwiLCBmaWxsOiBcInNleFwiLCB0aXA6IHRydWV9KSxcbiAgICBQbG90LnJ1bGVZKFswXSlcbiAgXVxufSlcbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1054,13 +1006,13 @@ Tip
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./paid-domestic-work.html" class="pagination-link" aria-label="Trabajo pago y doméstico (viz)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Trabajo pago y doméstico (viz)</span>
+      <a href="./oneday.html" class="pagination-link" aria-label="Un día cualquiera (viz)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Un día cualquiera (viz)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./build-a-site.html" class="pagination-link" aria-label="Build a site like this">
-        <span class="nav-page-text">Build a site like this</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./web-scraping.html" class="pagination-link" aria-label="Web scraping">
+        <span class="nav-page-text">Web scraping</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

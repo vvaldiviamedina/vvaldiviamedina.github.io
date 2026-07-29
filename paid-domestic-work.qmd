@@ -1,0 +1,98 @@
+---
+title: "Trabajo remunerado y trabajo doméstico"
+subtitle: "Duración promedio diaria y participación, por sexo y edad — inspirado en GenderPulse.md"
+toc: true
+---
+
+Inspirado en las visualizaciones de [GenderPulse.md](https://genderpulse.md/en/economic-empowerment/paid-work-and-domestic-work/daily-average-duration-of-paid-work-and-domestic-work) — pero con datos de la ENUT 2023 de Chile.
+
+::: {.callout-note}
+## Fuente de los datos
+Instituto Nacional de Estadísticas (INE) de Chile, **II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023**. Los promedios están ponderados por el factor de expansión de personas (`fe_cut`); las celdas con menos de 30 casos muestrales se omiten (por eso no aparece "Trabajo remunerado" para el grupo de 12 a 17 años — muy pocos adolescentes en la muestra tienen empleo).
+:::
+
+## Duración promedio diaria
+
+```{ojs}
+//| echo: false
+durationRaw = FileAttachment("data/enut/paid_domestic_duration_by_age_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+ageOrder = ["12-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
+sexColors = ({domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]})
+```
+
+```{ojs}
+//| echo: false
+// fx for the outer grouping (age) + x for the inner one (sex) gives
+// side-by-side grouped bars -- plain x+fill on a shared x stacks them
+// by default, which silently overflows the y-domain when H+M > domain max.
+durationChart = (activity) => Plot.plot({
+  title: activity,
+  width: 700,
+  height: 300,
+  marginLeft: 50,
+  fx: {label: "Grupo etario", domain: ageOrder},
+  x: {axis: null},
+  y: {label: "Horas por día →", domain: [0, 10]},
+  color: {legend: true, ...sexColors},
+  marks: [
+    Plot.barY(durationRaw.filter(d => d.activity === activity), {
+      fx: "age_group", x: "sex", y: "hours", fill: "sex", tip: true
+    }),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+```{ojs}
+//| echo: false
+durationChart("Trabajo remunerado")
+```
+
+```{ojs}
+//| echo: false
+durationChart("Trabajo doméstico")
+```
+
+::: {.callout-important}
+El trabajo remunerado es relativamente parejo entre sexos (con los hombres algo por delante en casi todos los grupos etarios). El trabajo doméstico no remunerado es la historia inversa y mucho más marcada: las mujeres dedican entre 1,3 y 1,8 horas diarias más que los hombres en cada grupo etario, y la brecha se mantiene ancha durante toda la vida adulta — no se cierra con la edad.
+:::
+
+## Participación en trabajo doméstico
+
+¿Qué proporción de cada grupo realiza al menos algo de trabajo doméstico en un día típico?
+
+```{ojs}
+//| echo: false
+participationRaw = FileAttachment("data/enut/domestic_participation_by_age_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  width: 700,
+  height: 320,
+  marginLeft: 50,
+  fx: {label: "Grupo etario", domain: ageOrder},
+  x: {axis: null},
+  y: {label: "Proporción que participa →", domain: [0, 1], tickFormat: d => `${Math.round(d * 100)}%`},
+  color: {legend: true, ...sexColors},
+  marks: [
+    Plot.barY(participationRaw, {fx: "age_group", x: "sex", y: "share", fill: "sex", tip: true}),
+    Plot.ruleY([0])
+  ]
+})
+```
+
+::: {.callout-note}
+La participación en sí (¿hizo algo de trabajo doméstico ese día?) es alta para ambos sexos — sobre 87% en todos los grupos. La brecha de género no está tanto en si se participa, sino en **cuánto tiempo** se le dedica una vez que se participa, como muestra el gráfico de duración.
+:::
+
+## Cómo se hizo esta página
+
+1. Se usó la misma base de datos pública de la ENUT 2023 de Chile (formato R) descrita en la página de [web scraping](web-scraping.qmd).
+2. Se procesó con [`scripts/build_paid_domestic_work.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.R) (o su equivalente en Python, [`scripts/build_paid_domestic_work.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.py)): promedios ponderados de horas diarias (`t_to_ds`, `t_tdnr_ds`) y de participación (`p_tdnr_ds`), por sexo y grupo etario.
+3. Esta página los grafica con [Observable Plot](https://observablehq.com/plot/), directamente en el navegador.
