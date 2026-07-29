@@ -28,18 +28,28 @@ base <- read_delim(file.path(DATA_DIR, "enut2021_base.txt"), delim = "|", show_c
 
 sex_label <- c(`1` = "Mujeres", `2` = "Varones")
 
-# Grupo (7 top-level categories) per ENUT 2021's CAUTAL code table
-# (enut2021_cautal.xlsx) -- codes not listed fall back to "Sin clasificar".
+# Grupo -- ENUT 2021's own CAUTAL table has only 7 top-level groups, which
+# lumps sleep/hygiene/eating/study/travel-for-those all into one "Personal"
+# bucket. Split that out into finer categories (closer to the reference
+# viz's own breakdown) using the underlying activity codes directly.
+# "Traslados" (Traveling) unifies travel-purpose codes from every group
+# (commute, care-related trips, personal/study trips) into one category,
+# same as the reference visualization -- otherwise it's a near-empty sliver.
 grupo_map <- c(
-  `11` = "Trabajo", `12` = "Trabajo", `13` = "Trabajo", `14` = "Trabajo", `2` = "Trabajo",
-  `411` = "Cuidado", `412` = "Cuidado", `413` = "Cuidado", `414` = "Cuidado", `419` = "Cuidado",
-  `421` = "Cuidado", `422` = "Cuidado", `423` = "Cuidado", `429` = "Cuidado",
-  `431` = "Cuidado", `432` = "Cuidado", `433` = "Cuidado", `439` = "Cuidado",
-  `441` = "Cuidado", `442` = "Cuidado", `443` = "Cuidado", `449` = "Cuidado",
+  `11` = "Trabajo", `12` = "Trabajo", `13` = "Trabajo", `2` = "Trabajo",
+  `14` = "Traslados",
+  `411` = "Cuidado", `412` = "Cuidado", `413` = "Cuidado", `419` = "Cuidado",
+  `421` = "Cuidado", `422` = "Cuidado", `429` = "Cuidado",
+  `431` = "Cuidado", `432` = "Cuidado", `439` = "Cuidado",
+  `441` = "Cuidado", `442` = "Cuidado", `449` = "Cuidado",
+  `414` = "Traslados", `423` = "Traslados", `433` = "Traslados", `443` = "Traslados",
   `31` = "Domésticas", `32` = "Domésticas", `33` = "Domésticas", `34` = "Domésticas",
   `35` = "Domésticas", `36` = "Domésticas", `37` = "Domésticas",
-  `911` = "Personal", `912` = "Personal", `914` = "Personal",
-  `921` = "Personal", `922` = "Personal", `923` = "Personal", `61` = "Personal", `62` = "Personal",
+  `922` = "Dormir",
+  `911` = "Cuidado personal", `912` = "Cuidado personal", `923` = "Cuidado personal",
+  `921` = "Comer y beber",
+  `914` = "Traslados", `62` = "Traslados",
+  `61` = "Educación",
   `711` = "Ocio", `712` = "Ocio", `72` = "Ocio", `73` = "Ocio", `74` = "Ocio",
   `81` = "Ocio", `82` = "Ocio", `83` = "Ocio", `84` = "Ocio", `85` = "Ocio",
   `52` = "Voluntarias", `53` = "Voluntarias", `54` = "Voluntarias", `55` = "Voluntarias",
