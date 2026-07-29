@@ -58,17 +58,21 @@ function clockDial(g, hours, color, radius) {
   // angle convention exactly, so no extra rotation is needed.
   const arcGen = a => d3.arc().innerRadius(0).outerRadius(radius).startAngle(0).endAngle(a)();
   g.append("circle").attr("r", radius).attr("fill", "none").attr("stroke", "#888").attr("stroke-width", 1.5);
+
+  const wedge = g.append("path")
+    .attr("d", arcGen(0.0001))
+    .attr("fill", color)
+    .attr("opacity", 0.85);
+
+  // minute ticks drawn on top of the wedge (not before it) so they stay
+  // visible over the coloured portion of the dial, not just the blank part
   for (let i = 0; i < 12; i++) {
     const a = (i / 12) * 2 * Math.PI;
     g.append("line")
       .attr("x1", Math.sin(a) * (radius - 6)).attr("y1", -Math.cos(a) * (radius - 6))
       .attr("x2", Math.sin(a) * radius).attr("y2", -Math.cos(a) * radius)
-      .attr("stroke", "#aaa");
+      .attr("stroke", "rgba(0,0,0,0.4)");
   }
-  const wedge = g.append("path")
-    .attr("d", arcGen(0.0001))
-    .attr("fill", color)
-    .attr("opacity", 0.85);
 
   // hour hand: short + thick; minute hand: long + thin -- standard clock
   // convention, drawn dark so they stay visible against the colored wedge
@@ -195,6 +199,8 @@ durationViz = {
 }
 ```
 
+<div style="text-align:center; font-size: 0.8rem; color: var(--bs-secondary-color, #666); margin-top: -12px; margin-bottom: 20px;">Fuente: INE Chile, II Encuesta Nacional sobre Uso del Tiempo (ENUT) 2023, personas de 15 años y más.</div>
+
 ::: {.callout-important}
 El trabajo remunerado es relativamente parejo entre sexos. El trabajo doméstico no remunerado es la historia inversa y mucho más marcada: las mujeres dedican considerablemente más horas diarias que los hombres en todos los grupos etarios, y la brecha no se cierra con la edad — pruébalo cambiando entre las pestañas.
 :::
@@ -222,8 +228,8 @@ activityIcons = ({
 ```{ojs}
 //| echo: false
 wheelViz = {
-  const wheelRadius = 130;
-  const size = 380;
+  const wheelRadius = 180;
+  const size = 480;
   const cx = size / 2, cy = size / 2;
 
   function getShare(code, ageTab, sex) {
@@ -232,9 +238,9 @@ wheelViz = {
   }
 
   const wrapper = html`<div></div>`;
-  const layout = html`<div style="display:flex; gap: 32px; align-items:center; justify-content:center; flex-wrap: wrap;"></div>`;
+  const layout = html`<div style="display:flex; gap: 32px; align-items:center; justify-content:center; flex-wrap: wrap; max-width: 860px; margin: 0 auto;"></div>`;
   const wheelHolder = html`<div></div>`;
-  const sidePanel = html`<div style="min-width: 260px; max-width: 300px; background: color-mix(in srgb, currentColor 6%, transparent); border-radius: 8px; padding: 16px;"></div>`;
+  const sidePanel = html`<div style="min-width: 240px; max-width: 270px; background: color-mix(in srgb, currentColor 6%, transparent); border-radius: 8px; padding: 16px;"></div>`;
   layout.appendChild(wheelHolder);
   layout.appendChild(sidePanel);
 
@@ -243,14 +249,14 @@ wheelViz = {
   svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", wheelRadius)
     .attr("fill", "none").attr("stroke", "#ccc").attr("stroke-dasharray", "3,3");
 
-  const centerLabel = svg.append("text").attr("x", cx).attr("y", cy - 8)
-    .attr("text-anchor", "middle").attr("font-size", 13).attr("fill", "currentColor");
-  const centerM = svg.append("text").attr("x", cx - 30).attr("y", cy + 20)
-    .attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", 700).attr("fill", colorM);
-  const centerH = svg.append("text").attr("x", cx + 30).attr("y", cy + 20)
-    .attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", 700).attr("fill", colorH);
-  svg.append("text").attr("x", cx - 30).attr("y", cy + 38).attr("text-anchor", "middle").attr("font-size", 20).text("👩");
-  svg.append("text").attr("x", cx + 30).attr("y", cy + 38).attr("text-anchor", "middle").attr("font-size", 20).text("👨");
+  const centerLabel = svg.append("text").attr("x", cx).attr("y", cy - 12)
+    .attr("text-anchor", "middle").attr("font-size", 14).attr("fill", "currentColor");
+  const centerM = svg.append("text").attr("x", cx - 38).attr("y", cy + 26)
+    .attr("text-anchor", "middle").attr("font-size", 24).attr("font-weight", 700).attr("fill", colorM);
+  const centerH = svg.append("text").attr("x", cx + 38).attr("y", cy + 26)
+    .attr("text-anchor", "middle").attr("font-size", 24).attr("font-weight", 700).attr("fill", colorH);
+  svg.append("text").attr("x", cx - 38).attr("y", cy + 48).attr("text-anchor", "middle").attr("font-size", 22).text("👩");
+  svg.append("text").attr("x", cx + 38).attr("y", cy + 48).attr("text-anchor", "middle").attr("font-size", 22).text("👨");
 
   const iconGroups = {};
   wheelActivities.forEach((act, i) => {
@@ -258,19 +264,22 @@ wheelViz = {
     const x = cx + Math.cos(angle) * wheelRadius;
     const y = cy + Math.sin(angle) * wheelRadius;
     const g = svg.append("g").attr("transform", `translate(${x},${y})`).style("cursor", "pointer");
-    const circle = g.append("circle").attr("r", 24).attr("fill", "white").attr("stroke", "#999").attr("stroke-width", 1.5);
-    g.append("text").attr("text-anchor", "middle").attr("dy", "0.35em").attr("font-size", 20).text(activityIcons[act.code] || "•");
-    g.append("text").attr("y", 38).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(act.label);
+    const circle = g.append("circle").attr("r", 33).attr("fill", "white").attr("stroke", "#999").attr("stroke-width", 1.5);
+    const icon = g.append("text").attr("text-anchor", "middle").attr("dy", "0.35em").attr("font-size", 28)
+      .style("filter", "grayscale(1)").style("opacity", 0.6).text(activityIcons[act.code] || "•");
+    g.append("text").attr("y", 50).attr("text-anchor", "middle").attr("font-size", 12).attr("fill", "currentColor").text(act.label);
     g.on("click", () => select(act.code, "Total"));
-    iconGroups[act.code] = {g, circle};
+    iconGroups[act.code] = {g, circle, icon};
   });
 
   let currentTab = "Total";
   function select(code, ageTab) {
     for (const c in iconGroups) {
       iconGroups[c].circle.attr("stroke", "#999").attr("stroke-width", 1.5).attr("fill", "white");
+      iconGroups[c].icon.style("filter", "grayscale(1)").style("opacity", 0.6);
     }
     iconGroups[code].circle.attr("stroke", "#333").attr("stroke-width", 2.5).attr("fill", "#f0f0f0");
+    iconGroups[code].icon.style("filter", "none").style("opacity", 1);
 
     const act = wheelActivities.find(a => a.code === code);
     const shareM = getShare(code, ageTab, "Mujeres");
@@ -308,6 +317,8 @@ wheelViz = {
   return wrapper;
 }
 ```
+
+<div style="text-align:center; font-size: 0.8rem; color: var(--bs-secondary-color, #666); margin-top: -12px; margin-bottom: 20px;">Fuente: INE Chile, II Encuesta Nacional sobre Uso del Tiempo (ENUT) 2023, personas de 15 años y más.</div>
 
 ::: {.callout-note}
 En casi todas las tareas domésticas, la participación de las mujeres supera a la de los hombres — aunque la brecha varía bastante según la tarea. "Mantenimiento del hogar" es la única donde los hombres participan más.
