@@ -1,0 +1,450 @@
+[
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.7018,
+    "n": 11289
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.8746,
+    "n": 16083
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.7047,
+    "n": 1864
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.7437,
+    "n": 2022
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.7002,
+    "n": 7281
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.8955,
+    "n": 10874
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.706,
+    "n": 2144
+  },
+  {
+    "activity_code": "psc",
+    "activity": "Preparar y servir comida",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.9137,
+    "n": 3187
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.6488,
+    "n": 11289
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.7979,
+    "n": 16083
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.6566,
+    "n": 1864
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.6946,
+    "n": 2022
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.6474,
+    "n": 7281
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.8149,
+    "n": 10874
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.6456,
+    "n": 2144
+  },
+  {
+    "activity_code": "lv",
+    "activity": "Limpiar la vivienda",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.827,
+    "n": 3187
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.3413,
+    "n": 11289
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.5555,
+    "n": 16083
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.3402,
+    "n": 1864
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.4147,
+    "n": 2022
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.3596,
+    "n": 7281
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.5911,
+    "n": 10874
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.2521,
+    "n": 2144
+  },
+  {
+    "activity_code": "lrc",
+    "activity": "Lavar y planchar ropa",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.5491,
+    "n": 3187
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.2331,
+    "n": 11289
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.1446,
+    "n": 16083
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.0752,
+    "n": 1864
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.0204,
+    "n": 2022
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.2771,
+    "n": 7281
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.1786,
+    "n": 10874
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.2151,
+    "n": 2144
+  },
+  {
+    "activity_code": "mrm",
+    "activity": "Mantenimiento del hogar",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.1293,
+    "n": 3187
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.3308,
+    "n": 11289
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.3163,
+    "n": 16083
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.1309,
+    "n": 1864
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.1313,
+    "n": 2022
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.3861,
+    "n": 7281
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.3843,
+    "n": 10874
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.3099,
+    "n": 2144
+  },
+  {
+    "activity_code": "admnhog",
+    "activity": "Administrar el hogar",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.2295,
+    "n": 3187
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.342,
+    "n": 11289
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.3722,
+    "n": 16083
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.1871,
+    "n": 1864
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.1849,
+    "n": 2022
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.3748,
+    "n": 7281
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.4366,
+    "n": 10874
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.3757,
+    "n": 2144
+  },
+  {
+    "activity_code": "comphog",
+    "activity": "Hacer compras",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.3007,
+    "n": 3187
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "share": 0.5788,
+    "n": 11289
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "share": 0.6938,
+    "n": 16083
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "share": 0.5673,
+    "n": 1864
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "share": 0.5737,
+    "n": 2022
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "share": 0.5841,
+    "n": 7281
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "share": 0.7084,
+    "n": 10874
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "share": 0.5672,
+    "n": 2144
+  },
+  {
+    "activity_code": "cmp",
+    "activity": "Cuidar mascotas y plantas",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "share": 0.7466,
+    "n": 3187
+  }
+]

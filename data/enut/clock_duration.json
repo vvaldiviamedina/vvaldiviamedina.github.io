@@ -1,0 +1,114 @@
+[
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "hours": 8.85,
+    "n": 6341
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "hours": 8.0,
+    "n": 6224
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "hours": 7.45,
+    "n": 481
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "hours": 6.3,
+    "n": 401
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "hours": 9.0,
+    "n": 5333
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "hours": 8.25,
+    "n": 5509
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "hours": 8.43,
+    "n": 527
+  },
+  {
+    "activity": "Trabajo remunerado",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "hours": 6.59,
+    "n": 314
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "Total",
+    "sex": "Hombres",
+    "hours": 2.29,
+    "n": 9969
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "Total",
+    "sex": "Mujeres",
+    "hours": 3.75,
+    "n": 15404
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "15-24",
+    "sex": "Hombres",
+    "hours": 1.67,
+    "n": 1681
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "15-24",
+    "sex": "Mujeres",
+    "hours": 2.09,
+    "n": 1862
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "25-64",
+    "sex": "Hombres",
+    "hours": 2.41,
+    "n": 6378
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "25-64",
+    "sex": "Mujeres",
+    "hours": 4.01,
+    "n": 10511
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "65+",
+    "sex": "Hombres",
+    "hours": 2.5,
+    "n": 1910
+  },
+  {
+    "activity": "Trabajo doméstico",
+    "age_tab": "65+",
+    "sex": "Mujeres",
+    "hours": 4.17,
+    "n": 3031
+  }
+]

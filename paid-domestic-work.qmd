@@ -4,95 +4,285 @@ subtitle: "Duración promedio diaria y participación, por sexo y edad — inspi
 toc: true
 ---
 
-Inspirado en las visualizaciones de [GenderPulse.md](https://genderpulse.md/en/economic-empowerment/paid-work-and-domestic-work/daily-average-duration-of-paid-work-and-domestic-work) — pero con datos de la ENUT 2023 de Chile.
+Inspirado en las visualizaciones de [GenderPulse.md](https://genderpulse.md/en/economic-empowerment/paid-work-and-domestic-work/daily-average-duration-of-paid-work-and-domestic-work) — relojes con transición animada al cambiar de grupo etario, y una rueda de actividades — pero con datos de la ENUT 2023 de Chile.
 
 ::: {.callout-note}
 ## Fuente de los datos
-Instituto Nacional de Estadísticas (INE) de Chile, **II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023**. Los promedios están ponderados por el factor de expansión de personas (`fe_cut`); las celdas con menos de 30 casos muestrales se omiten (por eso no aparece "Trabajo remunerado" para el grupo de 12 a 17 años — muy pocos adolescentes en la muestra tienen empleo).
+Instituto Nacional de Estadísticas (INE) de Chile, **II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023**, personas de 15 años y más (igual que la referencia). Los promedios están ponderados por el factor de expansión de personas (`fe_cut`); las celdas con menos de 30 casos muestrales se omiten. La rueda de participación usa las 7 categorías propias de "trabajo doméstico no remunerado" de la ENUT — no son exactamente los mismos íconos que en GenderPulse.md (esa es la clasificación de Moldova), pero cubren el mismo tipo de tareas.
 :::
 
 ## Duración promedio diaria
 
 ```{ojs}
 //| echo: false
-durationRaw = FileAttachment("data/enut/paid_domestic_duration_by_age_sex.json").json()
+durationRaw = FileAttachment("data/enut/clock_duration.json").json()
 ```
 
 ```{ojs}
 //| echo: false
-ageOrder = ["12-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"]
-sexColors = ({domain: ["Hombres", "Mujeres"], range: ["#5c9e95", "#c7a3c0"]})
+ageTabs = ["Total", "15-24", "25-64", "65+"]
+colorH = "#5c9e95"
+colorM = "#c7a3c0"
 ```
 
 ```{ojs}
 //| echo: false
-// fx for the outer grouping (age) + x for the inner one (sex) gives
-// side-by-side grouped bars -- plain x+fill on a shared x stacks them
-// by default, which silently overflows the y-domain when H+M > domain max.
-durationChart = (activity) => Plot.plot({
-  title: activity,
-  width: 700,
-  height: 300,
-  marginLeft: 50,
-  fx: {label: "Grupo etario", domain: ageOrder},
-  x: {axis: null},
-  y: {label: "Horas por día →", domain: [0, 10]},
-  color: {legend: true, ...sexColors},
-  marks: [
-    Plot.barY(durationRaw.filter(d => d.activity === activity), {
-      fx: "age_group", x: "sex", y: "hours", fill: "sex", tip: true
-    }),
-    Plot.ruleY([0])
-  ]
-})
+function tabBar(tabs, onSelect) {
+  const bar = html`<div style="text-align:center; margin-bottom: 20px;"></div>`;
+  const buttons = tabs.map((t, i) => {
+    const b = document.createElement("button");
+    b.textContent = t;
+    b.dataset.tab = t;
+    b.style.cssText = "padding:6px 16px;margin:0 4px;border-radius:4px;border:1px solid #999;cursor:pointer;font-size:0.9rem;";
+    b.style.background = i === 0 ? "#5c9e95" : "white";
+    b.style.color = i === 0 ? "white" : "#333";
+    b.onclick = () => {
+      buttons.forEach(other => {
+        const active = other === b;
+        other.style.background = active ? "#5c9e95" : "white";
+        other.style.color = active ? "white" : "#333";
+      });
+      onSelect(t);
+    };
+    bar.appendChild(b);
+    return b;
+  });
+  return bar;
+}
 ```
 
 ```{ojs}
 //| echo: false
-durationChart("Trabajo remunerado")
+function clockDial(g, hours, color, radius) {
+  // 0 rad = 12 o'clock, increasing clockwise -- matches d3.arc's own
+  // angle convention exactly, so no extra rotation is needed.
+  const arcGen = a => d3.arc().innerRadius(0).outerRadius(radius).startAngle(0).endAngle(a)();
+  g.append("circle").attr("r", radius).attr("fill", "none").attr("stroke", "#888").attr("stroke-width", 1.5);
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * 2 * Math.PI;
+    g.append("line")
+      .attr("x1", Math.sin(a) * (radius - 6)).attr("y1", -Math.cos(a) * (radius - 6))
+      .attr("x2", Math.sin(a) * radius).attr("y2", -Math.cos(a) * radius)
+      .attr("stroke", "#aaa");
+  }
+  const wedge = g.append("path")
+    .attr("d", arcGen(0.0001))
+    .attr("fill", color)
+    .attr("opacity", 0.85);
+  let current = 0.0001;
+  function set(hours, animate) {
+    const target = (hours / 12) * 2 * Math.PI;
+    if (!animate) {
+      wedge.attr("d", arcGen(target));
+      current = target;
+      return;
+    }
+    const from = current;
+    wedge.transition().duration(700).attrTween("d", () => {
+      const interp = d3.interpolate(from, target);
+      return t => arcGen(interp(t));
+    });
+    current = target;
+  }
+  set(hours, false);
+  return {set};
+}
 ```
 
 ```{ojs}
 //| echo: false
-durationChart("Trabajo doméstico")
+function formatHours(h) {
+  const hh = Math.floor(h);
+  const mm = Math.round((h - hh) * 60);
+  return mm === 0 ? `${hh} h` : `${hh} h ${mm} min`;
+}
+```
+
+```{ojs}
+//| echo: false
+durationViz = {
+  const activities = ["Trabajo remunerado", "Trabajo doméstico"];
+  const radius = 55;
+
+  function getHours(activity, ageTab, sex) {
+    const rec = durationRaw.find(d => d.activity === activity && d.age_tab === ageTab && d.sex === sex);
+    return rec ? rec.hours : null;
+  }
+
+  const container = html`<div></div>`;
+  const rows = {};
+  const dialHandles = {};
+  const textHandles = {};
+
+  for (const activity of activities) {
+    const row = html`<div style="display:flex; align-items:center; justify-content:center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap;">
+      <span style="font-size: 2.2rem;">👩</span>
+      <div class="dial-m"></div>
+      <div style="font-weight: 600; min-width: 140px; text-align: center;">${activity}</div>
+      <div class="dial-h"></div>
+      <span style="font-size: 2.2rem;">👨</span>
+    </div>`;
+    const caption = html`<div style="text-align:center; color: var(--bs-secondary-color, #666); margin-bottom: 24px;"></div>`;
+    container.appendChild(row);
+    container.appendChild(caption);
+
+    const svgM = d3.select(row.querySelector(".dial-m")).append("svg")
+      .attr("width", radius * 2 + 10).attr("height", radius * 2 + 10)
+      .append("g").attr("transform", `translate(${radius + 5},${radius + 5})`);
+    const svgH = d3.select(row.querySelector(".dial-h")).append("svg")
+      .attr("width", radius * 2 + 10).attr("height", radius * 2 + 10)
+      .append("g").attr("transform", `translate(${radius + 5},${radius + 5})`);
+
+    dialHandles[activity] = {
+      m: clockDial(svgM, 0, colorM, radius),
+      h: clockDial(svgH, 0, colorH, radius)
+    };
+    textHandles[activity] = caption;
+    rows[activity] = row;
+  }
+
+  function update(ageTab, animate) {
+    for (const activity of activities) {
+      const hM = getHours(activity, ageTab, "Mujeres");
+      const hH = getHours(activity, ageTab, "Hombres");
+      if (hM !== null) dialHandles[activity].m.set(hM, animate);
+      if (hH !== null) dialHandles[activity].h.set(hH, animate);
+      textHandles[activity].textContent = (hM !== null && hH !== null)
+        ? `Mujeres: ${formatHours(hM)} — Hombres: ${formatHours(hH)}`
+        : "Muestra insuficiente para este grupo";
+    }
+  }
+
+  update("Total", false);
+  const bar = tabBar(ageTabs, t => update(t, true));
+
+  const wrapper = html`<div></div>`;
+  wrapper.appendChild(bar);
+  wrapper.appendChild(container);
+  return wrapper;
+}
 ```
 
 ::: {.callout-important}
-El trabajo remunerado es relativamente parejo entre sexos (con los hombres algo por delante en casi todos los grupos etarios). El trabajo doméstico no remunerado es la historia inversa y mucho más marcada: las mujeres dedican entre 1,3 y 1,8 horas diarias más que los hombres en cada grupo etario, y la brecha se mantiene ancha durante toda la vida adulta — no se cierra con la edad.
+El trabajo remunerado es relativamente parejo entre sexos. El trabajo doméstico no remunerado es la historia inversa y mucho más marcada: las mujeres dedican considerablemente más horas diarias que los hombres en todos los grupos etarios, y la brecha no se cierra con la edad — pruébalo cambiando entre las pestañas.
 :::
 
-## Participación en trabajo doméstico
+## Participación en actividades domésticas
 
-¿Qué proporción de cada grupo realiza al menos algo de trabajo doméstico en un día típico?
+¿Qué proporción de cada grupo realiza cada tarea doméstica en un día típico? Elige una actividad de la rueda.
 
 ```{ojs}
 //| echo: false
-participationRaw = FileAttachment("data/enut/domestic_participation_by_age_sex.json").json()
+participationRaw = FileAttachment("data/enut/clock_participation.json").json()
 ```
 
 ```{ojs}
 //| echo: false
-Plot.plot({
-  width: 700,
-  height: 320,
-  marginLeft: 50,
-  fx: {label: "Grupo etario", domain: ageOrder},
-  x: {axis: null},
-  y: {label: "Proporción que participa →", domain: [0, 1], tickFormat: d => `${Math.round(d * 100)}%`},
-  color: {legend: true, ...sexColors},
-  marks: [
-    Plot.barY(participationRaw, {fx: "age_group", x: "sex", y: "share", fill: "sex", tip: true}),
-    Plot.ruleY([0])
-  ]
+wheelActivities = [...new Set(participationRaw.map(d => d.activity_code))].map(code => {
+  const rec = participationRaw.find(d => d.activity_code === code);
+  return {code, label: rec.activity};
+})
+activityIcons = ({
+  psc: "🍲", lv: "🧹", lrc: "🧺", mrm: "🔧", admnhog: "🧾", comphog: "🛒", cmp: "🐾"
 })
 ```
 
+```{ojs}
+//| echo: false
+wheelViz = {
+  const wheelRadius = 130;
+  const size = 380;
+  const cx = size / 2, cy = size / 2;
+
+  function getShare(code, ageTab, sex) {
+    const rec = participationRaw.find(d => d.activity_code === code && d.age_tab === ageTab && d.sex === sex);
+    return rec ? rec.share : null;
+  }
+
+  const wrapper = html`<div></div>`;
+  const layout = html`<div style="display:flex; gap: 32px; align-items:center; justify-content:center; flex-wrap: wrap;"></div>`;
+  const wheelHolder = html`<div></div>`;
+  const sidePanel = html`<div style="min-width: 260px; max-width: 300px; background: color-mix(in srgb, currentColor 6%, transparent); border-radius: 8px; padding: 16px;"></div>`;
+  layout.appendChild(wheelHolder);
+  layout.appendChild(sidePanel);
+
+  const svg = d3.select(wheelHolder).append("svg").attr("width", size).attr("height", size);
+
+  svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", wheelRadius)
+    .attr("fill", "none").attr("stroke", "#ccc").attr("stroke-dasharray", "3,3");
+
+  const centerLabel = svg.append("text").attr("x", cx).attr("y", cy - 8)
+    .attr("text-anchor", "middle").attr("font-size", 13).attr("fill", "currentColor");
+  const centerM = svg.append("text").attr("x", cx - 30).attr("y", cy + 20)
+    .attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", 700).attr("fill", colorM);
+  const centerH = svg.append("text").attr("x", cx + 30).attr("y", cy + 20)
+    .attr("text-anchor", "middle").attr("font-size", 18).attr("font-weight", 700).attr("fill", colorH);
+  svg.append("text").attr("x", cx - 30).attr("y", cy + 38).attr("text-anchor", "middle").attr("font-size", 20).text("👩");
+  svg.append("text").attr("x", cx + 30).attr("y", cy + 38).attr("text-anchor", "middle").attr("font-size", 20).text("👨");
+
+  const iconGroups = {};
+  wheelActivities.forEach((act, i) => {
+    const angle = (i / wheelActivities.length) * 2 * Math.PI - Math.PI / 2;
+    const x = cx + Math.cos(angle) * wheelRadius;
+    const y = cy + Math.sin(angle) * wheelRadius;
+    const g = svg.append("g").attr("transform", `translate(${x},${y})`).style("cursor", "pointer");
+    const circle = g.append("circle").attr("r", 24).attr("fill", "white").attr("stroke", "#999").attr("stroke-width", 1.5);
+    g.append("text").attr("text-anchor", "middle").attr("dy", "0.35em").attr("font-size", 20).text(activityIcons[act.code] || "•");
+    g.append("text").attr("y", 38).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(act.label);
+    g.on("click", () => select(act.code, "Total"));
+    iconGroups[act.code] = {g, circle};
+  });
+
+  let currentTab = "Total";
+  function select(code, ageTab) {
+    for (const c in iconGroups) {
+      iconGroups[c].circle.attr("stroke", "#999").attr("stroke-width", 1.5).attr("fill", "white");
+    }
+    iconGroups[code].circle.attr("stroke", "#333").attr("stroke-width", 2.5).attr("fill", "#f0f0f0");
+
+    const act = wheelActivities.find(a => a.code === code);
+    const shareM = getShare(code, ageTab, "Mujeres");
+    const shareH = getShare(code, ageTab, "Hombres");
+    centerLabel.text(act.label);
+    centerM.text(shareM !== null ? `${Math.round(shareM * 100)}%` : "—");
+    centerH.text(shareH !== null ? `${Math.round(shareH * 100)}%` : "—");
+
+    sidePanel.innerHTML = "";
+    const title = document.createElement("div");
+    title.style.cssText = "font-weight:700; margin-bottom: 8px;";
+    title.textContent = act.label;
+    sidePanel.appendChild(title);
+    if (shareM !== null && shareH !== null) {
+      const diff = Math.abs(shareM - shareH) * 100;
+      const more = shareM > shareH ? "mujeres" : "hombres";
+      const p = document.createElement("div");
+      p.textContent = `La participación de ${more} es ${diff.toFixed(1)} puntos porcentuales más alta.`;
+      sidePanel.appendChild(p);
+    }
+  }
+
+  select(wheelActivities[0].code, "Total");
+
+  const bar = tabBar(ageTabs, t => { currentTab = t; select(currentSelected(), t); });
+  let selectedCode = wheelActivities[0].code;
+  function currentSelected() { return selectedCode; }
+  // wrap select to also track selectedCode
+  const rawSelect = select;
+  function selectAndTrack(code, ageTab) { selectedCode = code; rawSelect(code, ageTab); }
+  wheelActivities.forEach(act => { iconGroups[act.code].g.on("click", () => selectAndTrack(act.code, currentTab)); });
+
+  wrapper.appendChild(bar);
+  wrapper.appendChild(layout);
+  return wrapper;
+}
+```
+
 ::: {.callout-note}
-La participación en sí (¿hizo algo de trabajo doméstico ese día?) es alta para ambos sexos — sobre 87% en todos los grupos. La brecha de género no está tanto en si se participa, sino en **cuánto tiempo** se le dedica una vez que se participa, como muestra el gráfico de duración.
+En casi todas las tareas domésticas, la participación de las mujeres supera a la de los hombres — aunque la brecha varía bastante según la tarea. "Mantenimiento del hogar" es la única donde los hombres participan más.
 :::
 
 ## Cómo se hizo esta página
 
-1. Se usó la misma base de datos pública de la ENUT 2023 de Chile (formato R) descrita en la página de [web scraping](web-scraping.qmd).
-2. Se procesó con [`scripts/build_paid_domestic_work.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.R) (o su equivalente en Python, [`scripts/build_paid_domestic_work.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_work.py)): promedios ponderados de horas diarias (`t_to_ds`, `t_tdnr_ds`) y de participación (`p_tdnr_ds`), por sexo y grupo etario.
-3. Esta página los grafica con [Observable Plot](https://observablehq.com/plot/), directamente en el navegador.
+1. Se usó la misma base de datos pública de la ENUT 2023 de Chile (formato R) descrita en la página de [web scraping](web-scraping.qmd), filtrada a personas de 15 años y más.
+2. Se procesó con [`scripts/build_paid_domestic_clock.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_clock.R) (o su equivalente en Python, [`scripts/build_paid_domestic_clock.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_clock.py)): promedios ponderados de horas diarias y de participación, por sexo y por los mismos tramos etarios que usa GenderPulse.md (Total, 15-24, 25-64, 65+).
+3. Esta página dibuja los relojes y la rueda directamente con [D3](https://d3js.org/), sin ninguna librería de gráficos — cada reloj es un `d3.arc()` animado con `d3.interpolate` al cambiar de pestaña.
