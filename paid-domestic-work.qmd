@@ -69,20 +69,52 @@ function clockDial(g, hours, color, radius) {
     .attr("d", arcGen(0.0001))
     .attr("fill", color)
     .attr("opacity", 0.85);
+
+  // hour hand: short + thick; minute hand: long + thin -- standard clock
+  // convention, drawn dark so they stay visible against the colored wedge
+  const hourHand = g.append("line")
+    .attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 0)
+    .attr("stroke", "#333").attr("stroke-width", 3).attr("stroke-linecap", "round");
+  const minuteHand = g.append("line")
+    .attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 0)
+    .attr("stroke", "#333").attr("stroke-width", 1.5).attr("stroke-linecap", "round");
+
+  function handPoint(angle, len) {
+    return [Math.sin(angle) * len, -Math.cos(angle) * len];
+  }
+  function applyHands(h) {
+    const hourAngle = ((h % 12) / 12) * 2 * Math.PI;
+    const minutes = (h - Math.floor(h)) * 60;
+    const minuteAngle = (minutes / 60) * 2 * Math.PI;
+    const [hx, hy] = handPoint(hourAngle, radius * 0.55);
+    const [mx, my] = handPoint(minuteAngle, radius * 0.85);
+    hourHand.attr("x2", hx).attr("y2", hy);
+    minuteHand.attr("x2", mx).attr("y2", my);
+  }
+
   let current = 0.0001;
+  let currentHours = 0;
   function set(hours, animate) {
     const target = (hours / 12) * 2 * Math.PI;
     if (!animate) {
       wedge.attr("d", arcGen(target));
+      applyHands(hours);
       current = target;
+      currentHours = hours;
       return;
     }
     const from = current;
+    const fromHours = currentHours;
     wedge.transition().duration(700).attrTween("d", () => {
       const interp = d3.interpolate(from, target);
       return t => arcGen(interp(t));
     });
+    minuteHand.transition().duration(700).tween("hands", () => {
+      const hoursInterp = d3.interpolateNumber(fromHours, hours);
+      return t => applyHands(hoursInterp(t));
+    });
     current = target;
+    currentHours = hours;
   }
   set(hours, false);
   return {set};
