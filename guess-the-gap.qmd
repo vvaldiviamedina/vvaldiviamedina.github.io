@@ -253,7 +253,309 @@ game = {
 El trabajo doméstico no remunerado es una de las brechas de género más marcadas y persistentes en el uso del tiempo: se mantiene en todos los grupos etarios, y no se explica solo por diferencias en la participación laboral remunerada — revisa la página [Trabajo pago y doméstico](paid-domestic-work.qmd) para más detalle.
 :::
 
+## Prueba otros estilos
+
+La línea numérica de arriba es solo una forma de adivinar. Aquí tienes tres más, cada una con un grupo etario al azar — pruébalas y quédate con la que más te guste.
+
+```{ojs}
+//| echo: false
+function randomAgeTab() {
+  return ageTabOrder[Math.floor(Math.random() * ageTabOrder.length)];
+}
+function contextHoursBarsSvg(hoursM, hoursH) {
+  const width = 380, height = 80;
+  const holder = html`<div style="margin-top: 16px; text-align:left; max-width: 380px; margin-left:auto; margin-right:auto;"></div>`;
+  const svg = d3.select(holder).append("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
+  const maxHours = Math.max(hoursM, hoursH) * 1.15;
+  const barScale = h => (h / maxHours) * 190;
+  const rows = [
+    { label: "Mujeres", hours: hoursM, color: colorM, y: 8 },
+    { label: "Hombres", hours: hoursH, color: colorH, y: 44 }
+  ];
+  rows.forEach(r => {
+    svg.append("text").attr("x", 0).attr("y", r.y + 15).attr("font-size", 12).attr("fill", "currentColor").text(r.label);
+    svg.append("rect").attr("x", 80).attr("y", r.y).attr("width", 4).attr("height", 22).attr("fill", "#ddd");
+    svg.append("rect").attr("x", 80).attr("y", r.y).attr("width", barScale(r.hours)).attr("height", 22).attr("fill", r.color).attr("rx", 3);
+    const hh = Math.floor(r.hours);
+    const mm = Math.round((r.hours - hh) * 60);
+    svg.append("text").attr("x", 86 + barScale(r.hours)).attr("y", r.y + 15).attr("font-size", 12).attr("fill", "currentColor").text(`${hh} h ${mm} min`);
+  });
+  return holder;
+}
+function retryButton(container, buildFn) {
+  const btn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top:16px;">Otro grupo →</button>`;
+  btn.onclick = () => { container.innerHTML = ""; buildFn(container); };
+  return btn;
+}
+```
+
+```{ojs}
+//| echo: false
+function buildGaugeDurationDemo(container) {
+  const ageTab = randomAgeTab();
+  const data = roundData(ageTab);
+  const GMIN = 0, GMAX = 150;
+  const R = 140, width = 2 * R + 100, height = R + 90;
+  const cx = width / 2, cy = height - 55;
+
+  function angleFor(v) {
+    const t = Math.max(GMIN, Math.min(GMAX, v));
+    return ((t - GMIN) / (GMAX - GMIN) - 0.5) * Math.PI;
+  }
+  function needlePoint(angle, len) {
+    return [cx + Math.sin(angle) * len, cy - Math.cos(angle) * len];
+  }
+
+  const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent); text-align:center;"></div>`;
+  const group = html`<div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">${ageTabLabel[ageTab]}</div>`;
+  const question = html`<div style="margin-bottom: 12px; max-width: 480px; margin-left:auto; margin-right:auto;">¿Cuánto <strong>tiempo más al día</strong> dedican las <span style="color:${colorM}; font-weight:700;">mujeres</span> al trabajo doméstico, comparado con los <span style="color:${colorH}; font-weight:700;">hombres</span>? Mueve la aguja.</div>`;
+
+  const gaugeHolder = html`<div></div>`;
+  const svg = d3.select(gaugeHolder).append("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`).style("max-width", "100%");
+  const g = svg.append("g").attr("transform", `translate(${cx},${cy})`);
+  const arcGen = (a0, a1, r0, r1) => d3.arc().innerRadius(r0).outerRadius(r1).startAngle(a0).endAngle(a1)();
+  g.append("path").attr("d", arcGen(-Math.PI / 2, Math.PI / 2, R - 16, R)).attr("fill", accentColor).attr("opacity", 0.2);
+  g.append("path").attr("d", arcGen(-Math.PI / 2, Math.PI / 2, R - 16, R)).attr("fill", "none").attr("stroke", "#999").attr("stroke-width", 1);
+  [GMIN, GMAX / 2, GMAX].forEach(v => {
+    const a = angleFor(v);
+    const [tx, ty] = needlePoint(a, R + 18);
+    g.append("text").attr("x", tx - cx).attr("y", ty - cy).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(formatMin(v));
+  });
+
+  const needle = g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", -(R - 24)).attr("stroke", "#333").attr("stroke-width", 3).attr("stroke-linecap", "round");
+  g.append("circle").attr("r", 5).attr("fill", "#333");
+  const readout = svg.append("text").attr("x", cx).attr("y", cy - R * 0.45).attr("text-anchor", "middle").attr("font-size", 20).attr("font-weight", 700).attr("fill", "currentColor").text(formatMin(0));
+
+  let guessVal = 0;
+  function setNeedle(v) {
+    const a = angleFor(v);
+    const [nx, ny] = needlePoint(a, R - 24);
+    needle.attr("x2", nx - cx).attr("y2", ny - cy);
+    readout.text(formatMin(v));
+  }
+  setNeedle(0);
+
+  const slider = html`<input type="range" min="${GMIN}" max="${GMAX}" step="5" value="0" style="width: 100%; max-width: 420px;">`;
+  slider.oninput = () => { guessVal = +slider.value; setNeedle(guessVal); };
+
+  const submitBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top: 16px;">Comprobar</button>`;
+
+  card.appendChild(group);
+  card.appendChild(question);
+  card.appendChild(gaugeHolder);
+  card.appendChild(slider);
+  card.appendChild(document.createElement("br"));
+  card.appendChild(submitBtn);
+  container.appendChild(card);
+
+  submitBtn.onclick = () => {
+    slider.disabled = true;
+    submitBtn.remove();
+    const errorAbs = Math.abs(guessVal - data.gapMin);
+    const fb = feedback(errorAbs, data.gapMin);
+    const fbBox = html`<div style="font-size: 1.05rem; margin: 12px 0;"><span style="font-size:1.4rem;">${fb.emoji}</span> ${fb.text} Adivinaste <strong>${formatMin(guessVal)}</strong>, la brecha real es <strong>${formatMin(data.gapMin)}</strong> (te desviaste por ${formatMin(errorAbs)}).</div>`;
+
+    needle.attr("stroke", "#aaa").attr("stroke-width", 2).attr("stroke-dasharray", "3,2");
+    readout.attr("fill", "#aaa");
+    const realNeedle = g.append("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", -(R - 24)).attr("stroke", accentColor).attr("stroke-width", 3.5).attr("stroke-linecap", "round");
+    g.append("circle").attr("r", 4).attr("fill", accentColor);
+    realNeedle.transition().duration(700).attrTween("x2", () => {
+      const interp = d3.interpolateNumber(angleFor(guessVal), angleFor(data.gapMin));
+      return t => needlePoint(interp(t), R - 24)[0] - cx;
+    }).attrTween("y2", () => {
+      const interp = d3.interpolateNumber(angleFor(guessVal), angleFor(data.gapMin));
+      return t => needlePoint(interp(t), R - 24)[1] - cy;
+    });
+
+    card.appendChild(fbBox);
+    card.appendChild(contextHoursBarsSvg(data.hoursM, data.hoursH));
+    card.appendChild(retryButton(container, buildGaugeDurationDemo));
+  };
+}
+```
+
+```{ojs}
+//| echo: false
+function buildSeesawDurationDemo(container) {
+  const ageTab = randomAgeTab();
+  const data = roundData(ageTab);
+  const GMAX = 150, MAXTILT = 20;
+  const width = 420, height = 220;
+  const pivotX = width / 2, pivotY = 150, beamHalf = 140;
+
+  const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent); text-align:center;"></div>`;
+  const group = html`<div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">${ageTabLabel[ageTab]}</div>`;
+  const question = html`<div style="margin-bottom: 16px; max-width: 480px; margin-left:auto; margin-right:auto;">¿Cuánto más pesa el trabajo doméstico de las mujeres frente al de los hombres, en tiempo? Inclina la balanza.</div>`;
+
+  const holder = html`<div></div>`;
+  const svg = d3.select(holder).append("svg").attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`).style("max-width", "100%");
+  svg.append("path").attr("d", `M ${pivotX - 16},${pivotY + 40} L ${pivotX + 16},${pivotY + 40} L ${pivotX},${pivotY} Z`).attr("fill", "#999");
+  svg.append("line").attr("x1", pivotX).attr("y1", pivotY + 40).attr("x2", pivotX).attr("y2", pivotY + 56).attr("stroke", "#999").attr("stroke-width", 4);
+
+  const beamGroup = svg.append("g");
+  beamGroup.append("line").attr("x1", pivotX - beamHalf).attr("y1", pivotY).attr("x2", pivotX + beamHalf).attr("y2", pivotY).attr("stroke", "#8a6d4a").attr("stroke-width", 8).attr("stroke-linecap", "round");
+  beamGroup.append("text").attr("x", pivotX - beamHalf).attr("y", pivotY - 14).attr("text-anchor", "middle").attr("font-size", 28).text("👨");
+  beamGroup.append("text").attr("x", pivotX + beamHalf).attr("y", pivotY - 14).attr("text-anchor", "middle").attr("font-size", 28).text("👩");
+  beamGroup.append("circle").attr("cx", pivotX).attr("cy", pivotY).attr("r", 5).attr("fill", "#333");
+
+  function angleFor(v) {
+    const t = Math.max(0, Math.min(GMAX, v));
+    return (t / GMAX) * MAXTILT;
+  }
+  function setTilt(v) {
+    beamGroup.attr("transform", `rotate(${angleFor(v)} ${pivotX} ${pivotY})`);
+  }
+  setTilt(0);
+
+  const readout = html`<div style="font-size: 1.2rem; font-weight: 700; margin-top: 8px;">${formatMin(0)}</div>`;
+
+  let guessVal = 0;
+  const slider = html`<input type="range" min="0" max="${GMAX}" step="5" value="0" style="width: 100%; max-width: 420px;">`;
+  slider.oninput = () => {
+    guessVal = +slider.value;
+    setTilt(guessVal);
+    readout.textContent = formatMin(guessVal);
+  };
+
+  const submitBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top:16px;">Comprobar</button>`;
+
+  card.appendChild(group);
+  card.appendChild(question);
+  card.appendChild(holder);
+  card.appendChild(readout);
+  card.appendChild(slider);
+  card.appendChild(document.createElement("br"));
+  card.appendChild(submitBtn);
+  container.appendChild(card);
+
+  submitBtn.onclick = () => {
+    slider.disabled = true;
+    submitBtn.remove();
+    const errorAbs = Math.abs(guessVal - data.gapMin);
+    const fb = feedback(errorAbs, data.gapMin);
+    const fbBox = html`<div style="font-size: 1.05rem; margin: 12px 0;"><span style="font-size:1.4rem;">${fb.emoji}</span> ${fb.text} Adivinaste <strong>${formatMin(guessVal)}</strong>, la brecha real es <strong>${formatMin(data.gapMin)}</strong> (te desviaste por ${formatMin(errorAbs)}).</div>`;
+    beamGroup.transition().duration(900).attrTween("transform", () => {
+      const interp = d3.interpolateNumber(angleFor(guessVal), angleFor(data.gapMin));
+      return t => `rotate(${interp(t)} ${pivotX} ${pivotY})`;
+    });
+    readout.textContent = formatMin(data.gapMin);
+    readout.style.color = accentColor;
+    card.appendChild(fbBox);
+    card.appendChild(contextHoursBarsSvg(data.hoursM, data.hoursH));
+    card.appendChild(retryButton(container, buildSeesawDurationDemo));
+  };
+}
+```
+
+```{ojs}
+//| echo: false
+function buildThermoDurationDemo(container) {
+  const ageTab = randomAgeTab();
+  const data = roundData(ageTab);
+  const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent); text-align:center;"></div>`;
+
+  const group = html`<div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 8px;">${ageTabLabel[ageTab]}</div>`;
+  const question = html`<div style="margin-bottom: 16px; max-width: 480px; margin-left:auto; margin-right:auto;">Estima el <strong>tiempo diario</strong> que dedican mujeres y hombres al trabajo doméstico — la brecha se calcula sola.</div>`;
+
+  const row = html`<div style="display:flex; gap: 40px; justify-content:center; align-items:flex-end; margin-bottom: 12px;"></div>`;
+
+  function verticalSlider(label, color) {
+    const col = html`<div style="display:flex; flex-direction:column; align-items:center; gap:6px;"></div>`;
+    const valLabel = html`<div style="font-weight:700; color:${color};">${formatMin(60)}</div>`;
+    const slider = html`<input type="range" min="0" max="300" step="5" value="60">`;
+    slider.style.cssText = `-webkit-appearance: slider-vertical; width: 32px; height: 160px; accent-color: ${color};`;
+    const nameLabel = html`<div>${label}</div>`;
+    col.appendChild(valLabel);
+    col.appendChild(slider);
+    col.appendChild(nameLabel);
+    return { col, slider, valLabel };
+  }
+
+  const mCol = verticalSlider("Mujeres", colorM);
+  const hCol = verticalSlider("Hombres", colorH);
+  row.appendChild(mCol.col);
+  row.appendChild(hCol.col);
+
+  const gapReadout = html`<div style="font-size: 1.05rem; margin-bottom: 12px;">Brecha implícita: <strong>${formatMin(0)}</strong></div>`;
+  function updateGapReadout() {
+    const g = (+mCol.slider.value) - (+hCol.slider.value);
+    gapReadout.querySelector("strong").textContent = g >= 0 ? `${formatMin(g)} más` : `${formatMin(-g)} menos`;
+  }
+  mCol.slider.oninput = () => { mCol.valLabel.textContent = formatMin(+mCol.slider.value); updateGapReadout(); };
+  hCol.slider.oninput = () => { hCol.valLabel.textContent = formatMin(+hCol.slider.value); updateGapReadout(); };
+
+  const submitBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top:8px;">Comprobar</button>`;
+
+  card.appendChild(group);
+  card.appendChild(question);
+  card.appendChild(row);
+  card.appendChild(gapReadout);
+  card.appendChild(submitBtn);
+  container.appendChild(card);
+
+  submitBtn.onclick = () => {
+    mCol.slider.disabled = true;
+    hCol.slider.disabled = true;
+    submitBtn.remove();
+    const guessM = +mCol.slider.value, guessH = +hCol.slider.value;
+    const guessGap = guessM - guessH;
+    const errorAbs = Math.abs(guessGap - data.gapMin);
+    const fb = feedback(errorAbs, data.gapMin);
+    const guessDisp = guessGap >= 0 ? `${formatMin(guessGap)} más` : `${formatMin(-guessGap)} menos`;
+    const fbBox = html`<div style="font-size: 1.05rem; margin: 12px 0;"><span style="font-size:1.4rem;">${fb.emoji}</span> ${fb.text} Tu combinación implica <strong>${guessDisp}</strong>, la brecha real es <strong>${formatMin(data.gapMin)} más</strong> (te desviaste por ${formatMin(errorAbs)}).</div>`;
+    card.appendChild(fbBox);
+    card.appendChild(contextHoursBarsSvg(data.hoursM, data.hoursH));
+    card.appendChild(retryButton(container, buildThermoDurationDemo));
+  };
+}
+```
+
+```{ojs}
+//| echo: false
+templateGalleryDuration = {
+  const wrapper = html`<div id="template-gallery-duration"></div>`;
+  const tabBar = html`<div style="text-align:center; margin-bottom: 16px;"></div>`;
+  const demoBox = html`<div></div>`;
+  wrapper.appendChild(tabBar);
+  wrapper.appendChild(demoBox);
+
+  const templates = [
+    { id: "gauge", label: "Medidor", build: buildGaugeDurationDemo },
+    { id: "seesaw", label: "Balanza", build: buildSeesawDurationDemo },
+    { id: "thermo", label: "Termómetros", build: buildThermoDurationDemo }
+  ];
+
+  let active = "gauge";
+  const buttons = templates.map(t => {
+    const b = document.createElement("button");
+    b.textContent = t.label;
+    b.style.cssText = "padding:6px 16px;margin:0 4px 8px;border-radius:4px;border:1px solid #5c9e95;cursor:pointer;font-size:0.9rem;";
+    b.onclick = () => { active = t.id; refresh(); };
+    tabBar.appendChild(b);
+    return { btn: b, id: t.id };
+  });
+
+  function updateButtons() {
+    buttons.forEach(({ btn, id }) => {
+      const on = id === active;
+      btn.style.background = on ? "#5c9e95" : "white";
+      btn.style.color = on ? "white" : "#333";
+    });
+  }
+
+  function refresh() {
+    updateButtons();
+    demoBox.innerHTML = "";
+    templates.find(t => t.id === active).build(demoBox);
+  }
+
+  refresh();
+  return wrapper;
+}
+```
+
 ## Cómo se hizo esta página
 
 1. Usa los mismos datos que [Trabajo pago y doméstico](paid-domestic-work.qmd): la ENUT 2023 de Chile, procesada con [`scripts/build_paid_domestic_clock.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_clock.py) (o su equivalente en R).
-2. El juego en sí — rondas, línea numérica comparando adivinanza vs. valor real, resumen final — está escrito directamente en [Observable JS](https://observablehq.com/), sin librerías externas, manipulando el DOM de forma imperativa (igual que los relojes y la rueda de la página anterior).
+2. El juego principal — rondas, línea numérica comparando adivinanza vs. valor real, resumen final — está escrito directamente en [Observable JS](https://observablehq.com/), sin librerías externas, manipulando el DOM de forma imperativa (igual que los relojes y la rueda de la página anterior).
+3. La sección "Prueba otros estilos" reutiliza los mismos tres bocetos de [Adivina la brecha: participación](guess-the-participation-gap.qmd) — medidor, balanza y termómetros dobles — adaptados a minutos en vez de puntos porcentuales.

@@ -106,7 +106,7 @@ gaugeGame = {
     [GMIN, GMIN / 2, 0, GMAX / 2, GMAX].forEach(v => {
       const a = angleFor(v);
       const [tx, ty] = needlePoint(a, R + 14);
-      g.append("text").attr("x", tx).attr("y", ty).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(v > 0 ? `+${v}` : `${v}`);
+      g.append("text").attr("x", tx - cx).attr("y", ty - cy).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(v > 0 ? `+${v}` : `${v}`);
     });
     g.append("text").attr("x", -R - 10).attr("y", 14).attr("text-anchor", "start").attr("font-size", 11).attr("fill", colorH).text("← Hombres");
     g.append("text").attr("x", R + 10).attr("y", 14).attr("text-anchor", "end").attr("font-size", 11).attr("fill", colorM).text("Mujeres →");
