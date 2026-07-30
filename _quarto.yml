@@ -31,8 +31,10 @@ website:
         href: oneday.qmd
       - text: "Trabajo pago y doméstico (viz)"
         href: paid-domestic-work.qmd
-      - text: "Adivina la brecha (juego)"
+      - text: "Adivina la brecha: duración (juego)"
         href: guess-the-gap.qmd
+      - text: "Adivina la brecha: participación (juego)"
+        href: guess-the-participation-gap.qmd
       - text: "Web scraping"
         href: web-scraping.qmd
       - text: "Build a site like this"
