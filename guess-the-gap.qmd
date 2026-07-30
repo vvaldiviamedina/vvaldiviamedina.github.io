@@ -1,0 +1,251 @@
+---
+title: "Adivina la brecha"
+subtitle: "Un mini-juego sobre la brecha de género en el trabajo doméstico — ENUT Chile 2023"
+toc: true
+---
+
+¿Qué tan bien calibrada tienes la intuición sobre la brecha de género en el trabajo doméstico no remunerado? Este juego te muestra cuatro grupos etarios, uno a la vez, y te pide adivinar cuántos minutos más al día dedican las mujeres al trabajo doméstico, comparado con los hombres. Después de cada ronda te mostramos el valor real.
+
+::: {.callout-note}
+## Fuente de los datos
+Instituto Nacional de Estadísticas (INE) de Chile, **II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023**, personas de 15 años y más. Los promedios de horas diarias de trabajo doméstico no remunerado están ponderados por el factor de expansión de personas (`fe_cut`) — los mismos datos usados en la página [Trabajo pago y doméstico](paid-domestic-work.qmd).
+:::
+
+```{ojs}
+//| echo: false
+durationRaw = FileAttachment("data/enut/clock_duration.json").json()
+```
+
+```{ojs}
+//| echo: false
+colorH = "#5c9e95"
+colorM = "#c7a3c0"
+accentColor = "#c26b5a"
+```
+
+```{ojs}
+//| echo: false
+ageTabOrder = ["Total", "15-24", "25-64", "65+"]
+ageTabLabel = ({
+  "Total": "Toda la población (15 años y más)",
+  "15-24": "Personas de 15 a 24 años",
+  "25-64": "Personas de 25 a 64 años",
+  "65+": "Personas de 65 años y más"
+})
+```
+
+```{ojs}
+//| echo: false
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+```
+
+```{ojs}
+//| echo: false
+function getHours(activity, ageTab, sex) {
+  const rec = durationRaw.find(d => d.activity === activity && d.age_tab === ageTab && d.sex === sex);
+  return rec ? rec.hours : null;
+}
+function roundData(ageTab) {
+  const hoursM = getHours("Trabajo doméstico", ageTab, "Mujeres");
+  const hoursH = getHours("Trabajo doméstico", ageTab, "Hombres");
+  const gapMin = Math.round((hoursM - hoursH) * 60);
+  return { ageTab, hoursM, hoursH, gapMin };
+}
+function feedback(errorAbs, actualGap) {
+  const pct = errorAbs / actualGap;
+  if (pct <= 0.1) return { emoji: "🎯", text: "¡Exacto! Tu intuición está muy bien calibrada." };
+  if (pct <= 0.25) return { emoji: "👏", text: "Muy cerca." };
+  if (pct <= 0.5) return { emoji: "🤔", text: "No tan mal, pero hay una brecha entre tu intuición y el dato." };
+  return { emoji: "😮", text: "Bastante lejos — la brecha real sorprende." };
+}
+```
+
+```{ojs}
+//| echo: false
+game = {
+  const wrapper = html`<div></div>`;
+  const roundBox = html`<div></div>`;
+  wrapper.appendChild(roundBox);
+
+  let order = shuffle(ageTabOrder);
+  let roundIndex = 0;
+  let results = [];
+
+  function renderRound() {
+    roundBox.innerHTML = "";
+    const ageTab = order[roundIndex];
+    const data = roundData(ageTab);
+
+    const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"></div>`;
+
+    const progress = html`<div style="font-size: 0.85rem; color: var(--bs-secondary-color, #666); margin-bottom: 4px;">Ronda ${roundIndex + 1} de ${order.length}</div>`;
+    const group = html`<div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;">${ageTabLabel[ageTab]}</div>`;
+    const question = html`<div style="margin-bottom: 20px;">¿Cuántos <strong>minutos más al día</strong> dedican las <span style="color:${colorM}; font-weight:700;">mujeres</span> al trabajo doméstico no remunerado, comparado con los <span style="color:${colorH}; font-weight:700;">hombres</span>, en este grupo?</div>`;
+
+    const inputRow = html`<div style="display:flex; align-items:center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"></div>`;
+    const slider = html`<input type="range" min="0" max="180" step="5" value="60" style="flex: 1; min-width: 200px;">`;
+    const numberBox = html`<input type="number" min="0" max="600" step="1" value="60" style="width: 80px; padding: 4px; text-align: center;">`;
+    const unitLabel = html`<span>min</span>`;
+    slider.oninput = () => { numberBox.value = slider.value; };
+    numberBox.oninput = () => { if (numberBox.value !== "") slider.value = Math.min(180, Math.max(0, +numberBox.value)); };
+    inputRow.appendChild(slider);
+    inputRow.appendChild(numberBox);
+    inputRow.appendChild(unitLabel);
+
+    const submitBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;">Comprobar</button>`;
+
+    card.appendChild(progress);
+    card.appendChild(group);
+    card.appendChild(question);
+    card.appendChild(inputRow);
+    card.appendChild(submitBtn);
+    roundBox.appendChild(card);
+
+    submitBtn.onclick = () => {
+      const guess = Math.max(0, +numberBox.value || 0);
+      results.push({ ageTab, guess, actual: data.gapMin, hoursM: data.hoursM, hoursH: data.hoursH });
+      renderReveal(data, guess);
+    };
+  }
+
+  function renderReveal(data, guess) {
+    roundBox.innerHTML = "";
+    const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"></div>`;
+
+    const progress = html`<div style="font-size: 0.85rem; color: var(--bs-secondary-color, #666); margin-bottom: 4px;">Ronda ${roundIndex + 1} de ${order.length}</div>`;
+    const group = html`<div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;">${ageTabLabel[data.ageTab]}</div>`;
+
+    const errorAbs = Math.abs(guess - data.gapMin);
+    const fb = feedback(errorAbs, data.gapMin);
+    const fbBox = html`<div style="font-size: 1.05rem; margin-bottom: 16px;"><span style="font-size:1.4rem;">${fb.emoji}</span> ${fb.text} Adivinaste <strong>${guess} min</strong>, la brecha real es <strong>${data.gapMin} min</strong> (te desviaste por ${errorAbs} min).</div>`;
+
+    // number line comparing guess vs actual
+    const niceMax = Math.max(50, Math.ceil((Math.max(guess, data.gapMin) * 1.3) / 10) * 10);
+    const svgWidth = 600, svgHeight = 100, x0 = 30, x1 = svgWidth - 30;
+    const scale = v => x0 + (v / niceMax) * (x1 - x0);
+
+    const lineHolder = html`<div style="overflow-x:auto;"></div>`;
+    const svg = d3.select(lineHolder).append("svg").attr("width", svgWidth).attr("height", svgHeight).attr("viewBox", `0 0 ${svgWidth} ${svgHeight}`);
+
+    svg.append("line").attr("x1", x0).attr("x2", x1).attr("y1", 60).attr("y2", 60).attr("stroke", "#999").attr("stroke-width", 1.5);
+    const nTicks = 5;
+    for (let i = 0; i <= nTicks; i++) {
+      const v = Math.round((niceMax / nTicks) * i);
+      const x = scale(v);
+      svg.append("line").attr("x1", x).attr("x2", x).attr("y1", 56).attr("y2", 64).attr("stroke", "#999");
+      svg.append("text").attr("x", x).attr("y", 78).attr("text-anchor", "middle").attr("font-size", 10).attr("fill", "currentColor").text(v);
+    }
+
+    const gx = scale(guess);
+    svg.append("line").attr("x1", gx).attr("x2", gx).attr("y1", 30).attr("y2", 60).attr("stroke", "#888").attr("stroke-width", 2).attr("stroke-dasharray", "3,2");
+    svg.append("circle").attr("cx", gx).attr("cy", 30).attr("r", 4).attr("fill", "#888");
+    svg.append("text").attr("x", gx).attr("y", 20).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", "#888").text("Tu respuesta");
+
+    const ax = scale(data.gapMin);
+    svg.append("line").attr("x1", ax).attr("x2", ax).attr("y1", 30).attr("y2", 60).attr("stroke", accentColor).attr("stroke-width", 2.5);
+    svg.append("circle").attr("cx", ax).attr("cy", 60).attr("r", 5).attr("fill", accentColor);
+    svg.append("text").attr("x", ax).attr("y", 20).attr("text-anchor", "middle").attr("font-size", 11).attr("fill", accentColor).attr("font-weight", 700).text("Real");
+
+    // context bars: hours by sex
+    const barsHolder = html`<div style="margin-top: 20px;"></div>`;
+    const barsSvg = d3.select(barsHolder).append("svg").attr("width", svgWidth).attr("height", 90).attr("viewBox", `0 0 ${svgWidth} 90`);
+    const maxHours = Math.max(data.hoursM, data.hoursH) * 1.15;
+    const barScale = h => (h / maxHours) * (svgWidth - 140);
+    const rows = [
+      { label: "Mujeres", hours: data.hoursM, color: colorM, y: 10 },
+      { label: "Hombres", hours: data.hoursH, color: colorH, y: 50 }
+    ];
+    rows.forEach(r => {
+      barsSvg.append("text").attr("x", 0).attr("y", r.y + 15).attr("font-size", 12).attr("fill", "currentColor").text(r.label);
+      barsSvg.append("rect").attr("x", 90).attr("y", r.y).attr("width", barScale(r.hours)).attr("height", 22).attr("fill", r.color).attr("rx", 3);
+      const hh = Math.floor(r.hours);
+      const mm = Math.round((r.hours - hh) * 60);
+      barsSvg.append("text").attr("x", 96 + barScale(r.hours)).attr("y", r.y + 15).attr("font-size", 12).attr("fill", "currentColor").text(`${hh} h ${mm} min`);
+    });
+
+    const nextBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top:20px;">${roundIndex + 1 < order.length ? "Siguiente ronda →" : "Ver resultado final"}</button>`;
+    nextBtn.onclick = () => {
+      if (roundIndex + 1 < order.length) {
+        roundIndex += 1;
+        renderRound();
+      } else {
+        renderSummary();
+      }
+    };
+
+    card.appendChild(progress);
+    card.appendChild(group);
+    card.appendChild(fbBox);
+    card.appendChild(lineHolder);
+    card.appendChild(barsHolder);
+    card.appendChild(nextBtn);
+    roundBox.appendChild(card);
+  }
+
+  function renderSummary() {
+    roundBox.innerHTML = "";
+    const card = html`<div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"></div>`;
+
+    const title = html`<div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 16px;">Resultado final</div>`;
+
+    const table = html`<table style="width:100%; border-collapse: collapse; margin-bottom: 16px;"></table>`;
+    const thead = html`<thead><tr>
+      <th style="text-align:left; padding:6px; border-bottom: 1px solid #999;">Grupo</th>
+      <th style="text-align:right; padding:6px; border-bottom: 1px solid #999;">Tu respuesta</th>
+      <th style="text-align:right; padding:6px; border-bottom: 1px solid #999;">Real</th>
+      <th style="text-align:right; padding:6px; border-bottom: 1px solid #999;">Diferencia</th>
+    </tr></thead>`;
+    table.appendChild(thead);
+    const tbody = html`<tbody></tbody>`;
+    let totalError = 0;
+    results.forEach(r => {
+      const err = Math.abs(r.guess - r.actual);
+      totalError += err;
+      const row = html`<tr>
+        <td style="padding:6px; border-bottom: 1px solid #eee;">${ageTabLabel[r.ageTab]}</td>
+        <td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;">${r.guess} min</td>
+        <td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;">${r.actual} min</td>
+        <td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;">${err} min</td>
+      </tr>`;
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    const avgError = Math.round(totalError / results.length);
+    const closing = html`<div style="margin-bottom: 20px;">Tu error promedio fue de <strong>${avgError} minutos</strong> por ronda. ${avgError <= 15 ? "Muy buena intuición sobre la brecha de género en el trabajo doméstico." : avgError <= 35 ? "Una intuición razonable, aunque la brecha real suele ser más marcada de lo que se piensa." : "La brecha real es más grande de lo que la mayoría intuye — así es la desigualdad en el trabajo doméstico no remunerado."}</div>`;
+
+    const replayBtn = html`<button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;">Jugar de nuevo</button>`;
+    replayBtn.onclick = () => {
+      order = shuffle(ageTabOrder);
+      roundIndex = 0;
+      results = [];
+      renderRound();
+    };
+
+    card.appendChild(title);
+    card.appendChild(table);
+    card.appendChild(closing);
+    card.appendChild(replayBtn);
+    roundBox.appendChild(card);
+  }
+
+  renderRound();
+  return wrapper;
+}
+```
+
+::: {.callout-important}
+El trabajo doméstico no remunerado es una de las brechas de género más marcadas y persistentes en el uso del tiempo: se mantiene en todos los grupos etarios, y no se explica solo por diferencias en la participación laboral remunerada — revisa la página [Trabajo pago y doméstico](paid-domestic-work.qmd) para más detalle.
+:::
+
+## Cómo se hizo esta página
+
+1. Usa los mismos datos que [Trabajo pago y doméstico](paid-domestic-work.qmd): la ENUT 2023 de Chile, procesada con [`scripts/build_paid_domestic_clock.py`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_clock.py) (o su equivalente en R).
+2. El juego en sí — rondas, línea numérica comparando adivinanza vs. valor real, resumen final — está escrito directamente en [Observable JS](https://observablehq.com/), sin librerías externas, manipulando el DOM de forma imperativa (igual que los relojes y la rueda de la página anterior).

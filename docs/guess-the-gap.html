@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Adivina la brecha – kokoromi</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./web-scraping.html" rel="next">
+<link href="./paid-domestic-work.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-bc978f7abfba8db8d95db302203ba3cf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-8ddb4d391d68f4465c027565eeb45e56.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-bc978f7abfba8db8d95db302203ba3cf.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">kokoromi</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./guess-the-gap.html">Adivina la brecha (juego)</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./showcase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Showcase</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./uso-del-tiempo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cuidado remunerado (viz)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./oneday.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Un día cualquiera (viz)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./paid-domestic-work.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trabajo pago y doméstico (viz)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./guess-the-gap.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Adivina la brecha (juego)</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./web-scraping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Web scraping</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./build-a-site.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Build a site like this</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#cómo-se-hizo-esta-página" id="toc-cómo-se-hizo-esta-página" class="nav-link active" data-scroll-target="#cómo-se-hizo-esta-página">Cómo se hizo esta página</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Adivina la brecha</h1>
+<p class="subtitle lead">Un mini-juego sobre la brecha de género en el trabajo doméstico — ENUT Chile 2023</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>¿Qué tan bien calibrada tienes la intuición sobre la brecha de género en el trabajo doméstico no remunerado? Este juego te muestra cuatro grupos etarios, uno a la vez, y te pide adivinar cuántos minutos más al día dedican las mujeres al trabajo doméstico, comparado con los hombres. Después de cada ronda te mostramos el valor real.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Fuente de los datos
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Instituto Nacional de Estadísticas (INE) de Chile, <strong>II Encuesta Nacional sobre Uso del Tiempo (II ENUT) 2023</strong>, personas de 15 años y más. Los promedios de horas diarias de trabajo doméstico no remunerado están ponderados por el factor de expansión de personas (<code>fe_cut</code>) — los mismos datos usados en la página <a href="./paid-domestic-work.html">Trabajo pago y doméstico</a>.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="15" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 14;"><span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>durationRaw <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/enut/clock_duration.json"</span>)<span class="op">.</span><span class="fu">json</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="21" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 20;"><span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>colorH <span class="op">=</span> <span class="st">"#5c9e95"</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>colorM <span class="op">=</span> <span class="st">"#c7a3c0"</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>accentColor <span class="op">=</span> <span class="st">"#c26b5a"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="28" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 27;"><span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>ageTabOrder <span class="op">=</span> [<span class="st">"Total"</span><span class="op">,</span> <span class="st">"15-24"</span><span class="op">,</span> <span class="st">"25-64"</span><span class="op">,</span> <span class="st">"65+"</span>]</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>ageTabLabel <span class="op">=</span> ({</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Total"</span><span class="op">:</span> <span class="st">"Toda la población (15 años y más)"</span><span class="op">,</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"15-24"</span><span class="op">:</span> <span class="st">"Personas de 15 a 24 años"</span><span class="op">,</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"25-64"</span><span class="op">:</span> <span class="st">"Personas de 25 a 64 años"</span><span class="op">,</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"65+"</span><span class="op">:</span> <span class="st">"Personas de 65 años y más"</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="38" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 37;"><span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">shuffle</span>(arr) {</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> arr<span class="op">.</span><span class="fu">slice</span>()<span class="op">;</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> a<span class="op">.</span><span class="at">length</span> <span class="op">-</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&gt;</span> <span class="dv">0</span><span class="op">;</span> i<span class="op">--</span>) {</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> j <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(<span class="bu">Math</span><span class="op">.</span><span class="fu">random</span>() <span class="op">*</span> (i <span class="op">+</span> <span class="dv">1</span>))<span class="op">;</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    [a[i]<span class="op">,</span> a[j]] <span class="op">=</span> [a[j]<span class="op">,</span> a[i]]<span class="op">;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> a<span class="op">;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="51" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 50;"><span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getHours</span>(activity<span class="op">,</span> ageTab<span class="op">,</span> sex) {</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> rec <span class="op">=</span> durationRaw<span class="op">.</span><span class="fu">find</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">activity</span> <span class="op">===</span> activity <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">age_tab</span> <span class="op">===</span> ageTab <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">sex</span> <span class="op">===</span> sex)<span class="op">;</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> rec <span class="op">?</span> rec<span class="op">.</span><span class="at">hours</span> <span class="op">:</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">roundData</span>(ageTab) {</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> hoursM <span class="op">=</span> <span class="fu">getHours</span>(<span class="st">"Trabajo doméstico"</span><span class="op">,</span> ageTab<span class="op">,</span> <span class="st">"Mujeres"</span>)<span class="op">;</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> hoursH <span class="op">=</span> <span class="fu">getHours</span>(<span class="st">"Trabajo doméstico"</span><span class="op">,</span> ageTab<span class="op">,</span> <span class="st">"Hombres"</span>)<span class="op">;</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> gapMin <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>((hoursM <span class="op">-</span> hoursH) <span class="op">*</span> <span class="dv">60</span>)<span class="op">;</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> { ageTab<span class="op">,</span> hoursM<span class="op">,</span> hoursH<span class="op">,</span> gapMin }<span class="op">;</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">feedback</span>(errorAbs<span class="op">,</span> actualGap) {</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> pct <span class="op">=</span> errorAbs <span class="op">/</span> actualGap<span class="op">;</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pct <span class="op">&lt;=</span> <span class="fl">0.1</span>) <span class="cf">return</span> { <span class="dt">emoji</span><span class="op">:</span> <span class="st">"🎯"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"¡Exacto! Tu intuición está muy bien calibrada."</span> }<span class="op">;</span></span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pct <span class="op">&lt;=</span> <span class="fl">0.25</span>) <span class="cf">return</span> { <span class="dt">emoji</span><span class="op">:</span> <span class="st">"👏"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"Muy cerca."</span> }<span class="op">;</span></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (pct <span class="op">&lt;=</span> <span class="fl">0.5</span>) <span class="cf">return</span> { <span class="dt">emoji</span><span class="op">:</span> <span class="st">"🤔"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"No tan mal, pero hay una brecha entre tu intuición y el dato."</span> }<span class="op">;</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> { <span class="dt">emoji</span><span class="op">:</span> <span class="st">"😮"</span><span class="op">,</span> <span class="dt">text</span><span class="op">:</span> <span class="st">"Bastante lejos — la brecha real sorprende."</span> }<span class="op">;</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-5-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="71" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 70;"><span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>game <span class="op">=</span> {</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> wrapper <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> roundBox <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  wrapper<span class="op">.</span><span class="fu">appendChild</span>(roundBox)<span class="op">;</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> order <span class="op">=</span> <span class="fu">shuffle</span>(ageTabOrder)<span class="op">;</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> roundIndex <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> results <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">renderRound</span>() {</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> ageTab <span class="op">=</span> order[roundIndex]<span class="op">;</span></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> data <span class="op">=</span> <span class="fu">roundData</span>(ageTab)<span class="op">;</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> card <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> progress <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-size: 0.85rem; color: var(--bs-secondary-color, #666); margin-bottom: 4px;"&gt;Ronda </span><span class="sc">${</span>roundIndex <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs"> de </span><span class="sc">${</span>order<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> group <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;"&gt;</span><span class="sc">${</span>ageTabLabel[ageTab]<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> question <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="margin-bottom: 20px;"&gt;¿Cuántos &lt;strong&gt;minutos más al día&lt;/strong&gt; dedican las &lt;span style="color:</span><span class="sc">${</span>colorM<span class="sc">}</span><span class="vs">; font-weight:700;"&gt;mujeres&lt;/span&gt; al trabajo doméstico no remunerado, comparado con los &lt;span style="color:</span><span class="sc">${</span>colorH<span class="sc">}</span><span class="vs">; font-weight:700;"&gt;hombres&lt;/span&gt;, en este grupo?&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> inputRow <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="display:flex; align-items:center; gap: 16px; margin-bottom: 20px; flex-wrap: wrap;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> slider <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;input type="range" min="0" max="180" step="5" value="60" style="flex: 1; min-width: 200px;"&gt;`</span><span class="op">;</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> numberBox <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;input type="number" min="0" max="600" step="1" value="60" style="width: 80px; padding: 4px; text-align: center;"&gt;`</span><span class="op">;</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> unitLabel <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;span&gt;min&lt;/span&gt;`</span><span class="op">;</span></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>    slider<span class="op">.</span><span class="at">oninput</span> <span class="op">=</span> () <span class="kw">=&gt;</span> { numberBox<span class="op">.</span><span class="at">value</span> <span class="op">=</span> slider<span class="op">.</span><span class="at">value</span><span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>    numberBox<span class="op">.</span><span class="at">oninput</span> <span class="op">=</span> () <span class="kw">=&gt;</span> { <span class="cf">if</span> (numberBox<span class="op">.</span><span class="at">value</span> <span class="op">!==</span> <span class="st">""</span>) slider<span class="op">.</span><span class="at">value</span> <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="dv">180</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">+</span>numberBox<span class="op">.</span><span class="at">value</span>))<span class="op">;</span> }<span class="op">;</span></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>    inputRow<span class="op">.</span><span class="fu">appendChild</span>(slider)<span class="op">;</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>    inputRow<span class="op">.</span><span class="fu">appendChild</span>(numberBox)<span class="op">;</span></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>    inputRow<span class="op">.</span><span class="fu">appendChild</span>(unitLabel)<span class="op">;</span></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> submitBtn <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;"&gt;Comprobar&lt;/button&gt;`</span><span class="op">;</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(progress)<span class="op">;</span></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(group)<span class="op">;</span></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(question)<span class="op">;</span></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(inputRow)<span class="op">;</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(submitBtn)<span class="op">;</span></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="fu">appendChild</span>(card)<span class="op">;</span></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>    submitBtn<span class="op">.</span><span class="at">onclick</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> guess <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">+</span>numberBox<span class="op">.</span><span class="at">value</span> <span class="op">||</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>      results<span class="op">.</span><span class="fu">push</span>({ ageTab<span class="op">,</span> guess<span class="op">,</span> <span class="dt">actual</span><span class="op">:</span> data<span class="op">.</span><span class="at">gapMin</span><span class="op">,</span> <span class="dt">hoursM</span><span class="op">:</span> data<span class="op">.</span><span class="at">hoursM</span><span class="op">,</span> <span class="dt">hoursH</span><span class="op">:</span> data<span class="op">.</span><span class="at">hoursH</span> })<span class="op">;</span></span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>      <span class="fu">renderReveal</span>(data<span class="op">,</span> guess)<span class="op">;</span></span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">renderReveal</span>(data<span class="op">,</span> guess) {</span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> card <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> progress <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-size: 0.85rem; color: var(--bs-secondary-color, #666); margin-bottom: 4px;"&gt;Ronda </span><span class="sc">${</span>roundIndex <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="vs"> de </span><span class="sc">${</span>order<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> group <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-weight: 700; font-size: 1.1rem; margin-bottom: 12px;"&gt;</span><span class="sc">${</span>ageTabLabel[data<span class="op">.</span><span class="at">ageTab</span>]<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> errorAbs <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(guess <span class="op">-</span> data<span class="op">.</span><span class="at">gapMin</span>)<span class="op">;</span></span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> fb <span class="op">=</span> <span class="fu">feedback</span>(errorAbs<span class="op">,</span> data<span class="op">.</span><span class="at">gapMin</span>)<span class="op">;</span></span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> fbBox <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-size: 1.05rem; margin-bottom: 16px;"&gt;&lt;span style="font-size:1.4rem;"&gt;</span><span class="sc">${</span>fb<span class="op">.</span><span class="at">emoji</span><span class="sc">}</span><span class="vs">&lt;/span&gt; </span><span class="sc">${</span>fb<span class="op">.</span><span class="at">text</span><span class="sc">}</span><span class="vs"> Adivinaste &lt;strong&gt;</span><span class="sc">${</span>guess<span class="sc">}</span><span class="vs"> min&lt;/strong&gt;, la brecha real es &lt;strong&gt;</span><span class="sc">${</span>data<span class="op">.</span><span class="at">gapMin</span><span class="sc">}</span><span class="vs"> min&lt;/strong&gt; (te desviaste por </span><span class="sc">${</span>errorAbs<span class="sc">}</span><span class="vs"> min).&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>    <span class="co">// number line comparing guess vs actual</span></span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> niceMax <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="dv">50</span><span class="op">,</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">ceil</span>((<span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(guess<span class="op">,</span> data<span class="op">.</span><span class="at">gapMin</span>) <span class="op">*</span> <span class="fl">1.3</span>) <span class="op">/</span> <span class="dv">10</span>) <span class="op">*</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svgWidth <span class="op">=</span> <span class="dv">600</span><span class="op">,</span> svgHeight <span class="op">=</span> <span class="dv">100</span><span class="op">,</span> x0 <span class="op">=</span> <span class="dv">30</span><span class="op">,</span> x1 <span class="op">=</span> svgWidth <span class="op">-</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> scale <span class="op">=</span> v <span class="kw">=&gt;</span> x0 <span class="op">+</span> (v <span class="op">/</span> niceMax) <span class="op">*</span> (x1 <span class="op">-</span> x0)<span class="op">;</span></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> lineHolder <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="overflow-x:auto;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> svg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(lineHolder)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> svgWidth)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> svgHeight)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>svgWidth<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>svgHeight<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> x0)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> x1)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#999"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> nTicks <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> nTicks<span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> v <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>((niceMax <span class="op">/</span> nTicks) <span class="op">*</span> i)<span class="op">;</span></span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> x <span class="op">=</span> <span class="fu">scale</span>(v)<span class="op">;</span></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>      svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> x)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> x)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">56</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> <span class="dv">64</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#999"</span>)<span class="op">;</span></span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a>      svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> x)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">78</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">.</span><span class="fu">text</span>(v)<span class="op">;</span></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> gx <span class="op">=</span> <span class="fu">scale</span>(guess)<span class="op">;</span></span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> gx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> gx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">30</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> <span class="st">"#888"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="dv">2</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-dasharray"</span><span class="op">,</span> <span class="st">"3,2"</span>)<span class="op">;</span></span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> gx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> <span class="dv">30</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">4</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"#888"</span>)<span class="op">;</span></span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> gx)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">20</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">11</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"#888"</span>)<span class="op">.</span><span class="fu">text</span>(<span class="st">"Tu respuesta"</span>)<span class="op">;</span></span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> ax <span class="op">=</span> <span class="fu">scale</span>(data<span class="op">.</span><span class="at">gapMin</span>)<span class="op">;</span></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"line"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x1"</span><span class="op">,</span> ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x2"</span><span class="op">,</span> ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y1"</span><span class="op">,</span> <span class="dv">30</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y2"</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke"</span><span class="op">,</span> accentColor)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"stroke-width"</span><span class="op">,</span> <span class="fl">2.5</span>)<span class="op">;</span></span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"circle"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cx"</span><span class="op">,</span> ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"cy"</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"r"</span><span class="op">,</span> <span class="dv">5</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> accentColor)<span class="op">;</span></span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a>    svg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> ax)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> <span class="dv">20</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"text-anchor"</span><span class="op">,</span> <span class="st">"middle"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">11</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> accentColor)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-weight"</span><span class="op">,</span> <span class="dv">700</span>)<span class="op">.</span><span class="fu">text</span>(<span class="st">"Real"</span>)<span class="op">;</span></span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>    <span class="co">// context bars: hours by sex</span></span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> barsHolder <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="margin-top: 20px;"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> barsSvg <span class="op">=</span> d3<span class="op">.</span><span class="fu">select</span>(barsHolder)<span class="op">.</span><span class="fu">append</span>(<span class="st">"svg"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> svgWidth)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> <span class="dv">90</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"viewBox"</span><span class="op">,</span> <span class="vs">`0 0 </span><span class="sc">${</span>svgWidth<span class="sc">}</span><span class="vs"> 90`</span>)<span class="op">;</span></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> maxHours <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(data<span class="op">.</span><span class="at">hoursM</span><span class="op">,</span> data<span class="op">.</span><span class="at">hoursH</span>) <span class="op">*</span> <span class="fl">1.15</span><span class="op">;</span></span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> barScale <span class="op">=</span> h <span class="kw">=&gt;</span> (h <span class="op">/</span> maxHours) <span class="op">*</span> (svgWidth <span class="op">-</span> <span class="dv">140</span>)<span class="op">;</span></span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> rows <span class="op">=</span> [</span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">label</span><span class="op">:</span> <span class="st">"Mujeres"</span><span class="op">,</span> <span class="dt">hours</span><span class="op">:</span> data<span class="op">.</span><span class="at">hoursM</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> colorM<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">10</span> }<span class="op">,</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a>      { <span class="dt">label</span><span class="op">:</span> <span class="st">"Hombres"</span><span class="op">,</span> <span class="dt">hours</span><span class="op">:</span> data<span class="op">.</span><span class="at">hoursH</span><span class="op">,</span> <span class="dt">color</span><span class="op">:</span> colorH<span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="dv">50</span> }</span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">;</span></span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>    rows<span class="op">.</span><span class="fu">forEach</span>(r <span class="kw">=&gt;</span> {</span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>      barsSvg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> r<span class="op">.</span><span class="at">y</span> <span class="op">+</span> <span class="dv">15</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">12</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">.</span><span class="fu">text</span>(r<span class="op">.</span><span class="at">label</span>)<span class="op">;</span></span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>      barsSvg<span class="op">.</span><span class="fu">append</span>(<span class="st">"rect"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">90</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> r<span class="op">.</span><span class="at">y</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"width"</span><span class="op">,</span> <span class="fu">barScale</span>(r<span class="op">.</span><span class="at">hours</span>))<span class="op">.</span><span class="fu">attr</span>(<span class="st">"height"</span><span class="op">,</span> <span class="dv">22</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> r<span class="op">.</span><span class="at">color</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"rx"</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">;</span></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> hh <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(r<span class="op">.</span><span class="at">hours</span>)<span class="op">;</span></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> mm <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>((r<span class="op">.</span><span class="at">hours</span> <span class="op">-</span> hh) <span class="op">*</span> <span class="dv">60</span>)<span class="op">;</span></span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a>      barsSvg<span class="op">.</span><span class="fu">append</span>(<span class="st">"text"</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"x"</span><span class="op">,</span> <span class="dv">96</span> <span class="op">+</span> <span class="fu">barScale</span>(r<span class="op">.</span><span class="at">hours</span>))<span class="op">.</span><span class="fu">attr</span>(<span class="st">"y"</span><span class="op">,</span> r<span class="op">.</span><span class="at">y</span> <span class="op">+</span> <span class="dv">15</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"font-size"</span><span class="op">,</span> <span class="dv">12</span>)<span class="op">.</span><span class="fu">attr</span>(<span class="st">"fill"</span><span class="op">,</span> <span class="st">"currentColor"</span>)<span class="op">.</span><span class="fu">text</span>(<span class="vs">`</span><span class="sc">${</span>hh<span class="sc">}</span><span class="vs"> h </span><span class="sc">${</span>mm<span class="sc">}</span><span class="vs"> min`</span>)<span class="op">;</span></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> nextBtn <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;margin-top:20px;"&gt;</span><span class="sc">${</span>roundIndex <span class="op">+</span> <span class="dv">1</span> <span class="op">&lt;</span> order<span class="op">.</span><span class="at">length</span> <span class="op">?</span> <span class="st">"Siguiente ronda →"</span> <span class="op">:</span> <span class="st">"Ver resultado final"</span><span class="sc">}</span><span class="vs">&lt;/button&gt;`</span><span class="op">;</span></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a>    nextBtn<span class="op">.</span><span class="at">onclick</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (roundIndex <span class="op">+</span> <span class="dv">1</span> <span class="op">&lt;</span> order<span class="op">.</span><span class="at">length</span>) {</span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a>        roundIndex <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a>        <span class="fu">renderRound</span>()<span class="op">;</span></span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a>      } <span class="cf">else</span> {</span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a>        <span class="fu">renderSummary</span>()<span class="op">;</span></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(progress)<span class="op">;</span></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(group)<span class="op">;</span></span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(fbBox)<span class="op">;</span></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(lineHolder)<span class="op">;</span></span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(barsHolder)<span class="op">;</span></span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(nextBtn)<span class="op">;</span></span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="fu">appendChild</span>(card)<span class="op">;</span></span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a>  <span class="kw">function</span> <span class="fu">renderSummary</span>() {</span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> card <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="max-width: 640px; margin: 0 auto; padding: 24px; border-radius: 10px; background: color-mix(in srgb, currentColor 5%, transparent);"&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> title <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="font-weight: 700; font-size: 1.2rem; margin-bottom: 16px;"&gt;Resultado final&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-197"><a href="#cb6-197" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> table <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;table style="width:100%; border-collapse: collapse; margin-bottom: 16px;"&gt;&lt;/table&gt;`</span><span class="op">;</span></span>
+<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> thead <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;thead&gt;&lt;tr&gt;</span></span>
+<span id="cb6-199"><a href="#cb6-199" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;th style="text-align:left; padding:6px; border-bottom: 1px solid #999;"&gt;Grupo&lt;/th&gt;</span></span>
+<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;th style="text-align:right; padding:6px; border-bottom: 1px solid #999;"&gt;Tu respuesta&lt;/th&gt;</span></span>
+<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;th style="text-align:right; padding:6px; border-bottom: 1px solid #999;"&gt;Real&lt;/th&gt;</span></span>
+<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;th style="text-align:right; padding:6px; border-bottom: 1px solid #999;"&gt;Diferencia&lt;/th&gt;</span></span>
+<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a><span class="vs">    &lt;/tr&gt;&lt;/thead&gt;`</span><span class="op">;</span></span>
+<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a>    table<span class="op">.</span><span class="fu">appendChild</span>(thead)<span class="op">;</span></span>
+<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> tbody <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;tbody&gt;&lt;/tbody&gt;`</span><span class="op">;</span></span>
+<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> totalError <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a>    results<span class="op">.</span><span class="fu">forEach</span>(r <span class="kw">=&gt;</span> {</span>
+<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> err <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(r<span class="op">.</span><span class="at">guess</span> <span class="op">-</span> r<span class="op">.</span><span class="at">actual</span>)<span class="op">;</span></span>
+<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a>      totalError <span class="op">+=</span> err<span class="op">;</span></span>
+<span id="cb6-210"><a href="#cb6-210" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> row <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;tr&gt;</span></span>
+<span id="cb6-211"><a href="#cb6-211" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;td style="padding:6px; border-bottom: 1px solid #eee;"&gt;</span><span class="sc">${</span>ageTabLabel[r<span class="op">.</span><span class="at">ageTab</span>]<span class="sc">}</span><span class="vs">&lt;/td&gt;</span></span>
+<span id="cb6-212"><a href="#cb6-212" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;"&gt;</span><span class="sc">${</span>r<span class="op">.</span><span class="at">guess</span><span class="sc">}</span><span class="vs"> min&lt;/td&gt;</span></span>
+<span id="cb6-213"><a href="#cb6-213" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;"&gt;</span><span class="sc">${</span>r<span class="op">.</span><span class="at">actual</span><span class="sc">}</span><span class="vs"> min&lt;/td&gt;</span></span>
+<span id="cb6-214"><a href="#cb6-214" aria-hidden="true" tabindex="-1"></a><span class="vs">        &lt;td style="text-align:right; padding:6px; border-bottom: 1px solid #eee;"&gt;</span><span class="sc">${</span>err<span class="sc">}</span><span class="vs"> min&lt;/td&gt;</span></span>
+<span id="cb6-215"><a href="#cb6-215" aria-hidden="true" tabindex="-1"></a><span class="vs">      &lt;/tr&gt;`</span><span class="op">;</span></span>
+<span id="cb6-216"><a href="#cb6-216" aria-hidden="true" tabindex="-1"></a>      tbody<span class="op">.</span><span class="fu">appendChild</span>(row)<span class="op">;</span></span>
+<span id="cb6-217"><a href="#cb6-217" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb6-218"><a href="#cb6-218" aria-hidden="true" tabindex="-1"></a>    table<span class="op">.</span><span class="fu">appendChild</span>(tbody)<span class="op">;</span></span>
+<span id="cb6-219"><a href="#cb6-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-220"><a href="#cb6-220" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> avgError <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">round</span>(totalError <span class="op">/</span> results<span class="op">.</span><span class="at">length</span>)<span class="op">;</span></span>
+<span id="cb6-221"><a href="#cb6-221" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> closing <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div style="margin-bottom: 20px;"&gt;Tu error promedio fue de &lt;strong&gt;</span><span class="sc">${</span>avgError<span class="sc">}</span><span class="vs"> minutos&lt;/strong&gt; por ronda. </span><span class="sc">${</span>avgError <span class="op">&lt;=</span> <span class="dv">15</span> <span class="op">?</span> <span class="st">"Muy buena intuición sobre la brecha de género en el trabajo doméstico."</span> <span class="op">:</span> avgError <span class="op">&lt;=</span> <span class="dv">35</span> <span class="op">?</span> <span class="st">"Una intuición razonable, aunque la brecha real suele ser más marcada de lo que se piensa."</span> <span class="op">:</span> <span class="st">"La brecha real es más grande de lo que la mayoría intuye — así es la desigualdad en el trabajo doméstico no remunerado."</span><span class="sc">}</span><span class="vs">&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb6-222"><a href="#cb6-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-223"><a href="#cb6-223" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> replayBtn <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;button style="padding:8px 20px;border-radius:4px;border:1px solid #5c9e95;background:#5c9e95;color:white;cursor:pointer;font-size:0.95rem;"&gt;Jugar de nuevo&lt;/button&gt;`</span><span class="op">;</span></span>
+<span id="cb6-224"><a href="#cb6-224" aria-hidden="true" tabindex="-1"></a>    replayBtn<span class="op">.</span><span class="at">onclick</span> <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb6-225"><a href="#cb6-225" aria-hidden="true" tabindex="-1"></a>      order <span class="op">=</span> <span class="fu">shuffle</span>(ageTabOrder)<span class="op">;</span></span>
+<span id="cb6-226"><a href="#cb6-226" aria-hidden="true" tabindex="-1"></a>      roundIndex <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-227"><a href="#cb6-227" aria-hidden="true" tabindex="-1"></a>      results <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb6-228"><a href="#cb6-228" aria-hidden="true" tabindex="-1"></a>      <span class="fu">renderRound</span>()<span class="op">;</span></span>
+<span id="cb6-229"><a href="#cb6-229" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb6-230"><a href="#cb6-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-231"><a href="#cb6-231" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(title)<span class="op">;</span></span>
+<span id="cb6-232"><a href="#cb6-232" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(table)<span class="op">;</span></span>
+<span id="cb6-233"><a href="#cb6-233" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(closing)<span class="op">;</span></span>
+<span id="cb6-234"><a href="#cb6-234" aria-hidden="true" tabindex="-1"></a>    card<span class="op">.</span><span class="fu">appendChild</span>(replayBtn)<span class="op">;</span></span>
+<span id="cb6-235"><a href="#cb6-235" aria-hidden="true" tabindex="-1"></a>    roundBox<span class="op">.</span><span class="fu">appendChild</span>(card)<span class="op">;</span></span>
+<span id="cb6-236"><a href="#cb6-236" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a>  <span class="fu">renderRound</span>()<span class="op">;</span></span>
+<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> wrapper<span class="op">;</span></span>
+<span id="cb6-240"><a href="#cb6-240" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El trabajo doméstico no remunerado es una de las brechas de género más marcadas y persistentes en el uso del tiempo: se mantiene en todos los grupos etarios, y no se explica solo por diferencias en la participación laboral remunerada — revisa la página <a href="./paid-domestic-work.html">Trabajo pago y doméstico</a> para más detalle.</p>
+</div>
+</div>
+<section id="cómo-se-hizo-esta-página" class="level2">
+<h2 class="anchored" data-anchor-id="cómo-se-hizo-esta-página">Cómo se hizo esta página</h2>
+<ol type="1">
+<li>Usa los mismos datos que <a href="./paid-domestic-work.html">Trabajo pago y doméstico</a>: la ENUT 2023 de Chile, procesada con <a href="https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_domestic_clock.py"><code>scripts/build_paid_domestic_clock.py</code></a> (o su equivalente en R).</li>
+<li>El juego en sí — rondas, línea numérica comparando adivinanza vs.&nbsp;valor real, resumen final — está escrito directamente en <a href="https://observablehq.com/">Observable JS</a>, sin librerías externas, manipulando el DOM de forma imperativa (igual que los relojes y la rueda de la página anterior).</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImR1cmF0aW9uUmF3ID0gRmlsZUF0dGFjaG1lbnQoXCJkYXRhL2VudXQvY2xvY2tfZHVyYXRpb24uanNvblwiKS5qc29uKClcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImNvbG9ySCA9IFwiIzVjOWU5NVwiXG5jb2xvck0gPSBcIiNjN2EzYzBcIlxuYWNjZW50Q29sb3IgPSBcIiNjMjZiNWFcIlxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0zIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiYWdlVGFiT3JkZXIgPSBbXCJUb3RhbFwiLCBcIjE1LTI0XCIsIFwiMjUtNjRcIiwgXCI2NStcIl1cbmFnZVRhYkxhYmVsID0gKHtcbiAgXCJUb3RhbFwiOiBcIlRvZGEgbGEgcG9ibGFjacOzbiAoMTUgYcOxb3MgeSBtw6FzKVwiLFxuICBcIjE1LTI0XCI6IFwiUGVyc29uYXMgZGUgMTUgYSAyNCBhw7Fvc1wiLFxuICBcIjI1LTY0XCI6IFwiUGVyc29uYXMgZGUgMjUgYSA2NCBhw7Fvc1wiLFxuICBcIjY1K1wiOiBcIlBlcnNvbmFzIGRlIDY1IGHDsW9zIHkgbcOhc1wiXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC00IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiZnVuY3Rpb24gc2h1ZmZsZShhcnIpIHtcbiAgY29uc3QgYSA9IGFyci5zbGljZSgpO1xuICBmb3IgKGxldCBpID0gYS5sZW5ndGggLSAxOyBpID4gMDsgaS0tKSB7XG4gICAgY29uc3QgaiA9IE1hdGguZmxvb3IoTWF0aC5yYW5kb20oKSAqIChpICsgMSkpO1xuICAgIFthW2ldLCBhW2pdXSA9IFthW2pdLCBhW2ldXTtcbiAgfVxuICByZXR1cm4gYTtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtNSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImZ1bmN0aW9uIGdldEhvdXJzKGFjdGl2aXR5LCBhZ2VUYWIsIHNleCkge1xuICBjb25zdCByZWMgPSBkdXJhdGlvblJhdy5maW5kKGQgPT4gZC5hY3Rpdml0eSA9PT0gYWN0aXZpdHkgJiYgZC5hZ2VfdGFiID09PSBhZ2VUYWIgJiYgZC5zZXggPT09IHNleCk7XG4gIHJldHVybiByZWMgPyByZWMuaG91cnMgOiBudWxsO1xufVxuZnVuY3Rpb24gcm91bmREYXRhKGFnZVRhYikge1xuICBjb25zdCBob3Vyc00gPSBnZXRIb3VycyhcIlRyYWJham8gZG9tw6lzdGljb1wiLCBhZ2VUYWIsIFwiTXVqZXJlc1wiKTtcbiAgY29uc3QgaG91cnNIID0gZ2V0SG91cnMoXCJUcmFiYWpvIGRvbcOpc3RpY29cIiwgYWdlVGFiLCBcIkhvbWJyZXNcIik7XG4gIGNvbnN0IGdhcE1pbiA9IE1hdGgucm91bmQoKGhvdXJzTSAtIGhvdXJzSCkgKiA2MCk7XG4gIHJldHVybiB7IGFnZVRhYiwgaG91cnNNLCBob3Vyc0gsIGdhcE1pbiB9O1xufVxuZnVuY3Rpb24gZmVlZGJhY2soZXJyb3JBYnMsIGFjdHVhbEdhcCkge1xuICBjb25zdCBwY3QgPSBlcnJvckFicyAvIGFjdHVhbEdhcDtcbiAgaWYgKHBjdCA8PSAwLjEpIHJldHVybiB7IGVtb2ppOiBcIvCfjq9cIiwgdGV4dDogXCLCoUV4YWN0byEgVHUgaW50dWljacOzbiBlc3TDoSBtdXkgYmllbiBjYWxpYnJhZGEuXCIgfTtcbiAgaWYgKHBjdCA8PSAwLjI1KSByZXR1cm4geyBlbW9qaTogXCLwn5GPXCIsIHRleHQ6IFwiTXV5IGNlcmNhLlwiIH07XG4gIGlmIChwY3QgPD0gMC41KSByZXR1cm4geyBlbW9qaTogXCLwn6SUXCIsIHRleHQ6IFwiTm8gdGFuIG1hbCwgcGVybyBoYXkgdW5hIGJyZWNoYSBlbnRyZSB0dSBpbnR1aWNpw7NuIHkgZWwgZGF0by5cIiB9O1xuICByZXR1cm4geyBlbW9qaTogXCLwn5iuXCIsIHRleHQ6IFwiQmFzdGFudGUgbGVqb3Mg4oCUIGxhIGJyZWNoYSByZWFsIHNvcnByZW5kZS5cIiB9O1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC02IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiZ2FtZSA9IHtcbiAgY29uc3Qgd3JhcHBlciA9IGh0bWxgPGRpdj48L2Rpdj5gO1xuICBjb25zdCByb3VuZEJveCA9IGh0bWxgPGRpdj48L2Rpdj5gO1xuICB3cmFwcGVyLmFwcGVuZENoaWxkKHJvdW5kQm94KTtcblxuICBsZXQgb3JkZXIgPSBzaHVmZmxlKGFnZVRhYk9yZGVyKTtcbiAgbGV0IHJvdW5kSW5kZXggPSAwO1xuICBsZXQgcmVzdWx0cyA9IFtdO1xuXG4gIGZ1bmN0aW9uIHJlbmRlclJvdW5kKCkge1xuICAgIHJvdW5kQm94LmlubmVySFRNTCA9IFwiXCI7XG4gICAgY29uc3QgYWdlVGFiID0gb3JkZXJbcm91bmRJbmRleF07XG4gICAgY29uc3QgZGF0YSA9IHJvdW5kRGF0YShhZ2VUYWIpO1xuXG4gICAgY29uc3QgY2FyZCA9IGh0bWxgPGRpdiBzdHlsZT1cIm1heC13aWR0aDogNjQwcHg7IG1hcmdpbjogMCBhdXRvOyBwYWRkaW5nOiAyNHB4OyBib3JkZXItcmFkaXVzOiAxMHB4OyBiYWNrZ3JvdW5kOiBjb2xvci1taXgoaW4gc3JnYiwgY3VycmVudENvbG9yIDUlLCB0cmFuc3BhcmVudCk7XCI+PC9kaXY+YDtcblxuICAgIGNvbnN0IHByb2dyZXNzID0gaHRtbGA8ZGl2IHN0eWxlPVwiZm9udC1zaXplOiAwLjg1cmVtOyBjb2xvcjogdmFyKC0tYnMtc2Vjb25kYXJ5LWNvbG9yLCAjNjY2KTsgbWFyZ2luLWJvdHRvbTogNHB4O1wiPlJvbmRhICR7cm91bmRJbmRleCArIDF9IGRlICR7b3JkZXIubGVuZ3RofTwvZGl2PmA7XG4gICAgY29uc3QgZ3JvdXAgPSBodG1sYDxkaXYgc3R5bGU9XCJmb250LXdlaWdodDogNzAwOyBmb250LXNpemU6IDEuMXJlbTsgbWFyZ2luLWJvdHRvbTogMTJweDtcIj4ke2FnZVRhYkxhYmVsW2FnZVRhYl19PC9kaXY+YDtcbiAgICBjb25zdCBxdWVzdGlvbiA9IGh0bWxgPGRpdiBzdHlsZT1cIm1hcmdpbi1ib3R0b206IDIwcHg7XCI+wr9DdcOhbnRvcyA8c3Ryb25nPm1pbnV0b3MgbcOhcyBhbCBkw61hPC9zdHJvbmc+IGRlZGljYW4gbGFzIDxzcGFuIHN0eWxlPVwiY29sb3I6JHtjb2xvck19OyBmb250LXdlaWdodDo3MDA7XCI+bXVqZXJlczwvc3Bhbj4gYWwgdHJhYmFqbyBkb23DqXN0aWNvIG5vIHJlbXVuZXJhZG8sIGNvbXBhcmFkbyBjb24gbG9zIDxzcGFuIHN0eWxlPVwiY29sb3I6JHtjb2xvckh9OyBmb250LXdlaWdodDo3MDA7XCI+aG9tYnJlczwvc3Bhbj4sIGVuIGVzdGUgZ3J1cG8/PC9kaXY+YDtcblxuICAgIGNvbnN0IGlucHV0Um93ID0gaHRtbGA8ZGl2IHN0eWxlPVwiZGlzcGxheTpmbGV4OyBhbGlnbi1pdGVtczpjZW50ZXI7IGdhcDogMTZweDsgbWFyZ2luLWJvdHRvbTogMjBweDsgZmxleC13cmFwOiB3cmFwO1wiPjwvZGl2PmA7XG4gICAgY29uc3Qgc2xpZGVyID0gaHRtbGA8aW5wdXQgdHlwZT1cInJhbmdlXCIgbWluPVwiMFwiIG1heD1cIjE4MFwiIHN0ZXA9XCI1XCIgdmFsdWU9XCI2MFwiIHN0eWxlPVwiZmxleDogMTsgbWluLXdpZHRoOiAyMDBweDtcIj5gO1xuICAgIGNvbnN0IG51bWJlckJveCA9IGh0bWxgPGlucHV0IHR5cGU9XCJudW1iZXJcIiBtaW49XCIwXCIgbWF4PVwiNjAwXCIgc3RlcD1cIjFcIiB2YWx1ZT1cIjYwXCIgc3R5bGU9XCJ3aWR0aDogODBweDsgcGFkZGluZzogNHB4OyB0ZXh0LWFsaWduOiBjZW50ZXI7XCI+YDtcbiAgICBjb25zdCB1bml0TGFiZWwgPSBodG1sYDxzcGFuPm1pbjwvc3Bhbj5gO1xuICAgIHNsaWRlci5vbmlucHV0ID0gKCkgPT4geyBudW1iZXJCb3gudmFsdWUgPSBzbGlkZXIudmFsdWU7IH07XG4gICAgbnVtYmVyQm94Lm9uaW5wdXQgPSAoKSA9PiB7IGlmIChudW1iZXJCb3gudmFsdWUgIT09IFwiXCIpIHNsaWRlci52YWx1ZSA9IE1hdGgubWluKDE4MCwgTWF0aC5tYXgoMCwgK251bWJlckJveC52YWx1ZSkpOyB9O1xuICAgIGlucHV0Um93LmFwcGVuZENoaWxkKHNsaWRlcik7XG4gICAgaW5wdXRSb3cuYXBwZW5kQ2hpbGQobnVtYmVyQm94KTtcbiAgICBpbnB1dFJvdy5hcHBlbmRDaGlsZCh1bml0TGFiZWwpO1xuXG4gICAgY29uc3Qgc3VibWl0QnRuID0gaHRtbGA8YnV0dG9uIHN0eWxlPVwicGFkZGluZzo4cHggMjBweDtib3JkZXItcmFkaXVzOjRweDtib3JkZXI6MXB4IHNvbGlkICM1YzllOTU7YmFja2dyb3VuZDojNWM5ZTk1O2NvbG9yOndoaXRlO2N1cnNvcjpwb2ludGVyO2ZvbnQtc2l6ZTowLjk1cmVtO1wiPkNvbXByb2JhcjwvYnV0dG9uPmA7XG5cbiAgICBjYXJkLmFwcGVuZENoaWxkKHByb2dyZXNzKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKGdyb3VwKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKHF1ZXN0aW9uKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKGlucHV0Um93KTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKHN1Ym1pdEJ0bik7XG4gICAgcm91bmRCb3guYXBwZW5kQ2hpbGQoY2FyZCk7XG5cbiAgICBzdWJtaXRCdG4ub25jbGljayA9ICgpID0+IHtcbiAgICAgIGNvbnN0IGd1ZXNzID0gTWF0aC5tYXgoMCwgK251bWJlckJveC52YWx1ZSB8fCAwKTtcbiAgICAgIHJlc3VsdHMucHVzaCh7IGFnZVRhYiwgZ3Vlc3MsIGFjdHVhbDogZGF0YS5nYXBNaW4sIGhvdXJzTTogZGF0YS5ob3Vyc00sIGhvdXJzSDogZGF0YS5ob3Vyc0ggfSk7XG4gICAgICByZW5kZXJSZXZlYWwoZGF0YSwgZ3Vlc3MpO1xuICAgIH07XG4gIH1cblxuICBmdW5jdGlvbiByZW5kZXJSZXZlYWwoZGF0YSwgZ3Vlc3MpIHtcbiAgICByb3VuZEJveC5pbm5lckhUTUwgPSBcIlwiO1xuICAgIGNvbnN0IGNhcmQgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXgtd2lkdGg6IDY0MHB4OyBtYXJnaW46IDAgYXV0bzsgcGFkZGluZzogMjRweDsgYm9yZGVyLXJhZGl1czogMTBweDsgYmFja2dyb3VuZDogY29sb3ItbWl4KGluIHNyZ2IsIGN1cnJlbnRDb2xvciA1JSwgdHJhbnNwYXJlbnQpO1wiPjwvZGl2PmA7XG5cbiAgICBjb25zdCBwcm9ncmVzcyA9IGh0bWxgPGRpdiBzdHlsZT1cImZvbnQtc2l6ZTogMC44NXJlbTsgY29sb3I6IHZhcigtLWJzLXNlY29uZGFyeS1jb2xvciwgIzY2Nik7IG1hcmdpbi1ib3R0b206IDRweDtcIj5Sb25kYSAke3JvdW5kSW5kZXggKyAxfSBkZSAke29yZGVyLmxlbmd0aH08L2Rpdj5gO1xuICAgIGNvbnN0IGdyb3VwID0gaHRtbGA8ZGl2IHN0eWxlPVwiZm9udC13ZWlnaHQ6IDcwMDsgZm9udC1zaXplOiAxLjFyZW07IG1hcmdpbi1ib3R0b206IDEycHg7XCI+JHthZ2VUYWJMYWJlbFtkYXRhLmFnZVRhYl19PC9kaXY+YDtcblxuICAgIGNvbnN0IGVycm9yQWJzID0gTWF0aC5hYnMoZ3Vlc3MgLSBkYXRhLmdhcE1pbik7XG4gICAgY29uc3QgZmIgPSBmZWVkYmFjayhlcnJvckFicywgZGF0YS5nYXBNaW4pO1xuICAgIGNvbnN0IGZiQm94ID0gaHRtbGA8ZGl2IHN0eWxlPVwiZm9udC1zaXplOiAxLjA1cmVtOyBtYXJnaW4tYm90dG9tOiAxNnB4O1wiPjxzcGFuIHN0eWxlPVwiZm9udC1zaXplOjEuNHJlbTtcIj4ke2ZiLmVtb2ppfTwvc3Bhbj4gJHtmYi50ZXh0fSBBZGl2aW5hc3RlIDxzdHJvbmc+JHtndWVzc30gbWluPC9zdHJvbmc+LCBsYSBicmVjaGEgcmVhbCBlcyA8c3Ryb25nPiR7ZGF0YS5nYXBNaW59IG1pbjwvc3Ryb25nPiAodGUgZGVzdmlhc3RlIHBvciAke2Vycm9yQWJzfSBtaW4pLjwvZGl2PmA7XG5cbiAgICAvLyBudW1iZXIgbGluZSBjb21wYXJpbmcgZ3Vlc3MgdnMgYWN0dWFsXG4gICAgY29uc3QgbmljZU1heCA9IE1hdGgubWF4KDUwLCBNYXRoLmNlaWwoKE1hdGgubWF4KGd1ZXNzLCBkYXRhLmdhcE1pbikgKiAxLjMpIC8gMTApICogMTApO1xuICAgIGNvbnN0IHN2Z1dpZHRoID0gNjAwLCBzdmdIZWlnaHQgPSAxMDAsIHgwID0gMzAsIHgxID0gc3ZnV2lkdGggLSAzMDtcbiAgICBjb25zdCBzY2FsZSA9IHYgPT4geDAgKyAodiAvIG5pY2VNYXgpICogKHgxIC0geDApO1xuXG4gICAgY29uc3QgbGluZUhvbGRlciA9IGh0bWxgPGRpdiBzdHlsZT1cIm92ZXJmbG93LXg6YXV0bztcIj48L2Rpdj5gO1xuICAgIGNvbnN0IHN2ZyA9IGQzLnNlbGVjdChsaW5lSG9sZGVyKS5hcHBlbmQoXCJzdmdcIikuYXR0cihcIndpZHRoXCIsIHN2Z1dpZHRoKS5hdHRyKFwiaGVpZ2h0XCIsIHN2Z0hlaWdodCkuYXR0cihcInZpZXdCb3hcIiwgYDAgMCAke3N2Z1dpZHRofSAke3N2Z0hlaWdodH1gKTtcblxuICAgIHN2Zy5hcHBlbmQoXCJsaW5lXCIpLmF0dHIoXCJ4MVwiLCB4MCkuYXR0cihcIngyXCIsIHgxKS5hdHRyKFwieTFcIiwgNjApLmF0dHIoXCJ5MlwiLCA2MCkuYXR0cihcInN0cm9rZVwiLCBcIiM5OTlcIikuYXR0cihcInN0cm9rZS13aWR0aFwiLCAxLjUpO1xuICAgIGNvbnN0IG5UaWNrcyA9IDU7XG4gICAgZm9yIChsZXQgaSA9IDA7IGkgPD0gblRpY2tzOyBpKyspIHtcbiAgICAgIGNvbnN0IHYgPSBNYXRoLnJvdW5kKChuaWNlTWF4IC8gblRpY2tzKSAqIGkpO1xuICAgICAgY29uc3QgeCA9IHNjYWxlKHYpO1xuICAgICAgc3ZnLmFwcGVuZChcImxpbmVcIikuYXR0cihcIngxXCIsIHgpLmF0dHIoXCJ4MlwiLCB4KS5hdHRyKFwieTFcIiwgNTYpLmF0dHIoXCJ5MlwiLCA2NCkuYXR0cihcInN0cm9rZVwiLCBcIiM5OTlcIik7XG4gICAgICBzdmcuYXBwZW5kKFwidGV4dFwiKS5hdHRyKFwieFwiLCB4KS5hdHRyKFwieVwiLCA3OCkuYXR0cihcInRleHQtYW5jaG9yXCIsIFwibWlkZGxlXCIpLmF0dHIoXCJmb250LXNpemVcIiwgMTApLmF0dHIoXCJmaWxsXCIsIFwiY3VycmVudENvbG9yXCIpLnRleHQodik7XG4gICAgfVxuXG4gICAgY29uc3QgZ3ggPSBzY2FsZShndWVzcyk7XG4gICAgc3ZnLmFwcGVuZChcImxpbmVcIikuYXR0cihcIngxXCIsIGd4KS5hdHRyKFwieDJcIiwgZ3gpLmF0dHIoXCJ5MVwiLCAzMCkuYXR0cihcInkyXCIsIDYwKS5hdHRyKFwic3Ryb2tlXCIsIFwiIzg4OFwiKS5hdHRyKFwic3Ryb2tlLXdpZHRoXCIsIDIpLmF0dHIoXCJzdHJva2UtZGFzaGFycmF5XCIsIFwiMywyXCIpO1xuICAgIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIikuYXR0cihcImN4XCIsIGd4KS5hdHRyKFwiY3lcIiwgMzApLmF0dHIoXCJyXCIsIDQpLmF0dHIoXCJmaWxsXCIsIFwiIzg4OFwiKTtcbiAgICBzdmcuYXBwZW5kKFwidGV4dFwiKS5hdHRyKFwieFwiLCBneCkuYXR0cihcInlcIiwgMjApLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKS5hdHRyKFwiZm9udC1zaXplXCIsIDExKS5hdHRyKFwiZmlsbFwiLCBcIiM4ODhcIikudGV4dChcIlR1IHJlc3B1ZXN0YVwiKTtcblxuICAgIGNvbnN0IGF4ID0gc2NhbGUoZGF0YS5nYXBNaW4pO1xuICAgIHN2Zy5hcHBlbmQoXCJsaW5lXCIpLmF0dHIoXCJ4MVwiLCBheCkuYXR0cihcIngyXCIsIGF4KS5hdHRyKFwieTFcIiwgMzApLmF0dHIoXCJ5MlwiLCA2MCkuYXR0cihcInN0cm9rZVwiLCBhY2NlbnRDb2xvcikuYXR0cihcInN0cm9rZS13aWR0aFwiLCAyLjUpO1xuICAgIHN2Zy5hcHBlbmQoXCJjaXJjbGVcIikuYXR0cihcImN4XCIsIGF4KS5hdHRyKFwiY3lcIiwgNjApLmF0dHIoXCJyXCIsIDUpLmF0dHIoXCJmaWxsXCIsIGFjY2VudENvbG9yKTtcbiAgICBzdmcuYXBwZW5kKFwidGV4dFwiKS5hdHRyKFwieFwiLCBheCkuYXR0cihcInlcIiwgMjApLmF0dHIoXCJ0ZXh0LWFuY2hvclwiLCBcIm1pZGRsZVwiKS5hdHRyKFwiZm9udC1zaXplXCIsIDExKS5hdHRyKFwiZmlsbFwiLCBhY2NlbnRDb2xvcikuYXR0cihcImZvbnQtd2VpZ2h0XCIsIDcwMCkudGV4dChcIlJlYWxcIik7XG5cbiAgICAvLyBjb250ZXh0IGJhcnM6IGhvdXJzIGJ5IHNleFxuICAgIGNvbnN0IGJhcnNIb2xkZXIgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXJnaW4tdG9wOiAyMHB4O1wiPjwvZGl2PmA7XG4gICAgY29uc3QgYmFyc1N2ZyA9IGQzLnNlbGVjdChiYXJzSG9sZGVyKS5hcHBlbmQoXCJzdmdcIikuYXR0cihcIndpZHRoXCIsIHN2Z1dpZHRoKS5hdHRyKFwiaGVpZ2h0XCIsIDkwKS5hdHRyKFwidmlld0JveFwiLCBgMCAwICR7c3ZnV2lkdGh9IDkwYCk7XG4gICAgY29uc3QgbWF4SG91cnMgPSBNYXRoLm1heChkYXRhLmhvdXJzTSwgZGF0YS5ob3Vyc0gpICogMS4xNTtcbiAgICBjb25zdCBiYXJTY2FsZSA9IGggPT4gKGggLyBtYXhIb3VycykgKiAoc3ZnV2lkdGggLSAxNDApO1xuICAgIGNvbnN0IHJvd3MgPSBbXG4gICAgICB7IGxhYmVsOiBcIk11amVyZXNcIiwgaG91cnM6IGRhdGEuaG91cnNNLCBjb2xvcjogY29sb3JNLCB5OiAxMCB9LFxuICAgICAgeyBsYWJlbDogXCJIb21icmVzXCIsIGhvdXJzOiBkYXRhLmhvdXJzSCwgY29sb3I6IGNvbG9ySCwgeTogNTAgfVxuICAgIF07XG4gICAgcm93cy5mb3JFYWNoKHIgPT4ge1xuICAgICAgYmFyc1N2Zy5hcHBlbmQoXCJ0ZXh0XCIpLmF0dHIoXCJ4XCIsIDApLmF0dHIoXCJ5XCIsIHIueSArIDE1KS5hdHRyKFwiZm9udC1zaXplXCIsIDEyKS5hdHRyKFwiZmlsbFwiLCBcImN1cnJlbnRDb2xvclwiKS50ZXh0KHIubGFiZWwpO1xuICAgICAgYmFyc1N2Zy5hcHBlbmQoXCJyZWN0XCIpLmF0dHIoXCJ4XCIsIDkwKS5hdHRyKFwieVwiLCByLnkpLmF0dHIoXCJ3aWR0aFwiLCBiYXJTY2FsZShyLmhvdXJzKSkuYXR0cihcImhlaWdodFwiLCAyMikuYXR0cihcImZpbGxcIiwgci5jb2xvcikuYXR0cihcInJ4XCIsIDMpO1xuICAgICAgY29uc3QgaGggPSBNYXRoLmZsb29yKHIuaG91cnMpO1xuICAgICAgY29uc3QgbW0gPSBNYXRoLnJvdW5kKChyLmhvdXJzIC0gaGgpICogNjApO1xuICAgICAgYmFyc1N2Zy5hcHBlbmQoXCJ0ZXh0XCIpLmF0dHIoXCJ4XCIsIDk2ICsgYmFyU2NhbGUoci5ob3VycykpLmF0dHIoXCJ5XCIsIHIueSArIDE1KS5hdHRyKFwiZm9udC1zaXplXCIsIDEyKS5hdHRyKFwiZmlsbFwiLCBcImN1cnJlbnRDb2xvclwiKS50ZXh0KGAke2hofSBoICR7bW19IG1pbmApO1xuICAgIH0pO1xuXG4gICAgY29uc3QgbmV4dEJ0biA9IGh0bWxgPGJ1dHRvbiBzdHlsZT1cInBhZGRpbmc6OHB4IDIwcHg7Ym9yZGVyLXJhZGl1czo0cHg7Ym9yZGVyOjFweCBzb2xpZCAjNWM5ZTk1O2JhY2tncm91bmQ6IzVjOWU5NTtjb2xvcjp3aGl0ZTtjdXJzb3I6cG9pbnRlcjtmb250LXNpemU6MC45NXJlbTttYXJnaW4tdG9wOjIwcHg7XCI+JHtyb3VuZEluZGV4ICsgMSA8IG9yZGVyLmxlbmd0aCA/IFwiU2lndWllbnRlIHJvbmRhIOKGklwiIDogXCJWZXIgcmVzdWx0YWRvIGZpbmFsXCJ9PC9idXR0b24+YDtcbiAgICBuZXh0QnRuLm9uY2xpY2sgPSAoKSA9PiB7XG4gICAgICBpZiAocm91bmRJbmRleCArIDEgPCBvcmRlci5sZW5ndGgpIHtcbiAgICAgICAgcm91bmRJbmRleCArPSAxO1xuICAgICAgICByZW5kZXJSb3VuZCgpO1xuICAgICAgfSBlbHNlIHtcbiAgICAgICAgcmVuZGVyU3VtbWFyeSgpO1xuICAgICAgfVxuICAgIH07XG5cbiAgICBjYXJkLmFwcGVuZENoaWxkKHByb2dyZXNzKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKGdyb3VwKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKGZiQm94KTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKGxpbmVIb2xkZXIpO1xuICAgIGNhcmQuYXBwZW5kQ2hpbGQoYmFyc0hvbGRlcik7XG4gICAgY2FyZC5hcHBlbmRDaGlsZChuZXh0QnRuKTtcbiAgICByb3VuZEJveC5hcHBlbmRDaGlsZChjYXJkKTtcbiAgfVxuXG4gIGZ1bmN0aW9uIHJlbmRlclN1bW1hcnkoKSB7XG4gICAgcm91bmRCb3guaW5uZXJIVE1MID0gXCJcIjtcbiAgICBjb25zdCBjYXJkID0gaHRtbGA8ZGl2IHN0eWxlPVwibWF4LXdpZHRoOiA2NDBweDsgbWFyZ2luOiAwIGF1dG87IHBhZGRpbmc6IDI0cHg7IGJvcmRlci1yYWRpdXM6IDEwcHg7IGJhY2tncm91bmQ6IGNvbG9yLW1peChpbiBzcmdiLCBjdXJyZW50Q29sb3IgNSUsIHRyYW5zcGFyZW50KTtcIj48L2Rpdj5gO1xuXG4gICAgY29uc3QgdGl0bGUgPSBodG1sYDxkaXYgc3R5bGU9XCJmb250LXdlaWdodDogNzAwOyBmb250LXNpemU6IDEuMnJlbTsgbWFyZ2luLWJvdHRvbTogMTZweDtcIj5SZXN1bHRhZG8gZmluYWw8L2Rpdj5gO1xuXG4gICAgY29uc3QgdGFibGUgPSBodG1sYDx0YWJsZSBzdHlsZT1cIndpZHRoOjEwMCU7IGJvcmRlci1jb2xsYXBzZTogY29sbGFwc2U7IG1hcmdpbi1ib3R0b206IDE2cHg7XCI+PC90YWJsZT5gO1xuICAgIGNvbnN0IHRoZWFkID0gaHRtbGA8dGhlYWQ+PHRyPlxuICAgICAgPHRoIHN0eWxlPVwidGV4dC1hbGlnbjpsZWZ0OyBwYWRkaW5nOjZweDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICM5OTk7XCI+R3J1cG88L3RoPlxuICAgICAgPHRoIHN0eWxlPVwidGV4dC1hbGlnbjpyaWdodDsgcGFkZGluZzo2cHg7IGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjOTk5O1wiPlR1IHJlc3B1ZXN0YTwvdGg+XG4gICAgICA8dGggc3R5bGU9XCJ0ZXh0LWFsaWduOnJpZ2h0OyBwYWRkaW5nOjZweDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICM5OTk7XCI+UmVhbDwvdGg+XG4gICAgICA8dGggc3R5bGU9XCJ0ZXh0LWFsaWduOnJpZ2h0OyBwYWRkaW5nOjZweDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICM5OTk7XCI+RGlmZXJlbmNpYTwvdGg+XG4gICAgPC90cj48L3RoZWFkPmA7XG4gICAgdGFibGUuYXBwZW5kQ2hpbGQodGhlYWQpO1xuICAgIGNvbnN0IHRib2R5ID0gaHRtbGA8dGJvZHk+PC90Ym9keT5gO1xuICAgIGxldCB0b3RhbEVycm9yID0gMDtcbiAgICByZXN1bHRzLmZvckVhY2gociA9PiB7XG4gICAgICBjb25zdCBlcnIgPSBNYXRoLmFicyhyLmd1ZXNzIC0gci5hY3R1YWwpO1xuICAgICAgdG90YWxFcnJvciArPSBlcnI7XG4gICAgICBjb25zdCByb3cgPSBodG1sYDx0cj5cbiAgICAgICAgPHRkIHN0eWxlPVwicGFkZGluZzo2cHg7IGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjZWVlO1wiPiR7YWdlVGFiTGFiZWxbci5hZ2VUYWJdfTwvdGQ+XG4gICAgICAgIDx0ZCBzdHlsZT1cInRleHQtYWxpZ246cmlnaHQ7IHBhZGRpbmc6NnB4OyBib3JkZXItYm90dG9tOiAxcHggc29saWQgI2VlZTtcIj4ke3IuZ3Vlc3N9IG1pbjwvdGQ+XG4gICAgICAgIDx0ZCBzdHlsZT1cInRleHQtYWxpZ246cmlnaHQ7IHBhZGRpbmc6NnB4OyBib3JkZXItYm90dG9tOiAxcHggc29saWQgI2VlZTtcIj4ke3IuYWN0dWFsfSBtaW48L3RkPlxuICAgICAgICA8dGQgc3R5bGU9XCJ0ZXh0LWFsaWduOnJpZ2h0OyBwYWRkaW5nOjZweDsgYm9yZGVyLWJvdHRvbTogMXB4IHNvbGlkICNlZWU7XCI+JHtlcnJ9IG1pbjwvdGQ+XG4gICAgICA8L3RyPmA7XG4gICAgICB0Ym9keS5hcHBlbmRDaGlsZChyb3cpO1xuICAgIH0pO1xuICAgIHRhYmxlLmFwcGVuZENoaWxkKHRib2R5KTtcblxuICAgIGNvbnN0IGF2Z0Vycm9yID0gTWF0aC5yb3VuZCh0b3RhbEVycm9yIC8gcmVzdWx0cy5sZW5ndGgpO1xuICAgIGNvbnN0IGNsb3NpbmcgPSBodG1sYDxkaXYgc3R5bGU9XCJtYXJnaW4tYm90dG9tOiAyMHB4O1wiPlR1IGVycm9yIHByb21lZGlvIGZ1ZSBkZSA8c3Ryb25nPiR7YXZnRXJyb3J9IG1pbnV0b3M8L3N0cm9uZz4gcG9yIHJvbmRhLiAke2F2Z0Vycm9yIDw9IDE1ID8gXCJNdXkgYnVlbmEgaW50dWljacOzbiBzb2JyZSBsYSBicmVjaGEgZGUgZ8OpbmVybyBlbiBlbCB0cmFiYWpvIGRvbcOpc3RpY28uXCIgOiBhdmdFcnJvciA8PSAzNSA/IFwiVW5hIGludHVpY2nDs24gcmF6b25hYmxlLCBhdW5xdWUgbGEgYnJlY2hhIHJlYWwgc3VlbGUgc2VyIG3DoXMgbWFyY2FkYSBkZSBsbyBxdWUgc2UgcGllbnNhLlwiIDogXCJMYSBicmVjaGEgcmVhbCBlcyBtw6FzIGdyYW5kZSBkZSBsbyBxdWUgbGEgbWF5b3LDrWEgaW50dXllIOKAlCBhc8OtIGVzIGxhIGRlc2lndWFsZGFkIGVuIGVsIHRyYWJham8gZG9tw6lzdGljbyBubyByZW11bmVyYWRvLlwifTwvZGl2PmA7XG5cbiAgICBjb25zdCByZXBsYXlCdG4gPSBodG1sYDxidXR0b24gc3R5bGU9XCJwYWRkaW5nOjhweCAyMHB4O2JvcmRlci1yYWRpdXM6NHB4O2JvcmRlcjoxcHggc29saWQgIzVjOWU5NTtiYWNrZ3JvdW5kOiM1YzllOTU7Y29sb3I6d2hpdGU7Y3Vyc29yOnBvaW50ZXI7Zm9udC1zaXplOjAuOTVyZW07XCI+SnVnYXIgZGUgbnVldm88L2J1dHRvbj5gO1xuICAgIHJlcGxheUJ0bi5vbmNsaWNrID0gKCkgPT4ge1xuICAgICAgb3JkZXIgPSBzaHVmZmxlKGFnZVRhYk9yZGVyKTtcbiAgICAgIHJvdW5kSW5kZXggPSAwO1xuICAgICAgcmVzdWx0cyA9IFtdO1xuICAgICAgcmVuZGVyUm91bmQoKTtcbiAgICB9O1xuXG4gICAgY2FyZC5hcHBlbmRDaGlsZCh0aXRsZSk7XG4gICAgY2FyZC5hcHBlbmRDaGlsZCh0YWJsZSk7XG4gICAgY2FyZC5hcHBlbmRDaGlsZChjbG9zaW5nKTtcbiAgICBjYXJkLmFwcGVuZENoaWxkKHJlcGxheUJ0bik7XG4gICAgcm91bmRCb3guYXBwZW5kQ2hpbGQoY2FyZCk7XG4gIH1cblxuICByZW5kZXJSb3VuZCgpO1xuICByZXR1cm4gd3JhcHBlcjtcbn1cbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./paid-domestic-work.html" class="pagination-link" aria-label="Trabajo pago y doméstico (viz)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Trabajo pago y doméstico (viz)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./web-scraping.html" class="pagination-link" aria-label="Web scraping">
+        <span class="nav-page-text">Web scraping</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>VVM</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
