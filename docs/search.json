@@ -341,17 +341,6 @@
     ]
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site",
-    "crumbs": [
-      "Home",
-      "About"
-    ]
-  },
-  {
     "objectID": "build-a-site.html",
     "href": "build-a-site.html",
     "title": "Build a site like this one",
@@ -492,6 +481,61 @@
     "crumbs": [
       "Home",
       "Build a site like this"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site",
+    "crumbs": [
+      "Home",
+      "About"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-comparado.html",
+    "href": "cuidado-remunerado-comparado.html",
+    "title": "El cuidado remunerado, en dos vistas",
+    "section": "",
+    "text": "Las otras dos páginas de este tema (Cuidado remunerado, otros formatos) muestran cada panel en el mismo estilo de gráfico. Acá se fija una combinación: barras verticales agrupadas por definición para las definiciones anidadas (el formato original) y barras divergentes para las categorías individuales — el que mejor separa visualmente a quién le toca más en cada una.\ncolorH = \"#5c9e95\"\ncolorM = \"#c7a3c0\"\npaidCareRaw = FileAttachment(\"data/enut/paid_care_workforce_by_sex.json\").json()\ncwdRaw = FileAttachment(\"data/enut/paid_care_workforce_cwd_by_sex.json\").json()\npaidCareOrder = [\"Trabajo de cuidados remunerados\", \"TCR + Habilitadores\", \"TCR + Habilitadores + Facilitadores\"]\ncwdOrder = [\"TCR dentro del sector\", \"TCR fuera del sector\", \"Habilitadores\", \"Facilitadores\"]\nallLong = [\n  ...paidCareRaw.map(d =&gt; ({ ...d, category: d.definition, group: \"paidCare\", country: \"Chile\" })),\n  ...cwdRaw.map(d =&gt; ({ ...d, category: d.definition, group: \"cwd\", country: \"Chile\" }))\n]\ncountries = [...new Set(allLong.map(d =&gt; d.country))]\nviewof selectedCountry = Inputs.select(countries, { label: \"País\", value: \"Chile\" })\npaidCareData = allLong.filter(d =&gt; d.group === \"paidCare\" && d.country === selectedCountry)\ncwdData = allLong.filter(d =&gt; d.group === \"cwd\" && d.country === selectedCountry)\nfunction verticalPanel(data, order, width) {\n  return Plot.plot({\n    width,\n    marginBottom: 60,\n    fx: { label: null, domain: order },\n    x: { axis: null },\n    y: { label: \"Proporción de personas ocupadas →\", percent: true, grid: true },\n    color: { legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [colorH, colorM] },\n    marks: [\n      Plot.barY(data, { fx: \"category\", x: \"sex\", y: \"share\", fill: \"sex\" }),\n      Plot.ruleX(data, { fx: \"category\", x: \"sex\", y1: \"ci_low\", y2: \"ci_high\", stroke: \"#666\", strokeWidth: 1.5 }),\n      Plot.tickY(data, { fx: \"category\", x: \"sex\", y: \"ci_low\", stroke: \"#666\", strokeWidth: 1.5, insetLeft: 22, insetRight: 22 }),\n      Plot.tickY(data, { fx: \"category\", x: \"sex\", y: \"ci_high\", stroke: \"#666\", strokeWidth: 1.5, insetLeft: 22, insetRight: 22 }),\n      Plot.text(data.filter(d =&gt; d.share &lt; 0.05), { fx: \"category\", x: \"sex\", y: \"ci_high\", dy: -8, text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: \"bold\" }),\n      Plot.text(data.filter(d =&gt; d.share &gt;= 0.05), { fx: \"category\", x: \"sex\", y: \"share\", dy: 30, text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"white\", fontWeight: \"bold\" }),\n      Plot.tip(data, Plot.pointer({\n        fx: \"category\", x: \"sex\", y: \"share\",\n        title: d =&gt; `${d.category}\\n${d.sex}\\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`\n      })),\n      Plot.ruleY([0])\n    ],\n    height: 420\n  });\n}\n\n// Same diverging-bar chart as \"otros formatos\".\nfunction divergingPanel(data, order, width) {\n  const niceMax = Math.ceil(d3.max(data, d =&gt; Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;\n  const signed = data.map(d =&gt; ({ ...d, xval: d.sex === \"Hombres\" ? -d.share : d.share }));\n  return Plot.plot({\n    width,\n    marginLeft: 200,\n    y: { domain: order, label: null },\n    x: { domain: [-niceMax, niceMax], grid: true, label: \"← Hombres      Mujeres →\", tickFormat: v =&gt; Math.abs(Math.round(v * 100)) + \"%\" },\n    color: { legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [colorH, colorM] },\n    marks: [\n      Plot.barX(signed, { y: \"category\", x: \"xval\", fill: \"sex\", insetTop: 6, insetBottom: 6 }),\n      Plot.text(signed.filter(d =&gt; d.sex === \"Hombres\"), { y: \"category\", x: \"xval\", dx: -8, textAnchor: \"end\", text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.text(signed.filter(d =&gt; d.sex === \"Mujeres\"), { y: \"category\", x: \"xval\", dx: 8, textAnchor: \"start\", text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.tip(signed, Plot.pointer({\n        y: \"category\", x: \"xval\",\n        title: d =&gt; `${d.category}\\n${d.sex}\\n${(d.share * 100).toFixed(1)}%`\n      })),\n      Plot.ruleX([0])\n    ],\n    height: order.length * 60 + 40\n  });\n}",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, dos vistas (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-comparado.html#definiciones-anidadas-y-categorías-individuales",
+    "href": "cuidado-remunerado-comparado.html#definiciones-anidadas-y-categorías-individuales",
+    "title": "El cuidado remunerado, en dos vistas",
+    "section": "Definiciones anidadas y categorías individuales",
+    "text": "Definiciones anidadas y categorías individuales\n\nsideBySidePanels = {\n  const gap = 28;\n  const mainEl = document.querySelector(\"#quarto-document-content\") || document.querySelector(\"main.content\") || document.body;\n  const totalWidth = mainEl.clientWidth || 900;\n  const twoUp = totalWidth &gt;= 900;\n  const panelWidth = twoUp ? Math.floor((totalWidth - gap) / 2) : totalWidth;\n\n  const wrapper = html`&lt;div style=\"display:flex; gap:${gap}px; flex-wrap:wrap; align-items:flex-start;\"&gt;&lt;/div&gt;`;\n\n  const col1 = html`&lt;div style=\"flex:1 1 ${panelWidth}px; min-width:0;\"&gt;&lt;/div&gt;`;\n  col1.appendChild(html`&lt;div style=\"font-weight:700; margin-bottom:8px;\"&gt;Definiciones anidadas de cuidado remunerado&lt;/div&gt;`);\n  col1.appendChild(verticalPanel(paidCareData, paidCareOrder, panelWidth));\n\n  const col2 = html`&lt;div style=\"flex:1 1 ${panelWidth}px; min-width:0;\"&gt;&lt;/div&gt;`;\n  col2.appendChild(html`&lt;div style=\"font-weight:700; margin-bottom:8px;\"&gt;Categorías individuales del ecosistema de cuidados&lt;/div&gt;`);\n  col2.appendChild(divergingPanel(cwdData, cwdOrder, panelWidth));\n\n  wrapper.appendChild(col1);\n  wrapper.appendChild(col2);\n  return wrapper;\n}\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nIndependiente de la dimensión de análisis, la proporción de mujeres que trabaja en cuidados remunerados es mayor que la de hombres — y en ninguna de las siete categorías se superponen los intervalos de confianza de ambos sexos.",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, dos vistas (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-comparado.html#los-mismos-datos-en-tabla",
+    "href": "cuidado-remunerado-comparado.html#los-mismos-datos-en-tabla",
+    "title": "El cuidado remunerado, en dos vistas",
+    "section": "Los mismos datos, en tabla",
+    "text": "Los mismos datos, en tabla\n\nInputs.table(allLong.filter(d =&gt; d.country === selectedCountry).map(d =&gt; ({\n  \"País\": d.country,\n  \"Dimensión\": d.group === \"paidCare\" ? \"Definición anidada\" : \"Categoría individual\",\n  \"Categoría\": d.category,\n  \"Sexo\": d.sex,\n  \"Proporción\": (d.share * 100).toFixed(1) + \"%\",\n  \"IC 95%\": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`\n})))",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, dos vistas (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-comparado.html#cómo-se-hizo-esta-página",
+    "href": "cuidado-remunerado-comparado.html#cómo-se-hizo-esta-página",
+    "title": "El cuidado remunerado, en dos vistas",
+    "section": "Cómo se hizo esta página",
+    "text": "Cómo se hizo esta página\n\nReutiliza exactamente los mismos dos archivos JSON que Cuidado remunerado y otros formatos (paid_care_workforce_by_sex.json, paid_care_workforce_cwd_by_sex.json) — ningún dato ni cálculo nuevo.\nEl panel izquierdo es el gráfico de barras verticales agrupadas por definición de Cuidado remunerado, tal cual. El panel derecho es la vista “Barras divergentes” de otros formatos. A diferencia de esas dos páginas, acá no hay selector de estilo — es una combinación fija, pensada para mostrar cada dimensión del dato con el formato que mejor le queda a esa dimensión específica.\nDiseño pensado para más países: igual que en “otros formatos”, cada fila lleva un campo country (hoy solo \"Chile\") y el selector se arma dinámicamente con [...new Set(allLong.map(d =&gt; d.country))] — agregar un país nuevo es agregar filas, no tocar el código de los gráficos.\nLos dos paneles se ubican lado a lado midiendo el ancho real de la columna de contenido y pasándole la mitad a cada gráfico de Plot, con el mismo fallback a una columna apilada bajo 900px que usa “otros formatos”.",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, dos vistas (viz)"
     ]
   },
   {

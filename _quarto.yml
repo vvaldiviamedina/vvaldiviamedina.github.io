@@ -29,6 +29,8 @@ website:
         href: uso-del-tiempo.qmd
       - text: "Cuidado remunerado, otros formatos (viz)"
         href: cuidado-remunerado-formas.qmd
+      - text: "Cuidado remunerado, dos vistas (viz)"
+        href: cuidado-remunerado-comparado.qmd
       - text: "Un día cualquiera (viz)"
         href: oneday.qmd
       - text: "Trabajo pago y doméstico (viz)"

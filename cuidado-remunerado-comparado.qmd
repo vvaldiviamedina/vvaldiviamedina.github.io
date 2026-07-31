@@ -1,0 +1,159 @@
+---
+title: "El cuidado remunerado, en dos vistas"
+subtitle: "Definiciones anidadas y categorías individuales, cada una con el formato que mejor le queda, lado a lado"
+toc: true
+---
+
+Las otras dos páginas de este tema ([Cuidado remunerado](uso-del-tiempo.qmd), [otros formatos](cuidado-remunerado-formas.qmd)) muestran cada panel en el mismo estilo de gráfico. Acá se fija una combinación: **barras verticales agrupadas por definición** para las definiciones anidadas (el formato original) y **barras divergentes** para las categorías individuales — el que mejor separa visualmente a quién le toca más en cada una.
+
+::: {.callout-note}
+## Fuente de los datos
+Clasificación por ocupación (CIUO-08, 2 dígitos) y rama (CAENES, 1 dígito), de la ENUT. `share` para hombres y `share` para mujeres se calculan por separado dentro de cada sexo (`svyby(~indicador, by=~sexo, FUN=svymean)`): 22,7% es "22,7% de las mujeres ocupadas", no "22,7% de todas las personas ocupadas". Son tasas de dos poblaciones distintas — ambos gráficos de esta página las muestran una al lado de la otra sin combinarlas, así que esto no les afecta, pero vale tenerlo presente.
+:::
+
+```{ojs}
+//| echo: false
+colorH = "#5c9e95"
+colorM = "#c7a3c0"
+```
+
+```{ojs}
+//| echo: false
+paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
+cwdRaw = FileAttachment("data/enut/paid_care_workforce_cwd_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+paidCareOrder = ["Trabajo de cuidados remunerados", "TCR + Habilitadores", "TCR + Habilitadores + Facilitadores"]
+cwdOrder = ["TCR dentro del sector", "TCR fuera del sector", "Habilitadores", "Facilitadores"]
+```
+
+```{ojs}
+//| echo: false
+// Long format with a country column, same as "otros formatos" -- adding a
+// second country later is just adding rows here with a different
+// `country` value, the selector picks it up automatically.
+allLong = [
+  ...paidCareRaw.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Chile" })),
+  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" }))
+]
+countries = [...new Set(allLong.map(d => d.country))]
+```
+
+```{ojs}
+//| echo: false
+viewof selectedCountry = Inputs.select(countries, { label: "País", value: "Chile" })
+```
+
+```{ojs}
+//| echo: false
+paidCareData = allLong.filter(d => d.group === "paidCare" && d.country === selectedCountry)
+cwdData = allLong.filter(d => d.group === "cwd" && d.country === selectedCountry)
+```
+
+```{ojs}
+//| echo: false
+// Same vertical grouped-bar-by-facet chart as Cuidado remunerado, just fed
+// from the long-format, country-filtered data instead of the page-local one.
+function verticalPanel(data, order, width) {
+  return Plot.plot({
+    width,
+    marginBottom: 60,
+    fx: { label: null, domain: order },
+    x: { axis: null },
+    y: { label: "Proporción de personas ocupadas →", percent: true, grid: true },
+    color: { legend: true, domain: ["Hombres", "Mujeres"], range: [colorH, colorM] },
+    marks: [
+      Plot.barY(data, { fx: "category", x: "sex", y: "share", fill: "sex" }),
+      Plot.ruleX(data, { fx: "category", x: "sex", y1: "ci_low", y2: "ci_high", stroke: "#666", strokeWidth: 1.5 }),
+      Plot.tickY(data, { fx: "category", x: "sex", y: "ci_low", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22 }),
+      Plot.tickY(data, { fx: "category", x: "sex", y: "ci_high", stroke: "#666", strokeWidth: 1.5, insetLeft: 22, insetRight: 22 }),
+      Plot.text(data.filter(d => d.share < 0.05), { fx: "category", x: "sex", y: "ci_high", dy: -8, text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: "bold" }),
+      Plot.text(data.filter(d => d.share >= 0.05), { fx: "category", x: "sex", y: "share", dy: 30, text: d => (d.share * 100).toFixed(1) + "%", fill: "white", fontWeight: "bold" }),
+      Plot.tip(data, Plot.pointer({
+        fx: "category", x: "sex", y: "share",
+        title: d => `${d.category}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
+      })),
+      Plot.ruleY([0])
+    ],
+    height: 420
+  });
+}
+
+// Same diverging-bar chart as "otros formatos".
+function divergingPanel(data, order, width) {
+  const niceMax = Math.ceil(d3.max(data, d => Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;
+  const signed = data.map(d => ({ ...d, xval: d.sex === "Hombres" ? -d.share : d.share }));
+  return Plot.plot({
+    width,
+    marginLeft: 200,
+    y: { domain: order, label: null },
+    x: { domain: [-niceMax, niceMax], grid: true, label: "← Hombres      Mujeres →", tickFormat: v => Math.abs(Math.round(v * 100)) + "%" },
+    color: { legend: true, domain: ["Hombres", "Mujeres"], range: [colorH, colorM] },
+    marks: [
+      Plot.barX(signed, { y: "category", x: "xval", fill: "sex", insetTop: 6, insetBottom: 6 }),
+      Plot.text(signed.filter(d => d.sex === "Hombres"), { y: "category", x: "xval", dx: -8, textAnchor: "end", text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.text(signed.filter(d => d.sex === "Mujeres"), { y: "category", x: "xval", dx: 8, textAnchor: "start", text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.tip(signed, Plot.pointer({
+        y: "category", x: "xval",
+        title: d => `${d.category}\n${d.sex}\n${(d.share * 100).toFixed(1)}%`
+      })),
+      Plot.ruleX([0])
+    ],
+    height: order.length * 60 + 40
+  });
+}
+```
+
+## Definiciones anidadas y categorías individuales
+
+```{ojs}
+//| echo: false
+sideBySidePanels = {
+  const gap = 28;
+  const mainEl = document.querySelector("#quarto-document-content") || document.querySelector("main.content") || document.body;
+  const totalWidth = mainEl.clientWidth || 900;
+  const twoUp = totalWidth >= 900;
+  const panelWidth = twoUp ? Math.floor((totalWidth - gap) / 2) : totalWidth;
+
+  const wrapper = html`<div style="display:flex; gap:${gap}px; flex-wrap:wrap; align-items:flex-start;"></div>`;
+
+  const col1 = html`<div style="flex:1 1 ${panelWidth}px; min-width:0;"></div>`;
+  col1.appendChild(html`<div style="font-weight:700; margin-bottom:8px;">Definiciones anidadas de cuidado remunerado</div>`);
+  col1.appendChild(verticalPanel(paidCareData, paidCareOrder, panelWidth));
+
+  const col2 = html`<div style="flex:1 1 ${panelWidth}px; min-width:0;"></div>`;
+  col2.appendChild(html`<div style="font-weight:700; margin-bottom:8px;">Categorías individuales del ecosistema de cuidados</div>`);
+  col2.appendChild(divergingPanel(cwdData, cwdOrder, panelWidth));
+
+  wrapper.appendChild(col1);
+  wrapper.appendChild(col2);
+  return wrapper;
+}
+```
+
+::: {.callout-important}
+Independiente de la dimensión de análisis, la proporción de mujeres que trabaja en cuidados remunerados es mayor que la de hombres — y en ninguna de las siete categorías se superponen los intervalos de confianza de ambos sexos.
+:::
+
+## Los mismos datos, en tabla
+
+```{ojs}
+//| echo: false
+Inputs.table(allLong.filter(d => d.country === selectedCountry).map(d => ({
+  "País": d.country,
+  "Dimensión": d.group === "paidCare" ? "Definición anidada" : "Categoría individual",
+  "Categoría": d.category,
+  "Sexo": d.sex,
+  "Proporción": (d.share * 100).toFixed(1) + "%",
+  "IC 95%": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`
+})))
+```
+
+## Cómo se hizo esta página
+
+1. Reutiliza exactamente los mismos dos archivos JSON que [Cuidado remunerado](uso-del-tiempo.qmd) y [otros formatos](cuidado-remunerado-formas.qmd) (`paid_care_workforce_by_sex.json`, `paid_care_workforce_cwd_by_sex.json`) — ningún dato ni cálculo nuevo.
+2. El panel izquierdo es el gráfico de barras verticales agrupadas por definición de [Cuidado remunerado](uso-del-tiempo.qmd), tal cual. El panel derecho es la vista "Barras divergentes" de [otros formatos](cuidado-remunerado-formas.qmd). A diferencia de esas dos páginas, acá no hay selector de estilo — es una combinación fija, pensada para mostrar cada dimensión del dato con el formato que mejor le queda a esa dimensión específica.
+3. **Diseño pensado para más países**: igual que en "otros formatos", cada fila lleva un campo `country` (hoy solo `"Chile"`) y el selector se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]` — agregar un país nuevo es agregar filas, no tocar el código de los gráficos.
+4. Los dos paneles se ubican lado a lado midiendo el ancho real de la columna de contenido y pasándole la mitad a cada gráfico de Plot, con el mismo fallback a una columna apilada bajo 900px que usa "otros formatos".
