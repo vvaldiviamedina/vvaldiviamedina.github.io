@@ -297,6 +297,72 @@
     ]
   },
   {
+    "objectID": "cuidado-remunerado-formas.html",
+    "href": "cuidado-remunerado-formas.html",
+    "title": "El cuidado remunerado, en otros formatos",
+    "section": "",
+    "text": "La página Cuidado remunerado muestra estos datos con barras verticales y un facet por definición. Aquí exploramos dos formas distintas de mirar exactamente la misma información: un gráfico de puntos con brecha (dumbbell) y barras divergentes — ambas horizontales, para que las dos dimensiones del dato (definiciones anidadas y categorías individuales) compartan un mismo eje de proporción y se puedan comparar directamente entre sí.\nEl selector de país de abajo hoy solo tiene Chile, pero el gráfico está armado para que agregar otro país sea solo agregar filas con un campo country distinto — no un rediseño.\ncolorH = \"#5c9e95\"\ncolorM = \"#c7a3c0\"\npaidCareRaw = FileAttachment(\"data/enut/paid_care_workforce_by_sex.json\").json()\ncwdRaw = FileAttachment(\"data/enut/paid_care_workforce_cwd_by_sex.json\").json()\npaidCareOrder = [\"Trabajo de cuidados remunerados\", \"TCR + Habilitadores\", \"TCR + Habilitadores + Facilitadores\"]\ncwdOrder = [\"TCR dentro del sector\", \"TCR fuera del sector\", \"Habilitadores\", \"Facilitadores\"]\nallLong = [\n  ...paidCareRaw.map(d =&gt; ({ ...d, category: d.definition, group: \"paidCare\", country: \"Chile\" })),\n  ...cwdRaw.map(d =&gt; ({ ...d, category: d.definition, group: \"cwd\", country: \"Chile\" }))\n]\ncountries = [...new Set(allLong.map(d =&gt; d.country))]\nviewof selectedCountry = Inputs.select(countries, { label: \"País\", value: \"Chile\" })\nviewof chartStyle = Inputs.radio([\"Puntos con brecha\", \"Barras divergentes\"], { label: \"Estilo de gráfico\", value: \"Puntos con brecha\" })\nfunction pairRows(data) {\n  const byCategory = d3.group(data, d =&gt; d.category);\n  return Array.from(byCategory, ([category, rows]) =&gt; ({\n    category,\n    shareH: rows.find(r =&gt; r.sex === \"Hombres\")?.share,\n    shareM: rows.find(r =&gt; r.sex === \"Mujeres\")?.share\n  }));\n}\n\nfunction dumbbellPanel(data, order, xDomain) {\n  return Plot.plot({\n    marginLeft: 240,\n    y: { domain: order, label: null },\n    x: { domain: xDomain, grid: true, label: \"Proporción de personas ocupadas →\", tickFormat: v =&gt; Math.round(v * 100) + \"%\" },\n    color: { legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [colorH, colorM] },\n    marks: [\n      Plot.ruleY(data, { y: \"category\", x1: \"ci_low\", x2: \"ci_high\", stroke: \"#999\", strokeOpacity: 0.5, strokeWidth: 1.5 }),\n      Plot.ruleY(pairRows(data), { y: \"category\", x1: \"shareH\", x2: \"shareM\", stroke: \"#bbb\", strokeWidth: 2 }),\n      Plot.dot(data, { y: \"category\", x: \"share\", fill: \"sex\", r: 7, stroke: \"white\", strokeWidth: 2 }),\n      // fixed dy per sex (not a function -- Plot.text's dy only accepts a\n      // constant) so the two labels never collide even when the dots\n      // themselves sit close together in x\n      Plot.text(data.filter(d =&gt; d.sex === \"Hombres\"), { y: \"category\", x: \"share\", dy: -14, text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.text(data.filter(d =&gt; d.sex === \"Mujeres\"), { y: \"category\", x: \"share\", dy: 14, text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.tip(data, Plot.pointer({\n        y: \"category\", x: \"share\",\n        title: d =&gt; `${d.category}\\n${d.sex}\\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`\n      })),\n      Plot.ruleX([0])\n    ],\n    height: order.length * 70 + 40\n  });\n}\n\nfunction divergingPanel(data, order, xDomain) {\n  const signed = data.map(d =&gt; ({ ...d, xval: d.sex === \"Hombres\" ? -d.share : d.share }));\n  return Plot.plot({\n    marginLeft: 240,\n    y: { domain: order, label: null },\n    x: { domain: xDomain, grid: true, label: \"← Hombres      Mujeres →\", tickFormat: v =&gt; Math.abs(Math.round(v * 100)) + \"%\" },\n    color: { legend: true, domain: [\"Hombres\", \"Mujeres\"], range: [colorH, colorM] },\n    marks: [\n      Plot.barX(signed, { y: \"category\", x: \"xval\", fill: \"sex\", insetTop: 6, insetBottom: 6 }),\n      Plot.text(signed.filter(d =&gt; d.sex === \"Hombres\"), { y: \"category\", x: \"xval\", dx: -8, textAnchor: \"end\", text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.text(signed.filter(d =&gt; d.sex === \"Mujeres\"), { y: \"category\", x: \"xval\", dx: 8, textAnchor: \"start\", text: d =&gt; (d.share * 100).toFixed(1) + \"%\", fill: \"currentColor\", fontWeight: 700, fontSize: 11 }),\n      Plot.tip(signed, Plot.pointer({\n        y: \"category\", x: \"xval\",\n        title: d =&gt; `${d.category}\\n${d.sex}\\n${(d.share * 100).toFixed(1)}%`\n      })),\n      Plot.ruleX([0])\n    ],\n    height: order.length * 60 + 40\n  });\n}",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, otros formatos (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-formas.html#definiciones-anidadas-de-cuidado-remunerado",
+    "href": "cuidado-remunerado-formas.html#definiciones-anidadas-de-cuidado-remunerado",
+    "title": "El cuidado remunerado, en otros formatos",
+    "section": "Definiciones anidadas de cuidado remunerado",
+    "text": "Definiciones anidadas de cuidado remunerado\n\npaidCarePanel = {\n  const data = allLong.filter(d =&gt; d.group === \"paidCare\" && d.country === selectedCountry);\n  const niceMax = Math.ceil(d3.max(data, d =&gt; Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;\n  return chartStyle === \"Barras divergentes\"\n    ? divergingPanel(data, paidCareOrder, [-niceMax, niceMax])\n    : dumbbellPanel(data, paidCareOrder, [0, niceMax]);\n}",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, otros formatos (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-formas.html#categorías-individuales-del-ecosistema-de-cuidados",
+    "href": "cuidado-remunerado-formas.html#categorías-individuales-del-ecosistema-de-cuidados",
+    "title": "El cuidado remunerado, en otros formatos",
+    "section": "Categorías individuales del ecosistema de cuidados",
+    "text": "Categorías individuales del ecosistema de cuidados\n\ncwdPanel = {\n  const data = allLong.filter(d =&gt; d.group === \"cwd\" && d.country === selectedCountry);\n  const niceMax = Math.ceil(d3.max(data, d =&gt; Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;\n  return chartStyle === \"Barras divergentes\"\n    ? divergingPanel(data, cwdOrder, [-niceMax, niceMax])\n    : dumbbellPanel(data, cwdOrder, [0, niceMax]);\n}\n\n\n\n\n\n\n\n\n\n\n\n\nImportant\n\n\n\nAmbos formatos ponen el peso visual en la brecha misma, no en el tamaño de cada barra por separado: en “Puntos con brecha” es la distancia entre los dos puntos; en “Barras divergentes” es la asimetría respecto al centro. Es una lectura más directa del argumento de la página original — la segregación de género en el cuidado remunerado — que comparar alturas de barra entre facets.",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, otros formatos (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-formas.html#los-mismos-datos-en-tabla",
+    "href": "cuidado-remunerado-formas.html#los-mismos-datos-en-tabla",
+    "title": "El cuidado remunerado, en otros formatos",
+    "section": "Los mismos datos, en tabla",
+    "text": "Los mismos datos, en tabla\n\nInputs.table(allLong.filter(d =&gt; d.country === selectedCountry).map(d =&gt; ({\n  \"País\": d.country,\n  \"Dimensión\": d.group === \"paidCare\" ? \"Definición anidada\" : \"Categoría individual\",\n  \"Categoría\": d.category,\n  \"Sexo\": d.sex,\n  \"Proporción\": (d.share * 100).toFixed(1) + \"%\",\n  \"IC 95%\": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`\n})))",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, otros formatos (viz)"
+    ]
+  },
+  {
+    "objectID": "cuidado-remunerado-formas.html#cómo-se-hizo-esta-página",
+    "href": "cuidado-remunerado-formas.html#cómo-se-hizo-esta-página",
+    "title": "El cuidado remunerado, en otros formatos",
+    "section": "Cómo se hizo esta página",
+    "text": "Cómo se hizo esta página\n\nReutiliza exactamente los mismos dos archivos JSON que Cuidado remunerado (paid_care_workforce_by_sex.json, paid_care_workforce_cwd_by_sex.json) — ningún dato nuevo, solo una reestructuración a formato largo y dos formas de graficarlo.\nDiseño pensado para más países: cada fila del dato lleva un campo country (hoy solo \"Chile\"). El selector de país se arma dinámicamente con [...new Set(allLong.map(d =&gt; d.country))], así que agregar Argentina, México, etc. — con su propio paid_care_workforce_by_sex.json reetiquetado por país — haría aparecer la opción en el selector sin tocar el código del gráfico. Si en el futuro se quisiera comparar países simultáneamente en vez de con un selector, el mismo dato largo permite facetar con fx: \"country\" directamente.\nLos dos paneles (definiciones anidadas / categorías individuales) se dibujan como gráficos Observable Plot separados, pero con un dominio de eje X calculado explícitamente a partir del máximo compartido de ambos — así los dos comparten la misma escala visual aunque sean SVGs distintos.\n“Puntos con brecha” es un gráfico de puntos (Cleveland dot plot / dumbbell): un punto por sexo y categoría, unidos por una línea que representa la brecha, con el intervalo de confianza como un trazo fino detrás del punto. “Barras divergentes” es el mismo dato como barras que crecen desde el centro hacia cada sexo, al estilo pirámide poblacional.",
+    "crumbs": [
+      "Home",
+      "Cuidado remunerado, otros formatos (viz)"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site",
+    "crumbs": [
+      "Home",
+      "About"
+    ]
+  },
+  {
     "objectID": "build-a-site.html",
     "href": "build-a-site.html",
     "title": "Build a site like this one",
@@ -437,17 +503,6 @@
     "crumbs": [
       "Home",
       "Build a site like this"
-    ]
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site",
-    "crumbs": [
-      "Home",
-      "About"
     ]
   },
   {

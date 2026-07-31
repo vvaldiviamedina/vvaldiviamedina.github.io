@@ -1,0 +1,163 @@
+---
+title: "El cuidado remunerado, en otros formatos"
+subtitle: "Los mismos datos de segregación de género en el cuidado — dos formas alternativas de leerlos, pensadas para comparar países más adelante"
+toc: true
+---
+
+La página [Cuidado remunerado](uso-del-tiempo.qmd) muestra estos datos con barras verticales y un facet por definición. Aquí exploramos dos formas distintas de mirar exactamente la misma información: un **gráfico de puntos con brecha** (dumbbell) y **barras divergentes** — ambas horizontales, para que las dos dimensiones del dato (definiciones anidadas y categorías individuales) compartan un mismo eje de proporción y se puedan comparar directamente entre sí.
+
+El selector de país de abajo hoy solo tiene Chile, pero el gráfico está armado para que agregar otro país sea solo agregar filas con un campo `country` distinto — no un rediseño.
+
+::: {.callout-note}
+## Fuente de los datos
+Clasificación por ocupación (CIUO-08, 2 dígitos) y rama (CAENES, 1 dígito), de la ENUT — los mismos datos que [Cuidado remunerado](uso-del-tiempo.qmd), reestructurados aquí en formato "largo" (una fila por categoría × sexo × país).
+:::
+
+```{ojs}
+//| echo: false
+colorH = "#5c9e95"
+colorM = "#c7a3c0"
+```
+
+```{ojs}
+//| echo: false
+paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
+cwdRaw = FileAttachment("data/enut/paid_care_workforce_cwd_by_sex.json").json()
+```
+
+```{ojs}
+//| echo: false
+paidCareOrder = ["Trabajo de cuidados remunerados", "TCR + Habilitadores", "TCR + Habilitadores + Facilitadores"]
+cwdOrder = ["TCR dentro del sector", "TCR fuera del sector", "Habilitadores", "Facilitadores"]
+```
+
+```{ojs}
+//| echo: false
+// One long-format table: one row per category x sex x country. Adding a
+// second country later means adding rows here with a different `country`
+// value -- the selector and both charts below pick it up automatically.
+allLong = [
+  ...paidCareRaw.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Chile" })),
+  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" }))
+]
+countries = [...new Set(allLong.map(d => d.country))]
+```
+
+```{ojs}
+//| echo: false
+viewof selectedCountry = Inputs.select(countries, { label: "País", value: "Chile" })
+```
+
+```{ojs}
+//| echo: false
+viewof chartStyle = Inputs.radio(["Puntos con brecha", "Barras divergentes"], { label: "Estilo de gráfico", value: "Puntos con brecha" })
+```
+
+```{ojs}
+//| echo: false
+function pairRows(data) {
+  const byCategory = d3.group(data, d => d.category);
+  return Array.from(byCategory, ([category, rows]) => ({
+    category,
+    shareH: rows.find(r => r.sex === "Hombres")?.share,
+    shareM: rows.find(r => r.sex === "Mujeres")?.share
+  }));
+}
+
+function dumbbellPanel(data, order, xDomain) {
+  return Plot.plot({
+    marginLeft: 240,
+    y: { domain: order, label: null },
+    x: { domain: xDomain, grid: true, label: "Proporción de personas ocupadas →", tickFormat: v => Math.round(v * 100) + "%" },
+    color: { legend: true, domain: ["Hombres", "Mujeres"], range: [colorH, colorM] },
+    marks: [
+      Plot.ruleY(data, { y: "category", x1: "ci_low", x2: "ci_high", stroke: "#999", strokeOpacity: 0.5, strokeWidth: 1.5 }),
+      Plot.ruleY(pairRows(data), { y: "category", x1: "shareH", x2: "shareM", stroke: "#bbb", strokeWidth: 2 }),
+      Plot.dot(data, { y: "category", x: "share", fill: "sex", r: 7, stroke: "white", strokeWidth: 2 }),
+      // fixed dy per sex (not a function -- Plot.text's dy only accepts a
+      // constant) so the two labels never collide even when the dots
+      // themselves sit close together in x
+      Plot.text(data.filter(d => d.sex === "Hombres"), { y: "category", x: "share", dy: -14, text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.text(data.filter(d => d.sex === "Mujeres"), { y: "category", x: "share", dy: 14, text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.tip(data, Plot.pointer({
+        y: "category", x: "share",
+        title: d => `${d.category}\n${d.sex}\n${(d.share * 100).toFixed(1)}% (IC 95%: ${(d.ci_low * 100).toFixed(1)}%–${(d.ci_high * 100).toFixed(1)}%)`
+      })),
+      Plot.ruleX([0])
+    ],
+    height: order.length * 70 + 40
+  });
+}
+
+function divergingPanel(data, order, xDomain) {
+  const signed = data.map(d => ({ ...d, xval: d.sex === "Hombres" ? -d.share : d.share }));
+  return Plot.plot({
+    marginLeft: 240,
+    y: { domain: order, label: null },
+    x: { domain: xDomain, grid: true, label: "← Hombres      Mujeres →", tickFormat: v => Math.abs(Math.round(v * 100)) + "%" },
+    color: { legend: true, domain: ["Hombres", "Mujeres"], range: [colorH, colorM] },
+    marks: [
+      Plot.barX(signed, { y: "category", x: "xval", fill: "sex", insetTop: 6, insetBottom: 6 }),
+      Plot.text(signed.filter(d => d.sex === "Hombres"), { y: "category", x: "xval", dx: -8, textAnchor: "end", text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.text(signed.filter(d => d.sex === "Mujeres"), { y: "category", x: "xval", dx: 8, textAnchor: "start", text: d => (d.share * 100).toFixed(1) + "%", fill: "currentColor", fontWeight: 700, fontSize: 11 }),
+      Plot.tip(signed, Plot.pointer({
+        y: "category", x: "xval",
+        title: d => `${d.category}\n${d.sex}\n${(d.share * 100).toFixed(1)}%`
+      })),
+      Plot.ruleX([0])
+    ],
+    height: order.length * 60 + 40
+  });
+}
+```
+
+## Definiciones anidadas de cuidado remunerado
+
+```{ojs}
+//| echo: false
+paidCarePanel = {
+  const data = allLong.filter(d => d.group === "paidCare" && d.country === selectedCountry);
+  const niceMax = Math.ceil(d3.max(data, d => Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;
+  return chartStyle === "Barras divergentes"
+    ? divergingPanel(data, paidCareOrder, [-niceMax, niceMax])
+    : dumbbellPanel(data, paidCareOrder, [0, niceMax]);
+}
+```
+
+## Categorías individuales del ecosistema de cuidados
+
+```{ojs}
+//| echo: false
+cwdPanel = {
+  const data = allLong.filter(d => d.group === "cwd" && d.country === selectedCountry);
+  const niceMax = Math.ceil(d3.max(data, d => Math.max(d.share, d.ci_high)) * 100 / 5) * 5 / 100;
+  return chartStyle === "Barras divergentes"
+    ? divergingPanel(data, cwdOrder, [-niceMax, niceMax])
+    : dumbbellPanel(data, cwdOrder, [0, niceMax]);
+}
+```
+
+::: {.callout-important}
+Ambos formatos ponen el peso visual en la **brecha misma**, no en el tamaño de cada barra por separado: en "Puntos con brecha" es la distancia entre los dos puntos; en "Barras divergentes" es la asimetría respecto al centro. Es una lectura más directa del argumento de la página original — la segregación de género en el cuidado remunerado — que comparar alturas de barra entre facets.
+:::
+
+## Los mismos datos, en tabla
+
+```{ojs}
+//| echo: false
+Inputs.table(allLong.filter(d => d.country === selectedCountry).map(d => ({
+  "País": d.country,
+  "Dimensión": d.group === "paidCare" ? "Definición anidada" : "Categoría individual",
+  "Categoría": d.category,
+  "Sexo": d.sex,
+  "Proporción": (d.share * 100).toFixed(1) + "%",
+  "IC 95%": `[${(d.ci_low * 100).toFixed(1)}%, ${(d.ci_high * 100).toFixed(1)}%]`
+})))
+```
+
+## Cómo se hizo esta página
+
+1. Reutiliza exactamente los mismos dos archivos JSON que [Cuidado remunerado](uso-del-tiempo.qmd) (`paid_care_workforce_by_sex.json`, `paid_care_workforce_cwd_by_sex.json`) — ningún dato nuevo, solo una reestructuración a formato largo y dos formas de graficarlo.
+2. **Diseño pensado para más países**: cada fila del dato lleva un campo `country` (hoy solo `"Chile"`). El selector de país se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]`, así que agregar Argentina, México, etc. — con su propio `paid_care_workforce_by_sex.json` reetiquetado por país — haría aparecer la opción en el selector sin tocar el código del gráfico. Si en el futuro se quisiera comparar países *simultáneamente* en vez de con un selector, el mismo dato largo permite facetar con `fx: "country"` directamente.
+3. Los dos paneles (definiciones anidadas / categorías individuales) se dibujan como gráficos [Observable Plot](https://observablehq.com/plot/) separados, pero con un dominio de eje X calculado explícitamente a partir del máximo compartido de ambos — así los dos comparten la misma escala visual aunque sean SVGs distintos.
+4. "Puntos con brecha" es un gráfico de puntos (Cleveland dot plot / dumbbell): un punto por sexo y categoría, unidos por una línea que representa la brecha, con el intervalo de confianza como un trazo fino detrás del punto. "Barras divergentes" es el mismo dato como barras que crecen desde el centro hacia cada sexo, al estilo pirámide poblacional.
