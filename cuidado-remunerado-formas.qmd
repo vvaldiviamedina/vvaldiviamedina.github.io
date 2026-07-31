@@ -91,8 +91,9 @@ sharedRatioMax = Math.ceil(d3.max([...pairRows(paidCareData), ...pairRows(cwdDat
 
 ```{ojs}
 //| echo: false
-function groupedBarPanel(data, order) {
+function groupedBarPanel(data, order, width) {
   return Plot.plot({
+    width,
     marginLeft: 240,
     fy: { domain: order, label: null },
     y: { domain: ["Hombres", "Mujeres"], axis: null },
@@ -112,9 +113,10 @@ function groupedBarPanel(data, order) {
   });
 }
 
-function divergingPanel(data, order) {
+function divergingPanel(data, order, width) {
   const signed = data.map(d => ({ ...d, xval: d.sex === "Hombres" ? -d.share : d.share }));
   return Plot.plot({
+    width,
     marginLeft: 240,
     y: { domain: order, label: null },
     x: { domain: [-sharedShareMax, sharedShareMax], grid: true, label: "← Hombres      Mujeres →", tickFormat: v => Math.abs(Math.round(v * 100)) + "%" },
@@ -133,9 +135,10 @@ function divergingPanel(data, order) {
   });
 }
 
-function ratioPanel(data, order) {
+function ratioPanel(data, order, width) {
   const rows = pairRows(data).map(r => ({ ...r, ratio: r.shareM / r.shareH }));
   return Plot.plot({
+    width,
     marginLeft: 240,
     y: { domain: order, label: null },
     x: { domain: [0, sharedRatioMax], grid: true, label: "Mujeres, veces más probable que hombres →" },
@@ -154,8 +157,9 @@ function ratioPanel(data, order) {
   });
 }
 
-function heatmapPanel(data, order) {
+function heatmapPanel(data, order, width) {
   return Plot.plot({
+    width,
     marginLeft: 240,
     marginRight: 40,
     y: { domain: order, label: null },
@@ -244,27 +248,42 @@ function wafflePanel(data, order) {
   return wrapper;
 }
 
-function panel(data, order) {
-  if (chartStyle === "Barras divergentes") return divergingPanel(data, order);
-  if (chartStyle === "Razón mujeres/hombres") return ratioPanel(data, order);
-  if (chartStyle === "Mapa de calor") return heatmapPanel(data, order);
+function panel(data, order, width) {
+  if (chartStyle === "Barras divergentes") return divergingPanel(data, order, width);
+  if (chartStyle === "Razón mujeres/hombres") return ratioPanel(data, order, width);
+  if (chartStyle === "Mapa de calor") return heatmapPanel(data, order, width);
   if (chartStyle === "Waffle") return wafflePanel(data, order);
-  return groupedBarPanel(data, order);
+  return groupedBarPanel(data, order, width);
 }
 ```
 
-## Definiciones anidadas de cuidado remunerado
+## Definiciones anidadas y categorías individuales, lado a lado
 
 ```{ojs}
 //| echo: false
-panel(paidCareData, paidCareOrder)
-```
+sideBySidePanels = {
+  const gap = 28;
+  // Quarto's content column width -- fall back progressively if the class
+  // name ever changes, so this degrades gracefully instead of breaking.
+  const mainEl = document.querySelector("#quarto-document-content") || document.querySelector("main.content") || document.body;
+  const totalWidth = mainEl.clientWidth || 900;
+  const twoUp = totalWidth >= 900;
+  const panelWidth = twoUp ? Math.floor((totalWidth - gap) / 2) : totalWidth;
 
-## Categorías individuales del ecosistema de cuidados
+  const wrapper = html`<div style="display:flex; gap:${gap}px; flex-wrap:wrap; align-items:flex-start;"></div>`;
 
-```{ojs}
-//| echo: false
-panel(cwdData, cwdOrder)
+  const col1 = html`<div style="flex:1 1 ${panelWidth}px; min-width:0;"></div>`;
+  col1.appendChild(html`<div style="font-weight:700; margin-bottom:8px;">Definiciones anidadas de cuidado remunerado</div>`);
+  col1.appendChild(panel(paidCareData, paidCareOrder, panelWidth));
+
+  const col2 = html`<div style="flex:1 1 ${panelWidth}px; min-width:0;"></div>`;
+  col2.appendChild(html`<div style="font-weight:700; margin-bottom:8px;">Categorías individuales del ecosistema de cuidados</div>`);
+  col2.appendChild(panel(cwdData, cwdOrder, panelWidth));
+
+  wrapper.appendChild(col1);
+  wrapper.appendChild(col2);
+  return wrapper;
+}
 ```
 
 ::: {.callout-important}
@@ -295,6 +314,7 @@ Inputs.table(allLong.filter(d => d.country === selectedCountry).map(d => ({
 1. Reutiliza exactamente los mismos dos archivos JSON que [Cuidado remunerado](uso-del-tiempo.qmd) (`paid_care_workforce_by_sex.json`, `paid_care_workforce_cwd_by_sex.json`) — ningún dato nuevo, solo una reestructuración a formato largo y cinco formas de graficarlo.
 2. **Diseño pensado para más países**: cada fila del dato lleva un campo `country` (hoy solo `"Chile"`). El selector de país se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]`, así que agregar Argentina, México, etc. — con su propio `paid_care_workforce_by_sex.json` reetiquetado por país — haría aparecer la opción en el selector sin tocar el código del gráfico.
 3. **Eje compartido de verdad**: los dos paneles (definiciones anidadas / categorías individuales) se dibujan como gráficos [Observable Plot](https://observablehq.com/plot/) separados, pero `sharedShareMax` y `sharedRatioMax` se calculan una sola vez a partir de ambos conjuntos de datos juntos, y ambos paneles reciben ese mismo número como dominio de su eje — así quedan realmente a la misma escala, no solo visualmente parecidos.
+   Los dos paneles también se ubican **lado a lado** en vez de uno arriba del otro, midiendo el ancho real de la columna de contenido (`document.querySelector("#quarto-document-content").clientWidth`) y pasándole la mitad a cada gráfico de Plot — usa todo el ancho disponible en vez de dejarse en los 640px por defecto de Plot. En pantallas angostas (menos de 900px) vuelve a apilarlos uno sobre otro, para no aplastar las etiquetas de categoría.
 4. La primera versión de esta página usaba un gráfico de puntos con brecha (dumbbell) para comparar hombres y mujeres. Se reemplazó por **barras agrupadas**: un dumbbell da a entender un cambio entre dos momentos o estados de la *misma* cosa (antes/después), y aquí no hay ninguna secuencia — son dos grupos distintos medidos en el mismo momento. Barras agrupadas no sugiere esa lectura y sigue permitiendo el intervalo de confianza como un trazo sobre cada barra.
 5. "Mapa de calor" mantiene el color por sexo (verde/morado) en vez de una escala secuencial de un solo tono, para no romper la convención de color del resto del sitio — la magnitud se codifica con la opacidad, no con el matiz.
 6. "Waffle" pasó por dos versiones. La primera dibujaba un solo cuadriculado de 100 casillas por categoría, con casillas de hombres y de mujeres en el mismo grupo de 100 — como si ambos porcentajes salieran de la misma población total de personas ocupadas. No es así: `share` se calcula por separado dentro de cada sexo (`svyby(~indicador, by=~sexo, FUN=svymean)`), así que 22,7% de mujeres y 7,3% de hombres son tasas de dos poblaciones distintas, no dos pedazos de un mismo 100%. La versión actual dibuja **dos** cuadriculados de 100 por categoría — "100 hombres ocupados" y "100 mujeres ocupadas", cada uno con su propio color y su propio gris — para no implicar una suma que los datos no permiten.
