@@ -26,10 +26,10 @@ enut <- enut |>
   mutate(
     cw_d = case_when(
       !cae %in% 2 ~ NA,
-      ciuo_2d %in% c(22, 23, 32, 36, 53) & caenes_1d %in% c(16, 17, 20) ~ 11,
+      ciuo_2d %in% c(22, 23, 26, 32, 36, 53) & caenes_1d %in% c(16, 17, 20) ~ 11,
       ciuo_2d %in% c(22, 23, 32, 36, 53) & !caenes_1d %in% c(16, 17, 20) ~ 12,
-      ciuo_2d %in% c(51, 91, 94, 96) & caenes_1d %in% c(16, 17, 20) ~ 21,
-      !ciuo_2d %in% c(22, 23, 32, 36, 53, 51, 91, 94, 96) & caenes_1d %in% c(16, 17, 20) ~ 31,
+      ciuo_2d %in% c(51, 91, 92, 94, 96) & caenes_1d %in% c(16, 17, 20) ~ 21,
+      !ciuo_2d %in% c(22, 23, 26, 32, 36, 53, 51, 91, 92, 94, 96) & caenes_1d %in% c(16, 17, 20) ~ 31,
       TRUE ~ 91
     )
   ) |>

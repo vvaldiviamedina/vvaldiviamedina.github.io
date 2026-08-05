@@ -2,34 +2,34 @@
   {
     "definition": "Trabajo de cuidados remunerados",
     "sex": "Hombres",
-    "share": 0.0731,
-    "se": 0.0046,
-    "ci_low": 0.064,
-    "ci_high": 0.0822
+    "share": 0.0787,
+    "se": 0.0048,
+    "ci_low": 0.0693,
+    "ci_high": 0.088
   },
   {
     "definition": "Trabajo de cuidados remunerados",
     "sex": "Mujeres",
-    "share": 0.2269,
-    "se": 0.0068,
-    "ci_low": 0.2136,
-    "ci_high": 0.2403
+    "share": 0.2474,
+    "se": 0.007,
+    "ci_low": 0.2336,
+    "ci_high": 0.2612
   },
   {
     "definition": "TCR + Habilitadores",
     "sex": "Hombres",
-    "share": 0.0776,
-    "se": 0.0047,
-    "ci_low": 0.0684,
-    "ci_high": 0.0867
+    "share": 0.0836,
+    "se": 0.0048,
+    "ci_low": 0.0741,
+    "ci_high": 0.093
   },
   {
     "definition": "TCR + Habilitadores",
     "sex": "Mujeres",
-    "share": 0.286,
-    "se": 0.007,
-    "ci_low": 0.2722,
-    "ci_high": 0.2998
+    "share": 0.3065,
+    "se": 0.0071,
+    "ci_low": 0.2925,
+    "ci_high": 0.3205
   },
   {
     "definition": "TCR + Habilitadores + Facilitadores",
