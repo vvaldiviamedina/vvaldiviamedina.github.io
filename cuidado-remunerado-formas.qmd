@@ -6,7 +6,7 @@ toc: true
 
 La página [Cuidado remunerado](uso-del-tiempo.qmd) muestra estos datos con barras verticales y un facet por definición. Aquí exploramos cinco formas distintas de mirar exactamente la misma información — todas horizontales, para que las dos dimensiones del dato (definiciones anidadas y categorías individuales) compartan un mismo eje y se puedan comparar directamente entre sí.
 
-El selector de país de abajo hoy solo tiene Chile, pero el gráfico está armado para que agregar otro país sea solo agregar filas con un campo `country` distinto — no un rediseño.
+El selector de país de abajo ya tiene Chile y Colombia, y el gráfico está armado para que agregar otro país más sea solo agregar filas con un campo `country` distinto — no un rediseño.
 
 ::: {.callout-note}
 ## Fuente de los datos
@@ -29,6 +29,8 @@ accentColor = "#c26b5a"
 //| echo: false
 paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
 cwdRaw = FileAttachment("data/enut/paid_care_workforce_cwd_by_sex.json").json()
+paidCareRawCo = FileAttachment("data/enut_co/paid_care_workforce_by_sex_co.json").json()
+cwdRawCo = FileAttachment("data/enut_co/paid_care_workforce_cwd_by_sex_co.json").json()
 ```
 
 ```{ojs}
@@ -44,7 +46,9 @@ cwdOrder = ["TCR dentro del sector", "TCR fuera del sector", "Habilitadores", "F
 // value -- the selector and every chart below pick it up automatically.
 allLong = [
   ...paidCareRaw.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Chile" })),
-  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" }))
+  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" })),
+  ...paidCareRawCo.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Colombia" })),
+  ...cwdRawCo.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Colombia" }))
 ]
 countries = [...new Set(allLong.map(d => d.country))]
 ```
@@ -312,7 +316,7 @@ Inputs.table(allLong.filter(d => d.country === selectedCountry).map(d => ({
 ## Cómo se hizo esta página
 
 1. Reutiliza exactamente los mismos dos archivos JSON que [Cuidado remunerado](uso-del-tiempo.qmd) (`paid_care_workforce_by_sex.json`, `paid_care_workforce_cwd_by_sex.json`) — ningún dato nuevo, solo una reestructuración a formato largo y cinco formas de graficarlo.
-2. **Diseño pensado para más países**: cada fila del dato lleva un campo `country` (hoy solo `"Chile"`). El selector de país se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]`, así que agregar Argentina, México, etc. — con su propio `paid_care_workforce_by_sex.json` reetiquetado por país — haría aparecer la opción en el selector sin tocar el código del gráfico.
+2. **Diseño pensado para más países**: cada fila del dato lleva un campo `country`. El selector de país se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]`, así que agregar un país nuevo es agregar filas con su propio `country` — sin tocar el código del gráfico. Colombia se agregó exactamente así: mismo esquema de clasificación (ocupación × rama de actividad), pero con las variables y códigos propios de la ENUT de Colombia (CUOC/CIUO-08 A.C. para ocupación, CIIU Rev. 4 A.C. para rama) en vez de los de Chile — ver [`scripts/build_paid_care_workforce_co.R`](https://github.com/vvaldiviamedina/vvaldiviamedina.github.io/blob/main/scripts/build_paid_care_workforce_co.R).
 3. **Eje compartido de verdad**: los dos paneles (definiciones anidadas / categorías individuales) se dibujan como gráficos [Observable Plot](https://observablehq.com/plot/) separados, pero `sharedShareMax` y `sharedRatioMax` se calculan una sola vez a partir de ambos conjuntos de datos juntos, y ambos paneles reciben ese mismo número como dominio de su eje — así quedan realmente a la misma escala, no solo visualmente parecidos.
    Los dos paneles también se ubican **lado a lado** en vez de uno arriba del otro, midiendo el ancho real de la columna de contenido (`document.querySelector("#quarto-document-content").clientWidth`) y pasándole la mitad a cada gráfico de Plot — usa todo el ancho disponible en vez de dejarse en los 640px por defecto de Plot. En pantallas angostas (menos de 900px) vuelve a apilarlos uno sobre otro, para no aplastar las etiquetas de categoría.
 4. La primera versión de esta página usaba un gráfico de puntos con brecha (dumbbell) para comparar hombres y mujeres. Se reemplazó por **barras agrupadas**: un dumbbell da a entender un cambio entre dos momentos o estados de la *misma* cosa (antes/después), y aquí no hay ninguna secuencia — son dos grupos distintos medidos en el mismo momento. Barras agrupadas no sugiere esa lectura y sigue permitiendo el intervalo de confianza como un trazo sobre cada barra.

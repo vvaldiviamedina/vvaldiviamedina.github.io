@@ -21,6 +21,8 @@ colorM = "#c7a3c0"
 //| echo: false
 paidCareRaw = FileAttachment("data/enut/paid_care_workforce_by_sex.json").json()
 cwdRaw = FileAttachment("data/enut/paid_care_workforce_cwd_by_sex.json").json()
+paidCareRawCo = FileAttachment("data/enut_co/paid_care_workforce_by_sex_co.json").json()
+cwdRawCo = FileAttachment("data/enut_co/paid_care_workforce_cwd_by_sex_co.json").json()
 ```
 
 ```{ojs}
@@ -36,7 +38,9 @@ cwdOrder = ["TCR dentro del sector", "TCR fuera del sector", "Habilitadores", "F
 // `country` value, the selector picks it up automatically.
 allLong = [
   ...paidCareRaw.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Chile" })),
-  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" }))
+  ...cwdRaw.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Chile" })),
+  ...paidCareRawCo.map(d => ({ ...d, category: d.definition, group: "paidCare", country: "Colombia" })),
+  ...cwdRawCo.map(d => ({ ...d, category: d.definition, group: "cwd", country: "Colombia" }))
 ]
 countries = [...new Set(allLong.map(d => d.country))]
 ```
@@ -155,5 +159,5 @@ Inputs.table(allLong.filter(d => d.country === selectedCountry).map(d => ({
 
 1. Reutiliza exactamente los mismos dos archivos JSON que [Cuidado remunerado](uso-del-tiempo.qmd) y [otros formatos](cuidado-remunerado-formas.qmd) (`paid_care_workforce_by_sex.json`, `paid_care_workforce_cwd_by_sex.json`) — ningún dato ni cálculo nuevo.
 2. El panel izquierdo es el gráfico de barras verticales agrupadas por definición de [Cuidado remunerado](uso-del-tiempo.qmd), tal cual. El panel derecho es la vista "Barras divergentes" de [otros formatos](cuidado-remunerado-formas.qmd). A diferencia de esas dos páginas, acá no hay selector de estilo — es una combinación fija, pensada para mostrar cada dimensión del dato con el formato que mejor le queda a esa dimensión específica.
-3. **Diseño pensado para más países**: igual que en "otros formatos", cada fila lleva un campo `country` (hoy solo `"Chile"`) y el selector se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]` — agregar un país nuevo es agregar filas, no tocar el código de los gráficos.
+3. **Diseño pensado para más países**: igual que en "otros formatos", cada fila lleva un campo `country` y el selector se arma dinámicamente con `[...new Set(allLong.map(d => d.country))]` — agregar un país nuevo es agregar filas, no tocar el código de los gráficos. Colombia ya está — mismo esquema de clasificación (ocupación × rama de actividad) con las variables propias de su ENUT.
 4. Los dos paneles se ubican lado a lado midiendo el ancho real de la columna de contenido y pasándole la mitad a cada gráfico de Plot, con el mismo fallback a una columna apilada bajo 900px que usa "otros formatos".

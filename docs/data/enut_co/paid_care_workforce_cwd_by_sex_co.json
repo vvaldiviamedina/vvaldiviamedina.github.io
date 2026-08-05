@@ -1,0 +1,66 @@
+[
+  {
+    "definition": "TCR dentro del sector",
+    "sex": "Hombres",
+    "share": 0.0285,
+    "se": 0.0014,
+    "ci_low": 0.0258,
+    "ci_high": 0.0312
+  },
+  {
+    "definition": "TCR dentro del sector",
+    "sex": "Mujeres",
+    "share": 0.1186,
+    "se": 0.0034,
+    "ci_low": 0.1118,
+    "ci_high": 0.1253
+  },
+  {
+    "definition": "TCR fuera del sector",
+    "sex": "Hombres",
+    "share": 0.0217,
+    "se": 0.0011,
+    "ci_low": 0.0196,
+    "ci_high": 0.0238
+  },
+  {
+    "definition": "TCR fuera del sector",
+    "sex": "Mujeres",
+    "share": 0.0449,
+    "se": 0.0021,
+    "ci_low": 0.0408,
+    "ci_high": 0.049
+  },
+  {
+    "definition": "Habilitadores",
+    "sex": "Hombres",
+    "share": 0.0027,
+    "se": 0.0006,
+    "ci_low": 0.0015,
+    "ci_high": 0.004
+  },
+  {
+    "definition": "Habilitadores",
+    "sex": "Mujeres",
+    "share": 0.0118,
+    "se": 0.0014,
+    "ci_low": 0.0091,
+    "ci_high": 0.0146
+  },
+  {
+    "definition": "Facilitadores",
+    "sex": "Hombres",
+    "share": 0.0157,
+    "se": 0.0013,
+    "ci_low": 0.0131,
+    "ci_high": 0.0182
+  },
+  {
+    "definition": "Facilitadores",
+    "sex": "Mujeres",
+    "share": 0.0337,
+    "se": 0.0016,
+    "ci_low": 0.0305,
+    "ci_high": 0.0369
+  }
+]
