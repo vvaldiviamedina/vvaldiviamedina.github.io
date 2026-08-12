@@ -1,1 +1,20 @@
 /* css styles */
+
+/* "Cómo se hizo esta página" sections: present on every viz/game page with
+   the exact same heading text, so Quarto gives them the same heading id
+   everywhere -- one rule covers all pages. Text color matches the page
+   background (light or dark, tracks the theme automatically via Bootstrap's
+   variables) so it's invisible at a glance, but selecting/highlighting the
+   text reveals it via ::selection. This is NOT access control -- the text
+   is still in the page source and still selectable/copyable, just not
+   visually obvious when sharing a link. */
+#cómo-se-hizo-esta-página,
+#cómo-se-hizo-esta-página * {
+  color: var(--bs-body-bg) !important;
+  background-color: var(--bs-body-bg) !important;
+  border-color: var(--bs-body-bg) !important;
+}
+#cómo-se-hizo-esta-página *::selection {
+  color: var(--bs-body-color) !important;
+  background: var(--bs-secondary-bg, #b4d7ff) !important;
+}

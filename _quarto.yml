@@ -9,11 +9,6 @@ website:
   navbar:
     background: dark
     foreground: info
-    left:
-      - href: index.qmd
-        text: Home
-      - href: about.qmd
-        text: About
   sidebar:
     style: "docked"
     search: true
@@ -21,10 +16,6 @@ website:
     background: "#5c9e95"
     foreground: "#c7a3c0"
     contents:
-      - text: "Home"
-        href: index.qmd
-      - text: "Showcase"
-        href: showcase.qmd
       - text: "Cuidado remunerado (viz)"
         href: uso-del-tiempo.qmd
       - text: "Cuidado remunerado, otros formatos (viz)"
@@ -39,12 +30,6 @@ website:
         href: guess-the-gap.qmd
       - text: "Adivina la brecha: participación (juego)"
         href: guess-the-participation-gap.qmd
-      - text: "Web scraping"
-        href: web-scraping.qmd
-      - text: "Build a site like this"
-        href: build-a-site.qmd
-      - text: "About"
-        href: about.qmd
 format:
   html:
     theme:
